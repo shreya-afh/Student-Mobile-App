@@ -1,10 +1,17 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useLocation } from "wouter";
-import { QrCodeIcon, BriefcaseIcon, AwardIcon, UserIcon, BookOpenIcon, TrendingUpIcon } from "lucide-react";
+import { QrCodeIcon, BriefcaseIcon, AwardIcon, UserIcon, BookOpenIcon, TrendingUpIcon, LogOutIcon } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function Dashboard() {
   const [, setLocation] = useLocation();
+  const { logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    setLocation("/");
+  };
 
   const quickActions = [
     {
@@ -53,10 +60,20 @@ export default function Dashboard() {
           <h1 className="font-['Inter',Helvetica] font-bold text-[#6d10b0] text-xl">
             Welcome back!
           </h1>
-          <div className="bg-[#ffffffe6] rounded-[10px] px-3 py-1.5">
-            <span className="font-['Inter',Helvetica] font-normal text-[#1d2838] text-xs">
-              Infosys X AspireForHer
-            </span>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleLogout}
+              className="h-8 w-8 p-0 hover:bg-white/20"
+            >
+              <LogOutIcon className="w-5 h-5 text-[#6d10b0]" />
+            </Button>
+            <div className="bg-[#ffffffe6] rounded-[10px] px-3 py-1.5">
+              <span className="font-['Inter',Helvetica] font-normal text-[#1d2838] text-xs">
+                Infosys X AspireForHer
+              </span>
+            </div>
           </div>
         </div>
 

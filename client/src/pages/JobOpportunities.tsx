@@ -5,10 +5,22 @@ import { Badge } from "@/components/ui/badge";
 import { useLocation } from "wouter";
 import { ChevronLeftIcon, SearchIcon, MapPinIcon, CalendarIcon, IndianRupeeIcon } from "lucide-react";
 import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 export default function JobOpportunities() {
   const [, setLocation] = useLocation();
+  const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("available");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [appliedJobs, setAppliedJobs] = useState<string[]>([]);
+
+  const handleApply = (jobTitle: string) => {
+    setAppliedJobs([...appliedJobs, jobTitle]);
+    toast({
+      title: "Application Submitted",
+      description: `Your application for ${jobTitle} has been submitted successfully!`,
+    });
+  };
 
   const jobs = [
     {
@@ -114,6 +126,8 @@ export default function JobOpportunities() {
             <Input
               placeholder="Search jobs or companies"
               className="pl-10 h-11"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
 
@@ -189,8 +203,12 @@ export default function JobOpportunities() {
                   ))}
                 </div>
 
-                <Button className="w-full h-10 bg-[#6d10b0] hover:bg-[#5a0d94] text-white">
-                  Apply Now
+                <Button 
+                  onClick={() => handleApply(job.title)}
+                  disabled={appliedJobs.includes(job.title)}
+                  className="w-full h-10 bg-[#6d10b0] hover:bg-[#5a0d94] text-white disabled:opacity-50"
+                >
+                  {appliedJobs.includes(job.title) ? "Applied ✓" : "Apply Now"}
                 </Button>
               </CardContent>
             </Card>

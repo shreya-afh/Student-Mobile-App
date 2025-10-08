@@ -3,9 +3,11 @@ import { Input } from "@/components/ui/input";
 import { useLocation } from "wouter";
 import { ChevronLeftIcon } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function VerifyOTP() {
   const [, setLocation] = useLocation();
+  const { login } = useAuth();
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [timer, setTimer] = useState(25);
 
@@ -32,7 +34,8 @@ export default function VerifyOTP() {
   };
 
   const handleVerify = () => {
-    setLocation("/course-enrollment");
+    login({ phone: "verified_user" });
+    setLocation("/dashboard");
   };
 
   return (
