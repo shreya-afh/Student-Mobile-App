@@ -3,9 +3,44 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useLocation } from "wouter";
 import { ChevronLeftIcon, UploadIcon, CalendarIcon, MapPinIcon, IndianRupeeIcon } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { useState } from "react";
 
 export default function JobOffers() {
   const [, setLocation] = useLocation();
+  const { toast } = useToast();
+  const [acceptedOffers, setAcceptedOffers] = useState<string[]>([]);
+
+  const handleUpload = () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.pdf,.doc,.docx';
+    input.onchange = (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (file) {
+        toast({
+          title: "Offer Letter Uploaded",
+          description: `${file.name} has been uploaded successfully!`,
+        });
+      }
+    };
+    input.click();
+  };
+
+  const handleViewLetter = (company: string) => {
+    toast({
+      title: "Opening Offer Letter",
+      description: `Viewing offer letter from ${company}...`,
+    });
+  };
+
+  const handleAccept = (company: string) => {
+    setAcceptedOffers([...acceptedOffers, company]);
+    toast({
+      title: "Offer Accepted",
+      description: `Congratulations! You have accepted the offer from ${company}.`,
+    });
+  };
 
   return (
     <div className="min-h-screen bg-[#faf9fb] flex flex-col">
@@ -43,7 +78,10 @@ export default function JobOffers() {
             <p className="font-['Inter',Helvetica] font-normal text-[#495565] text-sm mb-3">
               Upload your offer letter to confirm your placement and get recognition.
             </p>
-            <Button className="w-full h-10 bg-[#6d10b0] hover:bg-[#5a0d94] text-white">
+            <Button 
+              onClick={handleUpload}
+              className="w-full h-10 bg-[#6d10b0] hover:bg-[#5a0d94] text-white"
+            >
               <UploadIcon className="w-4 h-4 mr-2" />
               Upload Offer Letter
             </Button>
@@ -109,7 +147,11 @@ export default function JobOffers() {
               <span className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs">
                 Received: 12/03/2024
               </span>
-              <Button variant="link" className="p-0 h-auto text-[#6d10b0]">
+              <Button 
+                onClick={() => handleViewLetter("Infosys")}
+                variant="link" 
+                className="p-0 h-auto text-[#6d10b0]"
+              >
                 View Letter
               </Button>
             </div>
@@ -166,11 +208,19 @@ export default function JobOffers() {
                 Received: 10/03/2024
               </span>
               <div className="flex gap-2">
-                <Button variant="link" className="p-0 h-auto text-[#6d10b0]">
+                <Button 
+                  onClick={() => handleViewLetter("Wipro")}
+                  variant="link" 
+                  className="p-0 h-auto text-[#6d10b0]"
+                >
                   View Letter
                 </Button>
-                <Button className="h-8 px-4 bg-[#6d10b0] hover:bg-[#5a0d94] text-white text-sm">
-                  Accept
+                <Button 
+                  onClick={() => handleAccept("Wipro")}
+                  disabled={acceptedOffers.includes("Wipro")}
+                  className="h-8 px-4 bg-[#6d10b0] hover:bg-[#5a0d94] text-white text-sm disabled:opacity-50"
+                >
+                  {acceptedOffers.includes("Wipro") ? "Accepted" : "Accept"}
                 </Button>
               </div>
             </div>

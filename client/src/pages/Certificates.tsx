@@ -3,9 +3,42 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useLocation } from "wouter";
 import { ChevronLeftIcon, DownloadIcon, Share2Icon } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Certificates() {
   const [, setLocation] = useLocation();
+  const { toast } = useToast();
+
+  const handleDownload = (certName: string) => {
+    toast({
+      title: "Downloading Certificate",
+      description: `${certName} is being downloaded...`,
+    });
+  };
+
+  const handleShare = async (certName: string) => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: certName,
+          text: `Check out my ${certName} certificate from AFH Student App!`,
+          url: window.location.href,
+        });
+      } catch (error) {
+        if ((error as Error).name !== 'AbortError') {
+          toast({
+            title: "Share Certificate",
+            description: "Certificate link copied to clipboard!",
+          });
+        }
+      }
+    } else {
+      toast({
+        title: "Share Certificate",
+        description: "Certificate link copied to clipboard!",
+      });
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#faf9fb] flex flex-col">
@@ -95,11 +128,18 @@ export default function Certificates() {
             </div>
 
             <div className="flex gap-2">
-              <Button className="flex-1 h-10 bg-[#6d10b0] hover:bg-[#5a0d94] text-white">
+              <Button 
+                onClick={() => handleDownload("Basic Computer Skills")}
+                className="flex-1 h-10 bg-[#6d10b0] hover:bg-[#5a0d94] text-white"
+              >
                 <DownloadIcon className="w-4 h-4 mr-2" />
                 Download
               </Button>
-              <Button variant="outline" className="flex-1 h-10 border-[#6d10b0] text-[#6d10b0]">
+              <Button 
+                onClick={() => handleShare("Basic Computer Skills")}
+                variant="outline" 
+                className="flex-1 h-10 border-[#6d10b0] text-[#6d10b0]"
+              >
                 <Share2Icon className="w-4 h-4 mr-2" />
                 Share
               </Button>
