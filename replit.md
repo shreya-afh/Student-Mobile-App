@@ -1,0 +1,124 @@
+# Overview
+
+AFH (AspireForHer) Student is a mobile-first web application designed for the Infosys X AspireForHer career transformation program. The application provides students with tools to manage course enrollment, track attendance, submit feedback, view certificates, and explore job opportunities. The app is built as a Progressive Web Application (PWA) with Android support through Capacitor, enabling deployment as both a web app and native Android application.
+
+## User Preferences
+
+Preferred communication style: Simple, everyday language.
+
+## System Architecture
+
+### Frontend Architecture
+
+**Core Technology Stack:**
+- **React 18** with TypeScript for type-safe component development
+- **Vite** as the build tool and development server for fast hot module replacement
+- **Wouter** for lightweight client-side routing
+- **TailwindCSS** for utility-first styling with custom design tokens
+- **shadcn/ui** component library built on Radix UI primitives for accessible, customizable UI components
+
+**State Management:**
+- **TanStack Query (React Query)** for server state management, caching, and data fetching
+- Local component state with React hooks for UI state
+
+**Design System:**
+- Custom color palette centered around purple/violet primary colors (#6d10b0)
+- Responsive mobile-first design targeting 768px breakpoint
+- Consistent Inter font family throughout the application
+- Gradient backgrounds for headers and accent elements
+
+### Backend Architecture
+
+**Server Framework:**
+- **Express.js** with TypeScript running on Node.js
+- Custom Vite middleware integration for development hot reloading
+- Modular route registration pattern through `registerRoutes` function
+- Centralized error handling middleware
+
+**Storage Layer:**
+- **In-memory storage** implementation (MemStorage) as default
+- Interface-based storage pattern (IStorage) allowing easy swapping to database implementations
+- Prepared for PostgreSQL integration via Drizzle ORM (configuration present but not actively used)
+
+**Session Management:**
+- Cookie-based sessions configured for user authentication
+- Session storage interface ready for PostgreSQL via connect-pg-simple
+
+**Development Features:**
+- Request/response logging middleware with duration tracking
+- Replit-specific development plugins (cartographer, dev banner, runtime error overlay)
+- Separate development and production build processes
+
+### Data Storage Solutions
+
+**Current Implementation:**
+- In-memory Map-based storage for users
+- UUID-based primary keys using crypto.randomUUID()
+
+**Prepared Infrastructure:**
+- Drizzle ORM configuration for PostgreSQL migrations
+- Schema definitions in `shared/schema.ts` with Zod validation
+- Connection string support via DATABASE_URL environment variable
+- Migration output configured to `./migrations` directory
+
+**Schema Structure:**
+- Users table with id, username, and password fields
+- Extensible schema pattern using Drizzle's table definitions
+- Type-safe insert operations via Zod schemas
+
+### Authentication and Authorization
+
+**Planned Implementation:**
+- User registration multi-step flow (4 steps) with form validation
+- OTP verification for phone number confirmation
+- Session-based authentication with secure cookies
+- Password-based login system
+
+**Current State:**
+- Mock authentication flow routing users through registration/login to dashboard
+- Frontend routes protected by navigation flow (not enforced on backend)
+- User creation interface defined but not fully implemented
+
+### External Dependencies
+
+**UI Component Libraries:**
+- **Radix UI** - Comprehensive collection of accessible, unstyled React components
+  - Dialog, Dropdown, Popover, Toast, Accordion, Tabs, and 20+ other primitives
+  - Provides accessibility features and keyboard navigation out of the box
+
+**Mobile Platform:**
+- **Capacitor 7.4.3** - Cross-platform native runtime
+  - Configured for Android builds with package `com.infosys.afh.student`
+  - Web assets compiled to `dist/public` and synced to native projects
+  - Camera, Storage, and Internet permissions configured
+
+**Styling and Utilities:**
+- **TailwindCSS** with PostCSS and Autoprefixer
+- **class-variance-authority** for variant-based component styling
+- **clsx** and **tailwind-merge** for conditional class composition
+
+**Form Handling:**
+- **React Hook Form** with @hookform/resolvers for form state management
+- **Zod** for runtime validation and schema definition
+- Integration with shadcn/ui form components
+
+**Database (Prepared):**
+- **@neondatabase/serverless** - Serverless PostgreSQL driver
+- **Drizzle ORM** with drizzle-kit for migrations and schema management
+- **connect-pg-simple** for PostgreSQL session storage
+
+**Build and Development:**
+- **esbuild** for server-side bundling
+- **tsx** for TypeScript execution in development
+- Replit-specific plugins for enhanced development experience
+
+**Routing:**
+- **wouter** - Minimalist routing library for React (2KB alternative to React Router)
+
+**Key Application Routes:**
+- Landing page and authentication (/, /login, /register/step1-4, /verify-otp)
+- Dashboard with quick actions (/dashboard)
+- Course management (/course-enrollment)
+- Attendance system with multi-step flow (/attendance, /attendance/mode, /attendance/feedback)
+- Achievements and opportunities (/certificates, /job-offers, /job-opportunities)
+- User profile (/profile)
