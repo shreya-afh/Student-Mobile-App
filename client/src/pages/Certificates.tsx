@@ -10,32 +10,77 @@ export default function Certificates() {
   const { toast } = useToast();
 
   const handleDownload = (certName: string) => {
+    const certData = `
+AFH STUDENT APP - CERTIFICATE OF COMPLETION
+
+This certifies that
+
+[STUDENT NAME]
+
+has successfully completed
+
+${certName}
+
+Issued by: AspireForHer X Infosys
+Date: ${new Date().toLocaleDateString()}
+Certificate ID: AFH-CS-2024-${Math.floor(Math.random() * 1000000).toString().padStart(6, '0')}
+
+This is a digitally generated certificate.
+    `.trim();
+
+    const blob = new Blob([certData], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${certName.replace(/\s+/g, '_')}_Certificate.txt`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
     toast({
-      title: "Downloading Certificate",
-      description: `${certName} is being downloaded...`,
+      title: "Certificate Downloaded",
+      description: `${certName} certificate has been downloaded successfully!`,
     });
   };
 
   const handleShare = async (certName: string) => {
+    const shareText = `Check out my ${certName} certificate from AFH Student App!`;
+    const shareUrl = window.location.href;
+
     if (navigator.share) {
       try {
         await navigator.share({
           title: certName,
-          text: `Check out my ${certName} certificate from AFH Student App!`,
-          url: window.location.href,
+          text: shareText,
+          url: shareUrl,
+        });
+        toast({
+          title: "Certificate Shared",
+          description: "Certificate shared successfully!",
         });
       } catch (error) {
         if ((error as Error).name !== 'AbortError') {
-          toast({
-            title: "Share Certificate",
-            description: "Certificate link copied to clipboard!",
-          });
+          await fallbackCopyToClipboard(shareText, shareUrl);
         }
       }
     } else {
+      await fallbackCopyToClipboard(shareText, shareUrl);
+    }
+  };
+
+  const fallbackCopyToClipboard = async (text: string, url: string) => {
+    try {
+      await navigator.clipboard.writeText(`${text}\n${url}`);
       toast({
-        title: "Share Certificate",
+        title: "Link Copied",
         description: "Certificate link copied to clipboard!",
+      });
+    } catch (error) {
+      toast({
+        title: "Share Failed",
+        description: "Could not copy link to clipboard.",
+        variant: "destructive",
       });
     }
   };
