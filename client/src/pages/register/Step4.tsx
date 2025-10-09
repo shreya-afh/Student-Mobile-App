@@ -5,20 +5,72 @@ import { useLocation } from "wouter";
 import { ChevronLeftIcon, CameraIcon } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useRegistration } from "@/contexts/RegistrationContext";
+import { useToast } from "@/hooks/use-toast";
 
 export default function RegisterStep4() {
   const [, setLocation] = useLocation();
-  const { registrationData, updateStep4 } = useRegistration();
+  const { registrationData, updateStep4, resetRegistration } = useRegistration();
   const [formData, setFormData] = useState(registrationData.step4);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     setFormData(registrationData.step4);
   }, [registrationData.step4]);
 
-  const handleComplete = (e: React.FormEvent) => {
+  const handleComplete = async (e: React.FormEvent) => {
     e.preventDefault();
     updateStep4(formData);
-    setLocation("/verify-otp");
+    setIsSubmitting(true);
+
+    try {
+      const formDataToSend = new FormData();
+      formDataToSend.append("data", JSON.stringify({
+        step1: registrationData.step1,
+        step2: registrationData.step2,
+        step3: registrationData.step3,
+        step4: {
+          aadhaar: formData.aadhaar,
+          isPWD: formData.isPWD,
+          isGovtEmployee: formData.isGovtEmployee,
+        },
+      }));
+
+      if (formData.selfie) {
+        formDataToSend.append("selfie", formData.selfie);
+      }
+
+      const response = await fetch("/api/register", {
+        method: "POST",
+        body: formDataToSend,
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        toast({
+          title: "Registration Successful",
+          description: "Your data has been saved to Google Sheets!",
+        });
+        resetRegistration();
+        setLocation("/verify-otp");
+      } else {
+        toast({
+          title: "Registration Failed",
+          description: result.message || "Please try again",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to submit registration. Please try again.",
+        variant: "destructive",
+      });
+      console.error("Registration error:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -159,9 +211,10 @@ export default function RegisterStep4() {
 
             <Button
               type="submit"
-              className="w-full h-12 bg-[#6d10b0] hover:bg-[#5a0d94] text-white rounded-lg font-['Inter',Helvetica] font-medium text-base mt-6"
+              disabled={isSubmitting}
+              className="w-full h-12 bg-[#6d10b0] hover:bg-[#5a0d94] text-white rounded-lg font-['Inter',Helvetica] font-medium text-base mt-6 disabled:opacity-50"
             >
-              Complete Registration
+              {isSubmitting ? "Submitting..." : "Complete Registration"}
             </Button>
           </form>
         </div>
