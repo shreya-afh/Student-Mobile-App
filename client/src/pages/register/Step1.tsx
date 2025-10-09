@@ -5,6 +5,7 @@ import { useLocation } from "wouter";
 import { ChevronLeftIcon } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useRegistration } from "@/contexts/RegistrationContext";
+import { DatePickerWheel } from "@/components/DatePickerWheel";
 
 export default function RegisterStep1() {
   const [, setLocation] = useLocation();
@@ -17,6 +18,12 @@ export default function RegisterStep1() {
 
   const handleContinue = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!formData.dateOfBirth.day || !formData.dateOfBirth.month || !formData.dateOfBirth.year) {
+      alert("Please select your complete date of birth");
+      return;
+    }
+    
     updateStep1(formData);
     setLocation("/register/step2");
   };
@@ -127,47 +134,10 @@ export default function RegisterStep1() {
               <Label className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm mb-2 block">
                 Date of Birth *
               </Label>
-              <div className="grid grid-cols-3 gap-3">
-                <div>
-                  <Input
-                    placeholder="DD"
-                    value={formData.dateOfBirth.day}
-                    onChange={(e) => setFormData({
-                      ...formData,
-                      dateOfBirth: { ...formData.dateOfBirth, day: e.target.value }
-                    })}
-                    maxLength={2}
-                    required
-                  />
-                  <span className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs mt-1 block">Day</span>
-                </div>
-                <div>
-                  <Input
-                    placeholder="MM"
-                    value={formData.dateOfBirth.month}
-                    onChange={(e) => setFormData({
-                      ...formData,
-                      dateOfBirth: { ...formData.dateOfBirth, month: e.target.value }
-                    })}
-                    maxLength={2}
-                    required
-                  />
-                  <span className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs mt-1 block">Month</span>
-                </div>
-                <div>
-                  <Input
-                    placeholder="YYYY"
-                    value={formData.dateOfBirth.year}
-                    onChange={(e) => setFormData({
-                      ...formData,
-                      dateOfBirth: { ...formData.dateOfBirth, year: e.target.value }
-                    })}
-                    maxLength={4}
-                    required
-                  />
-                  <span className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs mt-1 block">Year</span>
-                </div>
-              </div>
+              <DatePickerWheel
+                value={formData.dateOfBirth}
+                onChange={(dateOfBirth) => setFormData({ ...formData, dateOfBirth })}
+              />
             </div>
 
             <Button
