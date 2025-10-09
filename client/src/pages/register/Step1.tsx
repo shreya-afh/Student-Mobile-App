@@ -5,7 +5,7 @@ import { useLocation } from "wouter";
 import { ChevronLeftIcon } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useRegistration } from "@/contexts/RegistrationContext";
-import { DatePickerWheel } from "@/components/DatePickerWheel";
+import { InlineCylinderPicker } from "@/components/InlineCylinderPicker";
 
 export default function RegisterStep1() {
   const [, setLocation] = useLocation();
@@ -131,13 +131,42 @@ export default function RegisterStep1() {
             </div>
 
             <div>
-              <Label className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm mb-2 block">
+              <Label className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm mb-3 block">
                 Date of Birth *
               </Label>
-              <DatePickerWheel
-                value={formData.dateOfBirth}
-                onChange={(dateOfBirth) => setFormData({ ...formData, dateOfBirth })}
-              />
+              <div className="grid grid-cols-3 gap-3">
+                <InlineCylinderPicker
+                  items={Array.from({ length: 31 }, (_, i) => String(i + 1).padStart(2, '0'))}
+                  value={formData.dateOfBirth.day}
+                  onChange={(day) => setFormData({ ...formData, dateOfBirth: { ...formData.dateOfBirth, day } })}
+                  label="Day"
+                />
+                <InlineCylinderPicker
+                  items={[
+                    { value: '01', label: 'Jan' },
+                    { value: '02', label: 'Feb' },
+                    { value: '03', label: 'Mar' },
+                    { value: '04', label: 'Apr' },
+                    { value: '05', label: 'May' },
+                    { value: '06', label: 'Jun' },
+                    { value: '07', label: 'Jul' },
+                    { value: '08', label: 'Aug' },
+                    { value: '09', label: 'Sep' },
+                    { value: '10', label: 'Oct' },
+                    { value: '11', label: 'Nov' },
+                    { value: '12', label: 'Dec' },
+                  ]}
+                  value={formData.dateOfBirth.month}
+                  onChange={(month) => setFormData({ ...formData, dateOfBirth: { ...formData.dateOfBirth, month } })}
+                  label="Month"
+                />
+                <InlineCylinderPicker
+                  items={Array.from({ length: 100 }, (_, i) => String(new Date().getFullYear() - i))}
+                  value={formData.dateOfBirth.year}
+                  onChange={(year) => setFormData({ ...formData, dateOfBirth: { ...formData.dateOfBirth, year } })}
+                  label="Year"
+                />
+              </div>
             </div>
 
             <Button
