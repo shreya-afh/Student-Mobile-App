@@ -8,6 +8,7 @@ interface DatePickerWheelProps {
 export function DatePickerWheel({ value, onChange }: DatePickerWheelProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [tempDate, setTempDate] = useState(value);
+  const [centeredIndices, setCenteredIndices] = useState({ day: 0, month: 0, year: 0 });
 
   const days = Array.from({ length: 31 }, (_, i) => String(i + 1).padStart(2, '0'));
   const months = [
@@ -27,30 +28,45 @@ export function DatePickerWheel({ value, onChange }: DatePickerWheelProps) {
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: 100 }, (_, i) => String(currentYear - i));
 
+  // Create infinite scrolling by repeating items
+  const infiniteDays = [...days, ...days, ...days];
+  const infiniteMonths = [...months, ...months, ...months];
+  const infiniteYears = [...years, ...years, ...years];
+
   const dayRef = useRef<HTMLDivElement>(null);
   const monthRef = useRef<HTMLDivElement>(null);
   const yearRef = useRef<HTMLDivElement>(null);
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const isScrollingRef = useRef(false);
 
   useEffect(() => {
     setTempDate(value);
   }, [value, isOpen]);
 
-  const scrollToValue = (ref: HTMLDivElement | null, selectedValue: string, items: string[]) => {
+  const scrollToValue = (ref: HTMLDivElement | null, selectedValue: string, originalItems: any[], infiniteItems: any[]) => {
     if (!ref) return;
-    const index = items.indexOf(selectedValue);
-    if (index !== -1) {
-      const itemHeight = 40;
-      ref.scrollTop = index * itemHeight;
+    const itemHeight = 40;
+    const originalLength = originalItems.length;
+    
+    // Find index in original array
+    const originalIndex = originalItems.findIndex((item: any) => 
+      typeof item === 'string' ? item === selectedValue : item.value === selectedValue
+    );
+    
+    if (originalIndex !== -1) {
+      // Start at middle copy plus the index
+      const middleSetIndex = originalLength + originalIndex;
+      ref.scrollTop = middleSetIndex * itemHeight;
     }
   };
 
-  const getSelectedValueFromScroll = (ref: HTMLDivElement | null, items: string[]): string => {
-    if (!ref) return items[0];
+  const getSelectedValueFromScroll = (ref: HTMLDivElement | null, originalItems: any[], infiniteItems: any[]): string => {
+    if (!ref) return typeof originalItems[0] === 'string' ? originalItems[0] : originalItems[0].value;
     const itemHeight = 40;
     const scrollTop = ref.scrollTop;
     const index = Math.round(scrollTop / itemHeight);
-    return items[Math.max(0, Math.min(index, items.length - 1))];
+    const item = infiniteItems[Math.max(0, Math.min(index, infiniteItems.length - 1))];
+    return typeof item === 'string' ? item : item.value;
   };
 
   const snapToNearest = (ref: HTMLDivElement | null) => {
@@ -61,6 +77,34 @@ export function DatePickerWheel({ value, onChange }: DatePickerWheelProps) {
     ref.scrollTo({ top: index * itemHeight, behavior: 'smooth' });
   };
 
+  const handleInfiniteScroll = (ref: HTMLDivElement | null, originalLength: number) => {
+    if (!ref || isScrollingRef.current) return;
+    
+    const itemHeight = 40;
+    const scrollTop = ref.scrollTop;
+    const currentIndex = Math.round(scrollTop / itemHeight);
+    
+    // Reset to middle section if scrolling beyond boundaries
+    if (currentIndex < originalLength / 2) {
+      // Scrolled too far up, jump to equivalent position in middle section
+      isScrollingRef.current = true;
+      ref.scrollTop = (currentIndex + originalLength) * itemHeight;
+      setTimeout(() => { isScrollingRef.current = false; }, 50);
+    } else if (currentIndex >= originalLength * 2.5) {
+      // Scrolled too far down, jump to equivalent position in middle section
+      isScrollingRef.current = true;
+      ref.scrollTop = (currentIndex - originalLength) * itemHeight;
+      setTimeout(() => { isScrollingRef.current = false; }, 50);
+    }
+  };
+
+  const getCenteredIndex = (ref: HTMLDivElement | null): number => {
+    if (!ref) return 0;
+    const itemHeight = 40;
+    const scrollTop = ref.scrollTop;
+    return Math.round(scrollTop / itemHeight);
+  };
+
   const handleScroll = (type: 'day' | 'month' | 'year') => {
     if (scrollTimeoutRef.current) {
       clearTimeout(scrollTimeoutRef.current);
@@ -68,16 +112,25 @@ export function DatePickerWheel({ value, onChange }: DatePickerWheelProps) {
 
     scrollTimeoutRef.current = setTimeout(() => {
       if (type === 'day' && dayRef.current) {
-        const selectedDay = getSelectedValueFromScroll(dayRef.current, days);
+        handleInfiniteScroll(dayRef.current, days.length);
+        const selectedDay = getSelectedValueFromScroll(dayRef.current, days, infiniteDays);
+        const centeredIdx = getCenteredIndex(dayRef.current);
         setTempDate(prev => ({ ...prev, day: selectedDay }));
+        setCenteredIndices(prev => ({ ...prev, day: centeredIdx }));
         snapToNearest(dayRef.current);
       } else if (type === 'month' && monthRef.current) {
-        const selectedMonth = getSelectedValueFromScroll(monthRef.current, months.map(m => m.value));
+        handleInfiniteScroll(monthRef.current, months.length);
+        const selectedMonth = getSelectedValueFromScroll(monthRef.current, months, infiniteMonths);
+        const centeredIdx = getCenteredIndex(monthRef.current);
         setTempDate(prev => ({ ...prev, month: selectedMonth }));
+        setCenteredIndices(prev => ({ ...prev, month: centeredIdx }));
         snapToNearest(monthRef.current);
       } else if (type === 'year' && yearRef.current) {
-        const selectedYear = getSelectedValueFromScroll(yearRef.current, years);
+        handleInfiniteScroll(yearRef.current, years.length);
+        const selectedYear = getSelectedValueFromScroll(yearRef.current, years, infiniteYears);
+        const centeredIdx = getCenteredIndex(yearRef.current);
         setTempDate(prev => ({ ...prev, year: selectedYear }));
+        setCenteredIndices(prev => ({ ...prev, year: centeredIdx }));
         snapToNearest(yearRef.current);
       }
     }, 100);
@@ -85,9 +138,18 @@ export function DatePickerWheel({ value, onChange }: DatePickerWheelProps) {
 
   useEffect(() => {
     if (isOpen) {
-      scrollToValue(dayRef.current, tempDate.day || '01', days);
-      scrollToValue(monthRef.current, tempDate.month || '01', months.map(m => m.value));
-      scrollToValue(yearRef.current, tempDate.year || String(currentYear - 20), years);
+      scrollToValue(dayRef.current, tempDate.day || '01', days, infiniteDays);
+      scrollToValue(monthRef.current, tempDate.month || '01', months, infiniteMonths);
+      scrollToValue(yearRef.current, tempDate.year || String(currentYear - 20), years, infiniteYears);
+      
+      // Set initial centered indices
+      setTimeout(() => {
+        setCenteredIndices({
+          day: getCenteredIndex(dayRef.current),
+          month: getCenteredIndex(monthRef.current),
+          year: getCenteredIndex(yearRef.current),
+        });
+      }, 50);
     }
   }, [isOpen]);
 
@@ -140,12 +202,18 @@ export function DatePickerWheel({ value, onChange }: DatePickerWheelProps) {
 
               <div className="flex-1 overflow-y-auto scrollbar-hide" ref={dayRef} onScroll={() => handleScroll('day')}>
                 <div className="py-[100px]">
-                  {days.map((day) => (
+                  {infiniteDays.map((day, idx) => (
                     <div
-                      key={day}
-                      onClick={() => setTempDate({ ...tempDate, day })}
+                      key={`day-${idx}`}
+                      onClick={() => {
+                        setTempDate({ ...tempDate, day });
+                        setCenteredIndices(prev => ({ ...prev, day: idx }));
+                        if (dayRef.current) {
+                          dayRef.current.scrollTo({ top: idx * 40, behavior: 'smooth' });
+                        }
+                      }}
                       className={`h-10 flex items-center justify-center cursor-pointer transition-colors ${
-                        tempDate.day === day ? 'font-semibold text-[#6d10b0]' : 'text-gray-600'
+                        idx === centeredIndices.day ? 'font-semibold text-[#6d10b0]' : 'text-gray-600'
                       }`}
                     >
                       {day}
@@ -156,12 +224,18 @@ export function DatePickerWheel({ value, onChange }: DatePickerWheelProps) {
 
               <div className="flex-[2] overflow-y-auto scrollbar-hide" ref={monthRef} onScroll={() => handleScroll('month')}>
                 <div className="py-[100px]">
-                  {months.map((month) => (
+                  {infiniteMonths.map((month, idx) => (
                     <div
-                      key={month.value}
-                      onClick={() => setTempDate({ ...tempDate, month: month.value })}
+                      key={`month-${idx}`}
+                      onClick={() => {
+                        setTempDate({ ...tempDate, month: month.value });
+                        setCenteredIndices(prev => ({ ...prev, month: idx }));
+                        if (monthRef.current) {
+                          monthRef.current.scrollTo({ top: idx * 40, behavior: 'smooth' });
+                        }
+                      }}
                       className={`h-10 flex items-center justify-center cursor-pointer transition-colors ${
-                        tempDate.month === month.value ? 'font-semibold text-[#6d10b0]' : 'text-gray-600'
+                        idx === centeredIndices.month ? 'font-semibold text-[#6d10b0]' : 'text-gray-600'
                       }`}
                     >
                       {month.label}
@@ -172,12 +246,18 @@ export function DatePickerWheel({ value, onChange }: DatePickerWheelProps) {
 
               <div className="flex-1 overflow-y-auto scrollbar-hide" ref={yearRef} onScroll={() => handleScroll('year')}>
                 <div className="py-[100px]">
-                  {years.map((year) => (
+                  {infiniteYears.map((year, idx) => (
                     <div
-                      key={year}
-                      onClick={() => setTempDate({ ...tempDate, year })}
+                      key={`year-${idx}`}
+                      onClick={() => {
+                        setTempDate({ ...tempDate, year });
+                        setCenteredIndices(prev => ({ ...prev, year: idx }));
+                        if (yearRef.current) {
+                          yearRef.current.scrollTo({ top: idx * 40, behavior: 'smooth' });
+                        }
+                      }}
                       className={`h-10 flex items-center justify-center cursor-pointer transition-colors ${
-                        tempDate.year === year ? 'font-semibold text-[#6d10b0]' : 'text-gray-600'
+                        idx === centeredIndices.year ? 'font-semibold text-[#6d10b0]' : 'text-gray-600'
                       }`}
                     >
                       {year}
