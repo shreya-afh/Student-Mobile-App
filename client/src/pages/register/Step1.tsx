@@ -3,20 +3,21 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useLocation } from "wouter";
 import { ChevronLeftIcon } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRegistration } from "@/contexts/RegistrationContext";
 
 export default function RegisterStep1() {
   const [, setLocation] = useLocation();
-  const [formData, setFormData] = useState({
-    fullName: "",
-    gender: "",
-    guardianName: "",
-    guardianOccupation: "",
-    dateOfBirth: { day: "", month: "", year: "" },
-  });
+  const { registrationData, updateStep1 } = useRegistration();
+  const [formData, setFormData] = useState(registrationData.step1);
+
+  useEffect(() => {
+    setFormData(registrationData.step1);
+  }, [registrationData.step1]);
 
   const handleContinue = (e: React.FormEvent) => {
     e.preventDefault();
+    updateStep1(formData);
     setLocation("/register/step2");
   };
 

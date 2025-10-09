@@ -3,19 +3,21 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useLocation } from "wouter";
 import { ChevronLeftIcon, CameraIcon } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRegistration } from "@/contexts/RegistrationContext";
 
 export default function RegisterStep4() {
   const [, setLocation] = useLocation();
-  const [formData, setFormData] = useState({
-    aadhaar: "",
-    isPWD: "",
-    isGovtEmployee: "",
-    selfie: null as File | null,
-  });
+  const { registrationData, updateStep4 } = useRegistration();
+  const [formData, setFormData] = useState(registrationData.step4);
+
+  useEffect(() => {
+    setFormData(registrationData.step4);
+  }, [registrationData.step4]);
 
   const handleComplete = (e: React.FormEvent) => {
     e.preventDefault();
+    updateStep4(formData);
     setLocation("/verify-otp");
   };
 

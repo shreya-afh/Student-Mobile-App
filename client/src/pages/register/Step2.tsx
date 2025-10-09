@@ -3,23 +3,21 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useLocation } from "wouter";
 import { ChevronLeftIcon } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRegistration } from "@/contexts/RegistrationContext";
 
 export default function RegisterStep2() {
   const [, setLocation] = useLocation();
-  const [formData, setFormData] = useState({
-    collegeName: "",
-    course: "",
-    startYear: "2023",
-    endYear: "2027",
-    city: "",
-    district: "",
-    state: "",
-    pincode: "",
-  });
+  const { registrationData, updateStep2 } = useRegistration();
+  const [formData, setFormData] = useState(registrationData.step2);
+
+  useEffect(() => {
+    setFormData(registrationData.step2);
+  }, [registrationData.step2]);
 
   const handleContinue = (e: React.FormEvent) => {
     e.preventDefault();
+    updateStep2(formData);
     setLocation("/register/step3");
   };
 

@@ -10,20 +10,21 @@ import {
 } from "@/components/ui/select";
 import { useLocation } from "wouter";
 import { ChevronLeftIcon } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRegistration } from "@/contexts/RegistrationContext";
 
 export default function RegisterStep3() {
   const [, setLocation] = useLocation();
-  const [formData, setFormData] = useState({
-    studentContact: "",
-    whatsappNumber: "",
-    guardianContact: "",
-    email: "",
-    familyIncome: "",
-  });
+  const { registrationData, updateStep3 } = useRegistration();
+  const [formData, setFormData] = useState(registrationData.step3);
+
+  useEffect(() => {
+    setFormData(registrationData.step3);
+  }, [registrationData.step3]);
 
   const handleContinue = (e: React.FormEvent) => {
     e.preventDefault();
+    updateStep3(formData);
     setLocation("/register/step4");
   };
 
