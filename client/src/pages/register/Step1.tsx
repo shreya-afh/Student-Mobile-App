@@ -16,6 +16,29 @@ export default function RegisterStep1() {
     setFormData(registrationData.step1);
   }, [registrationData.step1]);
 
+  // Calculate days in month based on selected month and year
+  const getDaysInMonth = (month: string, year: string): number => {
+    if (!month || !year) return 31;
+    const monthNum = parseInt(month);
+    const yearNum = parseInt(year);
+    return new Date(yearNum, monthNum, 0).getDate();
+  };
+
+  const daysInSelectedMonth = getDaysInMonth(formData.dateOfBirth.month, formData.dateOfBirth.year);
+
+  // Auto-adjust day if it exceeds the maximum for the selected month
+  useEffect(() => {
+    if (formData.dateOfBirth.day && parseInt(formData.dateOfBirth.day) > daysInSelectedMonth) {
+      setFormData({
+        ...formData,
+        dateOfBirth: {
+          ...formData.dateOfBirth,
+          day: String(daysInSelectedMonth).padStart(2, '0')
+        }
+      });
+    }
+  }, [formData.dateOfBirth.month, formData.dateOfBirth.year, daysInSelectedMonth]);
+
   const handleContinue = (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -136,7 +159,7 @@ export default function RegisterStep1() {
               </Label>
               <div className="grid grid-cols-3 gap-3">
                 <InlineCylinderPicker
-                  items={Array.from({ length: 31 }, (_, i) => String(i + 1).padStart(2, '0'))}
+                  items={Array.from({ length: daysInSelectedMonth }, (_, i) => String(i + 1).padStart(2, '0'))}
                   value={formData.dateOfBirth.day}
                   onChange={(day) => setFormData({ ...formData, dateOfBirth: { ...formData.dateOfBirth, day } })}
                   label="Day"

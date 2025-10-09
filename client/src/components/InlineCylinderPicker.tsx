@@ -71,6 +71,10 @@ export function InlineCylinderPicker({ items, value, onChange, label }: InlineCy
   };
 
   const handleScroll = () => {
+    // Update centered index immediately for visual feedback
+    const currentCentered = getCenteredIndex();
+    setCenteredIndex(currentCentered);
+    
     if (scrollTimeoutRef.current) {
       clearTimeout(scrollTimeoutRef.current);
     }
@@ -99,16 +103,17 @@ export function InlineCylinderPicker({ items, value, onChange, label }: InlineCy
   return (
     <div>
       <span className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs block mb-1">{label}</span>
-      <div className="relative h-[120px] border border-[#0000001a] rounded-lg overflow-hidden">
+      <div className="relative h-[60px] border border-[#0000001a] rounded-lg overflow-hidden">
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-          <div className="w-full h-10 border-t border-b border-[#6d10b0] bg-[#6d10b0]/5"></div>
+          <div className="w-full h-full bg-[#6d10b0]/5"></div>
         </div>
         <div 
           className="h-full overflow-y-auto scrollbar-hide" 
           ref={scrollRef} 
           onScroll={handleScroll}
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
-          <div className="py-[40px]">
+          <div className="py-[10px]">
             {infiniteItems.map((item, idx) => (
               <div
                 key={idx}
@@ -116,7 +121,7 @@ export function InlineCylinderPicker({ items, value, onChange, label }: InlineCy
                 className={`h-10 flex items-center justify-center cursor-pointer transition-colors ${
                   idx === centeredIndex 
                     ? 'font-semibold text-[#6d10b0]' 
-                    : 'text-gray-600'
+                    : 'text-transparent pointer-events-none'
                 }`}
               >
                 {typeof item === 'string' ? item : item.label}
