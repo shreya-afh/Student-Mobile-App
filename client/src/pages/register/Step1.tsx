@@ -5,7 +5,7 @@ import { useLocation } from "wouter";
 import { ChevronLeftIcon } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useRegistration } from "@/contexts/RegistrationContext";
-import { InlineCylinderPicker } from "@/components/InlineCylinderPicker";
+import { PopupCylinderPicker } from "@/components/PopupCylinderPicker";
 
 export default function RegisterStep1() {
   const [, setLocation] = useLocation();
@@ -158,13 +158,13 @@ export default function RegisterStep1() {
                 Date of Birth *
               </Label>
               <div className="grid grid-cols-3 gap-3">
-                <InlineCylinderPicker
+                <PopupCylinderPicker
                   items={Array.from({ length: daysInSelectedMonth }, (_, i) => String(i + 1).padStart(2, '0'))}
                   value={formData.dateOfBirth.day}
                   onChange={(day) => setFormData({ ...formData, dateOfBirth: { ...formData.dateOfBirth, day } })}
                   label="Day"
                 />
-                <InlineCylinderPicker
+                <PopupCylinderPicker
                   items={[
                     { value: '01', label: 'Jan' },
                     { value: '02', label: 'Feb' },
@@ -183,7 +183,7 @@ export default function RegisterStep1() {
                   onChange={(month) => setFormData({ ...formData, dateOfBirth: { ...formData.dateOfBirth, month } })}
                   label="Month"
                 />
-                <InlineCylinderPicker
+                <PopupCylinderPicker
                   items={Array.from({ length: 100 }, (_, i) => String(new Date().getFullYear() - i))}
                   value={formData.dateOfBirth.year}
                   onChange={(year) => setFormData({ ...formData, dateOfBirth: { ...formData.dateOfBirth, year } })}
