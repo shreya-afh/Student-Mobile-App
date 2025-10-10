@@ -6,6 +6,7 @@ import { useLocation } from "wouter";
 import { ChevronLeftIcon, SearchIcon, MapPinIcon, CalendarIcon, IndianRupeeIcon } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useAndroidBackButton } from "@/hooks/useAndroidBackButton";
 
 export default function JobOpportunities() {
   const [, setLocation] = useLocation();
@@ -13,6 +14,7 @@ export default function JobOpportunities() {
   const [activeTab, setActiveTab] = useState("available");
   const [searchQuery, setSearchQuery] = useState("");
   const [appliedJobs, setAppliedJobs] = useState<string[]>([]);
+  useAndroidBackButton("/dashboard");
 
   const handleApply = (jobTitle: string) => {
     setAppliedJobs([...appliedJobs, jobTitle]);
@@ -61,14 +63,14 @@ export default function JobOpportunities() {
   return (
     <div className="h-screen bg-[#faf9fb] flex flex-col overflow-hidden">
       {/* Header */}
-      <header className="bg-[linear-gradient(90deg,rgba(218,178,255,1)_0%,rgba(196,180,255,1)_100%)] p-4 flex-shrink-0">
+      <header className="bg-[linear-gradient(90deg,rgba(218,178,255,1)_0%,rgba(196,180,255,1)_100%)] pt-safe pb-4 px-4 flex-shrink-0">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <Button
               variant="ghost"
               size="icon"
               onClick={() => setLocation("/dashboard")}
-              className="h-8 w-9 p-0 hover:bg-transparent"
+              className="h-10 w-10 p-0 hover:bg-transparent relative z-10 -ml-2"
             >
               <ChevronLeftIcon className="w-6 h-6 text-[#6d10b0]" />
             </Button>
