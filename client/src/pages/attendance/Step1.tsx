@@ -11,9 +11,9 @@ export default function AttendanceStep1() {
   };
 
   return (
-    <div className="min-h-screen bg-[#faf9fb] flex flex-col">
+    <div className="h-screen bg-[#faf9fb] flex flex-col overflow-hidden">
       {/* Header */}
-      <header className="bg-[linear-gradient(90deg,rgba(218,178,255,1)_0%,rgba(196,180,255,1)_100%)] p-4">
+      <header className="bg-[linear-gradient(90deg,rgba(218,178,255,1)_0%,rgba(196,180,255,1)_100%)] p-4 flex-shrink-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Button
@@ -41,7 +41,7 @@ export default function AttendanceStep1() {
         </div>
       </header>
 
-      <div className="flex-1 p-4 flex flex-col justify-center">
+      <div className="flex-1 overflow-y-auto p-4 flex flex-col justify-center">
         <div className="max-w-md mx-auto w-full">
           <Card className="border-[#6d10b0] bg-[#eff1ff] mb-6">
             <CardContent className="p-4">
