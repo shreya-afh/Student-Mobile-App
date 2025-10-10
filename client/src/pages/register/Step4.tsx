@@ -6,6 +6,7 @@ import { ChevronLeftIcon, CameraIcon } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useRegistration } from "@/contexts/RegistrationContext";
 import { useToast } from "@/hooks/use-toast";
+import { Camera, CameraResultType, CameraSource, CameraDirection } from '@capacitor/camera';
 
 export default function RegisterStep4() {
   const [, setLocation] = useLocation();
@@ -73,9 +74,29 @@ export default function RegisterStep4() {
     }
   };
 
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setFormData({ ...formData, selfie: e.target.files[0] });
+  const handleCaptureSelfie = async () => {
+    try {
+      const image = await Camera.getPhoto({
+        quality: 90,
+        allowEditing: false,
+        resultType: CameraResultType.Uri,
+        source: CameraSource.Camera,
+        direction: CameraDirection.Front,
+      });
+
+      // Convert the image URI to a File object
+      const response = await fetch(image.webPath!);
+      const blob = await response.blob();
+      const file = new File([blob], 'selfie.jpg', { type: 'image/jpeg' });
+      
+      setFormData({ ...formData, selfie: file });
+    } catch (error) {
+      console.error('Camera error:', error);
+      toast({
+        title: "Camera Error",
+        description: "Failed to capture selfie. Please try again.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -183,30 +204,24 @@ export default function RegisterStep4() {
               <Label className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm mb-2 block">
                 Live Picture (Selfie) *
               </Label>
-              <div className="border-2 border-dashed border-[#0000001a] rounded-lg p-8 text-center">
-                <input
-                  type="file"
-                  accept="image/*"
-                  capture="user"
-                  onChange={handleFileSelect}
-                  className="hidden"
-                  id="selfie-input"
-                />
-                <label htmlFor="selfie-input" className="cursor-pointer">
-                  <CameraIcon className="w-12 h-12 mx-auto text-[#697282] mb-2" />
-                  <p className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm">
-                    Tap to capture selfie
+              <button
+                type="button"
+                onClick={handleCaptureSelfie}
+                className="w-full border-2 border-dashed border-[#0000001a] rounded-lg p-8 text-center hover:bg-[#6d10b0]/5 transition-colors"
+              >
+                <CameraIcon className="w-12 h-12 mx-auto text-[#697282] mb-2" />
+                <p className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm">
+                  Tap to capture selfie
+                </p>
+                <p className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs mt-1">
+                  Live camera required
+                </p>
+                {formData.selfie && (
+                  <p className="font-['Inter',Helvetica] font-normal text-[#6d10b0] text-xs mt-2">
+                    ✓ Photo captured
                   </p>
-                  <p className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs mt-1">
-                    Live camera required
-                  </p>
-                  {formData.selfie && (
-                    <p className="font-['Inter',Helvetica] font-normal text-[#6d10b0] text-xs mt-2">
-                      ✓ Photo captured
-                    </p>
-                  )}
-                </label>
-              </div>
+                )}
+              </button>
             </div>
 
             <Button
