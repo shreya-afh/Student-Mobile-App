@@ -9,8 +9,8 @@ export const StudentMobileApp = (): JSX.Element => {
   const [, setLocation] = useLocation();
 
   return (
-    <div className="flex flex-col w-full min-h-screen bg-[#faf9fb]">
-      <header className="bg-[linear-gradient(90deg,rgba(218,178,255,1)_0%,rgba(196,180,255,1)_100%)] p-4">
+    <div className="flex flex-col w-full h-screen bg-[#faf9fb] overflow-hidden">
+      <header className="bg-[linear-gradient(90deg,rgba(218,178,255,1)_0%,rgba(196,180,255,1)_100%)] p-4 flex-shrink-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Button
@@ -32,7 +32,9 @@ export const StudentMobileApp = (): JSX.Element => {
           </div>
         </div>
       </header>
-      <InformationSection />
+      <div className="flex-1 overflow-y-auto">
+        <InformationSection />
+      </div>
     </div>
   );
 };

@@ -52,9 +52,9 @@ export default function RegisterStep1() {
   };
 
   return (
-    <div className="min-h-screen bg-[#faf9fb] flex flex-col">
+    <div className="h-screen bg-[#faf9fb] flex flex-col overflow-hidden">
       {/* Header */}
-      <header className="bg-[linear-gradient(90deg,rgba(218,178,255,1)_0%,rgba(196,180,255,1)_100%)] p-4">
+      <header className="bg-[linear-gradient(90deg,rgba(218,178,255,1)_0%,rgba(196,180,255,1)_100%)] p-4 flex-shrink-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Button
@@ -82,7 +82,7 @@ export default function RegisterStep1() {
         </div>
       </header>
 
-      <div className="flex-1 p-4">
+      <div className="flex-1 overflow-y-auto p-4">
         <div className="max-w-md mx-auto">
           <h1 className="font-['Inter',Helvetica] font-bold text-[#1d2838] text-xl mb-6">
             Personal Information
