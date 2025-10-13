@@ -4,12 +4,112 @@ import { useLocation } from "wouter";
 import { ChevronLeftIcon } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useRegistration } from "@/contexts/RegistrationContext";
+import { useMutation } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
+import { useAndroidBackButton } from "@/hooks/useAndroidBackButton";
 
 export default function VerifyOTP() {
   const [, setLocation] = useLocation();
   const { login } = useAuth();
-  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
-  const [timer, setTimer] = useState(25);
+  const { registrationData } = useRegistration();
+  const { toast } = useToast();
+  const [otp, setOtp] = useState(["", "", "", "", ""]);
+  const [timer, setTimer] = useState(0); // Start at 0, will be set to 60 when OTP is successfully sent
+
+  useAndroidBackButton("/register/step4");
+
+  const mobileNumber = registrationData.step3.studentContact;
+
+  const sendOtpMutation = useMutation({
+    mutationFn: async () => {
+      const response = await apiRequest("POST", "/api/send-otp", { mobileNumber });
+      return response.json();
+    },
+    onSuccess: () => {
+      setTimer(60); // Start timer only on successful send
+      toast({
+        title: "OTP Sent",
+        description: "Please check your SMS for the verification code",
+      });
+    },
+    onError: (error: any) => {
+      // Stop timer on error so resend button is immediately available
+      setTimer(0);
+      
+      // Parse error message from response
+      let errorMessage = "Failed to send OTP. Please try again.";
+      try {
+        const errorText = error.message || "";
+        // Extract JSON from error message like "500: {"success":false,"message":"..."}"
+        const match = errorText.match(/\d+:\s*(\{.*\})/);
+        if (match && match[1]) {
+          const errorData = JSON.parse(match[1]);
+          errorMessage = errorData.message || errorMessage;
+        }
+      } catch (e) {
+        // Use default message if parsing fails
+      }
+      
+      toast({
+        title: "Error",
+        description: errorMessage,
+        variant: "destructive",
+      });
+    },
+  });
+
+  const verifyOtpMutation = useMutation({
+    mutationFn: async (otpCode: string) => {
+      const response = await apiRequest("POST", "/api/verify-otp", { mobileNumber, otp: otpCode });
+      return response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: "Success",
+        description: "Phone number verified successfully",
+      });
+      login({ phone: mobileNumber });
+      setLocation("/dashboard");
+    },
+    onError: (error: any) => {
+      // Parse error message and type from response
+      let errorMessage = "Invalid OTP. Please try again.";
+      let errorType = "invalid";
+      
+      try {
+        const errorText = error.message || "";
+        // Extract JSON from error message like "400: {"success":false,"message":"...","errorType":"..."}"
+        const match = errorText.match(/\d+:\s*(\{.*\})/);
+        if (match && match[1]) {
+          const errorData = JSON.parse(match[1]);
+          errorMessage = errorData.message || errorMessage;
+          errorType = errorData.errorType || errorType;
+        }
+      } catch (e) {
+        // Use default message if parsing fails
+      }
+
+      // Clear OTP inputs if expired to help user understand they need to resend
+      if (errorType === "expired") {
+        setOtp(["", "", "", "", ""]);
+      }
+      
+      toast({
+        title: "Verification Failed",
+        description: errorMessage,
+        variant: "destructive",
+      });
+    },
+  });
+
+  useEffect(() => {
+    // Send OTP when component mounts
+    if (mobileNumber) {
+      sendOtpMutation.mutate();
+    }
+  }, []);
 
   useEffect(() => {
     if (timer > 0) {
@@ -26,7 +126,7 @@ export default function VerifyOTP() {
       newOtp[index] = value;
       setOtp(newOtp);
 
-      if (value && index < 5) {
+      if (value && index < 4) {
         const nextInput = document.getElementById(`otp-${index + 1}`);
         nextInput?.focus();
       }
@@ -34,20 +134,26 @@ export default function VerifyOTP() {
   };
 
   const handleVerify = () => {
-    login({ phone: "verified_user" });
-    setLocation("/dashboard");
+    const otpCode = otp.join("");
+    verifyOtpMutation.mutate(otpCode);
+  };
+
+  const handleResend = () => {
+    setOtp(["", "", "", "", ""]); // Clear OTP inputs
+    sendOtpMutation.mutate(); // Timer will be set by mutation's onSuccess
   };
 
   return (
-    <div className="min-h-screen bg-[#faf9fb] flex flex-col">
+    <div className="h-screen bg-[#faf9fb] flex flex-col overflow-hidden">
       {/* Header */}
-      <header className="bg-[linear-gradient(90deg,rgba(218,178,255,1)_0%,rgba(196,180,255,1)_100%)] p-4">
+      <header className="flex-shrink-0 bg-[linear-gradient(90deg,rgba(218,178,255,1)_0%,rgba(196,180,255,1)_100%)] p-4 pt-safe">
         <div className="flex items-center gap-2">
           <Button
             variant="ghost"
             size="icon"
             onClick={() => setLocation("/register/step4")}
-            className="h-8 w-9 p-0 hover:bg-transparent"
+            className="h-10 w-10 p-0 hover:bg-transparent"
+            data-testid="button-back"
           >
             <ChevronLeftIcon className="w-6 h-6 text-[#6d10b0]" />
           </Button>
@@ -57,13 +163,16 @@ export default function VerifyOTP() {
         </div>
       </header>
 
-      <div className="flex-1 flex flex-col items-center justify-center p-4">
+      <div className="flex-1 flex flex-col items-center justify-center p-4 overflow-y-auto">
         <div className="max-w-md w-full text-center">
           <h1 className="font-['Inter',Helvetica] font-bold text-[#1d2838] text-2xl mb-2">
             Verify Your Phone
           </h1>
-          <p className="font-['Inter',Helvetica] font-normal text-[#495565] text-sm mb-8">
-            We've sent a 6-digit code to
+          <p className="font-['Inter',Helvetica] font-normal text-[#495565] text-sm mb-2">
+            We've sent a 5-digit code to
+          </p>
+          <p className="font-['Inter',Helvetica] font-semibold text-[#6d10b0] text-base mb-8" data-testid="text-phone">
+            {mobileNumber}
           </p>
 
           <div className="flex justify-center gap-2 mb-6">
@@ -72,31 +181,36 @@ export default function VerifyOTP() {
                 key={index}
                 id={`otp-${index}`}
                 type="text"
+                inputMode="numeric"
                 maxLength={1}
                 value={digit}
                 onChange={(e) => handleOtpChange(index, e.target.value)}
                 className="w-12 h-12 text-center text-xl font-semibold"
+                data-testid={`input-otp-${index}`}
               />
             ))}
           </div>
 
           <Button
             onClick={handleVerify}
-            disabled={otp.some((d) => !d)}
+            disabled={otp.some((d) => !d) || verifyOtpMutation.isPending}
             className="w-full h-12 bg-[#6d10b0] hover:bg-[#5a0d94] text-white rounded-lg font-['Inter',Helvetica] font-medium text-base mb-4"
+            data-testid="button-verify"
           >
-            Verify OTP
+            {verifyOtpMutation.isPending ? "Verifying..." : "Verify OTP"}
           </Button>
 
           <p className="font-['Inter',Helvetica] font-normal text-[#495565] text-sm">
             {timer > 0 ? (
-              `Resend code in ${timer}s`
+              <span data-testid="text-timer">Resend code in {timer}s</span>
             ) : (
               <button
-                onClick={() => setTimer(25)}
-                className="text-[#6d10b0] hover:underline"
+                onClick={handleResend}
+                disabled={sendOtpMutation.isPending}
+                className="text-[#6d10b0] hover:underline disabled:opacity-50"
+                data-testid="button-resend"
               >
-                Resend code
+                {sendOtpMutation.isPending ? "Sending..." : "Resend code"}
               </button>
             )}
           </p>
