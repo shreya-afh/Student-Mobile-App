@@ -169,31 +169,52 @@ export async function registerRoutes(app: Express): Promise<Server> {
         );
       }
 
-      // Prepare data for Google Sheets
+      // Calculate age from date of birth
+      const dob = registrationData.step1.dateOfBirth;
+      const birthDate = new Date(`${dob.year}-${dob.month.padStart(2, '0')}-${dob.day.padStart(2, '0')}`);
+      const today = new Date();
+      let age = today.getFullYear() - birthDate.getFullYear();
+      const monthDiff = today.getMonth() - birthDate.getMonth();
+      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+      }
+
+      // Format date of birth as DD/MM/YYYY
+      const dobFormatted = `${dob.day.padStart(2, '0')}/${dob.month.padStart(2, '0')}/${dob.year}`;
+      
+      // Format enrollment date as DD/MM/YYYY
+      const enrollmentDate = new Date();
+      const enrollmentFormatted = `${enrollmentDate.getDate().toString().padStart(2, '0')}/${(enrollmentDate.getMonth() + 1).toString().padStart(2, '0')}/${enrollmentDate.getFullYear()}`;
+
+      // Prepare data for Google Sheets - exact column order as specified
       const sheetRow = [
-        new Date().toISOString(),
-        registrationData.step1.fullName,
-        registrationData.step1.gender,
-        registrationData.step1.guardianName,
-        registrationData.step1.guardianOccupation,
-        `${registrationData.step1.dateOfBirth.day}/${registrationData.step1.dateOfBirth.month}/${registrationData.step1.dateOfBirth.year}`,
-        registrationData.step2.collegeName,
-        registrationData.step2.course,
-        registrationData.step2.startYear,
-        registrationData.step2.endYear,
-        registrationData.step2.city,
-        registrationData.step2.district,
-        registrationData.step2.state,
-        registrationData.step2.pincode,
-        registrationData.step3.studentContact,
-        registrationData.step3.whatsappNumber,
-        registrationData.step3.guardianContact,
-        registrationData.step3.email,
-        registrationData.step3.familyIncome,
-        registrationData.step4.aadhaar,
-        registrationData.step4.isPWD,
-        registrationData.step4.isGovtEmployee,
-        photoUrl,
+        "", // Application Id (empty)
+        registrationData.step4.aadhaar, // Aadhaar No
+        enrollmentFormatted, // Enrollment Date
+        registrationData.step1.fullName, // Name
+        age.toString(), // Age
+        registrationData.step1.gender, // Gender
+        registrationData.step3.studentContact, // Contact
+        registrationData.step2.state, // State
+        registrationData.step2.district, // District
+        registrationData.step2.collegeName, // College Name
+        registrationData.step2.course, // Highest Qualification Course
+        registrationData.step3.familyIncome, // Annual Family Income in INR
+        "", // Centre Name (empty)
+        registrationData.step2.district, // Training Location District Name
+        registrationData.step2.city, // Training Location City Name
+        dobFormatted, // Date of Birth
+        registrationData.step3.email, // Email ID
+        registrationData.step1.guardianName, // Parent/Guardian Name
+        registrationData.step3.guardianContact, // Parent/Guardian Phone Number
+        registrationData.step1.guardianOccupation, // Parent/Guardian Occupation
+        "", // Beneficiary Work Experience (in Years) (empty)
+        "", // Enrollment Status (empty)
+        "", // System Generated Course ID (empty)
+        "", // Batch ID (empty)
+        "", // Onboarding Source (empty)
+        registrationData.step4.isPWD, // PWD (Status)
+        registrationData.step4.isGovtEmployee, // Is a family member govt. employee?
       ];
 
       // Append to Google Sheet
