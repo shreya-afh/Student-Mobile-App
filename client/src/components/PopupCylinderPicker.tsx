@@ -116,7 +116,7 @@ export function PopupCylinderPicker({ items, value, onChange, label }: PopupCyli
           <div className="bg-white rounded-2xl p-6 w-[90%] max-w-sm" onClick={(e) => e.stopPropagation()}>
             <h3 className="text-lg font-semibold text-[#1d2838] mb-4">Select {label}</h3>
             
-            <div className="relative h-[200px] border border-[#0000001a] rounded-lg overflow-hidden mb-4">
+            <div className="relative h-[200px] border border-[#0000001a] rounded-lg overflow-hidden">
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
                 <div className="w-full h-10 border-t border-b border-[#6d10b0] bg-[#6d10b0]/5"></div>
               </div>
@@ -130,6 +130,11 @@ export function PopupCylinderPicker({ items, value, onChange, label }: PopupCyli
                   {infiniteItems.map((item, idx) => (
                     <div
                       key={idx}
+                      onClick={() => {
+                        if (idx === centeredIndex) {
+                          handleSelect();
+                        }
+                      }}
                       className={`h-10 flex items-center justify-center cursor-pointer transition-all ${
                         idx === centeredIndex 
                           ? 'font-semibold text-[#6d10b0] text-lg' 
@@ -141,21 +146,6 @@ export function PopupCylinderPicker({ items, value, onChange, label }: PopupCyli
                   ))}
                 </div>
               </div>
-            </div>
-
-            <div className="flex gap-3">
-              <button
-                onClick={() => setIsOpen(false)}
-                className="flex-1 h-12 border border-[#6d10b0] text-[#6d10b0] rounded-lg font-medium hover:bg-[#6d10b0]/5"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleSelect}
-                className="flex-1 h-12 bg-[#6d10b0] text-white rounded-lg font-medium hover:bg-[#5a0d94]"
-              >
-                Select
-              </button>
             </div>
           </div>
         </div>
