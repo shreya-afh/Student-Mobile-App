@@ -103,7 +103,6 @@ export default function VerifyOTP() {
     onSuccess: () => {
       toast({
         title: "Registration Successful",
-        description: "Your data has been saved successfully!",
       });
       login({ phone: mobileNumber });
       resetRegistration();
