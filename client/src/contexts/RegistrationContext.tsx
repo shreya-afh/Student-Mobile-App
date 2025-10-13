@@ -53,8 +53,8 @@ const initialRegistrationData: RegistrationData = {
   step2: {
     collegeName: "",
     course: "",
-    startYear: "2023",
-    endYear: "2027",
+    startYear: "",
+    endYear: "",
     city: "",
     district: "",
     state: "",
