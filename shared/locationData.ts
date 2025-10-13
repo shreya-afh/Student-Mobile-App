@@ -96,6 +96,7 @@ export const indianStates: StateEntry[] = [
     value: "assam",
     label: "Assam",
     districts: [
+      { value: "bajali", label: "Bajali", cities: [{ value: "pathsala", label: "Pathsala" }, { value: "other", label: "Other", isOther: true }] },
       { value: "baksa", label: "Baksa", cities: [{ value: "mushalpur", label: "Mushalpur" }, { value: "other", label: "Other", isOther: true }] },
       { value: "barpeta", label: "Barpeta", cities: [{ value: "barpeta", label: "Barpeta" }, { value: "other", label: "Other", isOther: true }] },
       { value: "biswanath", label: "Biswanath", cities: [{ value: "biswanath-chariali", label: "Biswanath Chariali" }, { value: "other", label: "Other", isOther: true }] },
@@ -126,6 +127,7 @@ export const indianStates: StateEntry[] = [
       { value: "sivasagar", label: "Sivasagar", cities: [{ value: "sivasagar", label: "Sivasagar" }, { value: "other", label: "Other", isOther: true }] },
       { value: "sonitpur", label: "Sonitpur", cities: [{ value: "tezpur", label: "Tezpur" }, { value: "other", label: "Other", isOther: true }] },
       { value: "south-salmara-mankachar", label: "South Salmara-Mankachar", cities: [{ value: "mankachar", label: "Mankachar" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "tamulpur", label: "Tamulpur", cities: [{ value: "tamulpur", label: "Tamulpur" }, { value: "other", label: "Other", isOther: true }] },
       { value: "tinsukia", label: "Tinsukia", cities: [{ value: "tinsukia", label: "Tinsukia" }, { value: "other", label: "Other", isOther: true }] },
       { value: "udalguri", label: "Udalguri", cities: [{ value: "udalguri", label: "Udalguri" }, { value: "other", label: "Other", isOther: true }] },
       { value: "west-karbi-anglong", label: "West Karbi Anglong", cities: [{ value: "hamren", label: "Hamren" }, { value: "other", label: "Other", isOther: true }] }
@@ -197,14 +199,28 @@ export const indianStates: StateEntry[] = [
       { value: "dhamtari", label: "Dhamtari", cities: [{ value: "dhamtari", label: "Dhamtari" }, { value: "other", label: "Other", isOther: true }] },
       { value: "durg", label: "Durg", cities: [{ value: "durg", label: "Durg" }, { value: "bhilai", label: "Bhilai" }, { value: "other", label: "Other", isOther: true }] },
       { value: "gariaband", label: "Gariaband", cities: [{ value: "gariaband", label: "Gariaband" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "gaurela-pendra-marwahi", label: "Gaurela-Pendra-Marwahi", cities: [{ value: "gaurela", label: "Gaurela" }, { value: "pendra", label: "Pendra" }, { value: "other", label: "Other", isOther: true }] },
       { value: "janjgir-champa", label: "Janjgir-Champa", cities: [{ value: "janjgir", label: "Janjgir" }, { value: "champa", label: "Champa" }, { value: "other", label: "Other", isOther: true }] },
       { value: "jashpur", label: "Jashpur", cities: [{ value: "jashpur", label: "Jashpur" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "kabirdham", label: "Kabirdham", cities: [{ value: "kawardha", label: "Kawardha" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "kanker", label: "Kanker", cities: [{ value: "kanker", label: "Kanker" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "khairagarh-chhuikhadan-gandai", label: "Khairagarh-Chhuikhadan-Gandai", cities: [{ value: "khairagarh", label: "Khairagarh" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "kondagaon", label: "Kondagaon", cities: [{ value: "kondagaon", label: "Kondagaon" }, { value: "other", label: "Other", isOther: true }] },
       { value: "korba", label: "Korba", cities: [{ value: "korba", label: "Korba" }, { value: "other", label: "Other", isOther: true }] },
       { value: "koriya", label: "Koriya", cities: [{ value: "baikunthpur", label: "Baikunthpur" }, { value: "other", label: "Other", isOther: true }] },
       { value: "mahasamund", label: "Mahasamund", cities: [{ value: "mahasamund", label: "Mahasamund" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "manendragarh-chirmiri-bharatpur", label: "Manendragarh-Chirmiri-Bharatpur", cities: [{ value: "manendragarh", label: "Manendragarh" }, { value: "chirmiri", label: "Chirmiri" }, { value: "bharatpur", label: "Bharatpur" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "mohla-manpur-ambagarh-chowki", label: "Mohla-Manpur-Ambagarh Chowki", cities: [{ value: "manpur", label: "Manpur" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "mungeli", label: "Mungeli", cities: [{ value: "mungeli", label: "Mungeli" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "narayanpur", label: "Narayanpur", cities: [{ value: "narayanpur", label: "Narayanpur" }, { value: "other", label: "Other", isOther: true }] },
       { value: "raigarh", label: "Raigarh", cities: [{ value: "raigarh", label: "Raigarh" }, { value: "other", label: "Other", isOther: true }] },
       { value: "raipur", label: "Raipur", cities: [{ value: "raipur", label: "Raipur" }, { value: "other", label: "Other", isOther: true }] },
       { value: "rajnandgaon", label: "Rajnandgaon", cities: [{ value: "rajnandgaon", label: "Rajnandgaon" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "ramanujganj", label: "Ramanujganj", cities: [{ value: "ramanujganj", label: "Ramanujganj" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "sakti", label: "Sakti", cities: [{ value: "sakti", label: "Sakti" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "sarangarh-bilaigarh", label: "Sarangarh-Bilaigarh", cities: [{ value: "sarangarh", label: "Sarangarh" }, { value: "bilaigarh", label: "Bilaigarh" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "sukma", label: "Sukma", cities: [{ value: "sukma", label: "Sukma" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "surajpur", label: "Surajpur", cities: [{ value: "surajpur", label: "Surajpur" }, { value: "other", label: "Other", isOther: true }] },
       { value: "surguja", label: "Surguja", cities: [{ value: "ambikapur", label: "Ambikapur" }, { value: "other", label: "Other", isOther: true }] }
     ]
   },
@@ -254,10 +270,17 @@ export const indianStates: StateEntry[] = [
       { value: "bharuch", label: "Bharuch", cities: [{ value: "bharuch", label: "Bharuch" }, { value: "other", label: "Other", isOther: true }] },
       { value: "bhavnagar", label: "Bhavnagar", cities: [{ value: "bhavnagar", label: "Bhavnagar" }, { value: "other", label: "Other", isOther: true }] },
       { value: "botad", label: "Botad", cities: [{ value: "botad", label: "Botad" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "chhota-udaipur", label: "Chhota Udaipur", cities: [{ value: "chhota-udaipur", label: "Chhota Udaipur" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "dahod", label: "Dahod", cities: [{ value: "dahod", label: "Dahod" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "dang", label: "Dang", cities: [{ value: "ahwa", label: "Ahwa" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "devbhoomi-dwarka", label: "Devbhoomi Dwarka", cities: [{ value: "khambhalia", label: "Khambhalia" }, { value: "dwarka", label: "Dwarka" }, { value: "other", label: "Other", isOther: true }] },
       { value: "gandhinagar", label: "Gandhinagar", cities: [{ value: "gandhinagar", label: "Gandhinagar" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "gir-somnath", label: "Gir Somnath", cities: [{ value: "veraval", label: "Veraval" }, { value: "somnath", label: "Somnath" }, { value: "other", label: "Other", isOther: true }] },
       { value: "jamnagar", label: "Jamnagar", cities: [{ value: "jamnagar", label: "Jamnagar" }, { value: "other", label: "Other", isOther: true }] },
       { value: "junagadh", label: "Junagadh", cities: [{ value: "junagadh", label: "Junagadh" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "kheda", label: "Kheda", cities: [{ value: "nadiad", label: "Nadiad" }, { value: "kheda", label: "Kheda" }, { value: "other", label: "Other", isOther: true }] },
       { value: "kutch", label: "Kutch", cities: [{ value: "bhuj", label: "Bhuj" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "mahisagar", label: "Mahisagar", cities: [{ value: "lunawada", label: "Lunawada" }, { value: "other", label: "Other", isOther: true }] },
       { value: "mehsana", label: "Mehsana", cities: [{ value: "mehsana", label: "Mehsana" }, { value: "other", label: "Other", isOther: true }] },
       { value: "morbi", label: "Morbi", cities: [{ value: "morbi", label: "Morbi" }, { value: "other", label: "Other", isOther: true }] },
       { value: "narmada", label: "Narmada", cities: [{ value: "rajpipla", label: "Rajpipla" }, { value: "other", label: "Other", isOther: true }] },
@@ -271,7 +294,8 @@ export const indianStates: StateEntry[] = [
       { value: "surendranagar", label: "Surendranagar", cities: [{ value: "surendranagar", label: "Surendranagar" }, { value: "other", label: "Other", isOther: true }] },
       { value: "tapi", label: "Tapi", cities: [{ value: "vyara", label: "Vyara" }, { value: "other", label: "Other", isOther: true }] },
       { value: "vadodara", label: "Vadodara", cities: [{ value: "vadodara", label: "Vadodara" }, { value: "other", label: "Other", isOther: true }] },
-      { value: "valsad", label: "Valsad", cities: [{ value: "valsad", label: "Valsad" }, { value: "other", label: "Other", isOther: true }] }
+      { value: "valsad", label: "Valsad", cities: [{ value: "valsad", label: "Valsad" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "vav-tharad", label: "Vav-Tharad", cities: [{ value: "tharad", label: "Tharad" }, { value: "vav", label: "Vav" }, { value: "other", label: "Other", isOther: true }] }
     ]
   },
   {
@@ -409,6 +433,7 @@ export const indianStates: StateEntry[] = [
       { value: "udupi", label: "Udupi", cities: [{ value: "udupi", label: "Udupi" }, { value: "other", label: "Other", isOther: true }] },
       { value: "uttara-kannada", label: "Uttara Kannada", cities: [{ value: "karwar", label: "Karwar" }, { value: "other", label: "Other", isOther: true }] },
       { value: "vijayapura", label: "Vijayapura", cities: [{ value: "vijayapura", label: "Vijayapura" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "vijayanagara", label: "Vijayanagara", cities: [{ value: "hospet", label: "Hospet" }, { value: "hampi", label: "Hampi" }, { value: "harapanahalli", label: "Harapanahalli" }, { value: "other", label: "Other", isOther: true }] },
       { value: "yadgir", label: "Yadgir", cities: [{ value: "yadgir", label: "Yadgir" }, { value: "other", label: "Other", isOther: true }] }
     ]
   },
@@ -436,8 +461,11 @@ export const indianStates: StateEntry[] = [
     value: "ladakh",
     label: "Ladakh",
     districts: [
+      { value: "drass", label: "Drass", cities: [{ value: "drass", label: "Drass" }, { value: "other", label: "Other", isOther: true }] },
       { value: "kargil", label: "Kargil", cities: [{ value: "kargil", label: "Kargil" }, { value: "other", label: "Other", isOther: true }] },
-      { value: "leh", label: "Leh", cities: [{ value: "leh", label: "Leh" }, { value: "other", label: "Other", isOther: true }] }
+      { value: "leh", label: "Leh", cities: [{ value: "leh", label: "Leh" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "nubra", label: "Nubra", cities: [{ value: "diskit", label: "Diskit" }, { value: "hunder", label: "Hunder" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "zanskar", label: "Zanskar", cities: [{ value: "padum", label: "Padum" }, { value: "other", label: "Other", isOther: true }] }
     ]
   },
   {
@@ -478,12 +506,16 @@ export const indianStates: StateEntry[] = [
       { value: "katni", label: "Katni", cities: [{ value: "katni", label: "Katni" }, { value: "other", label: "Other", isOther: true }] },
       { value: "khandwa", label: "Khandwa", cities: [{ value: "khandwa", label: "Khandwa" }, { value: "other", label: "Other", isOther: true }] },
       { value: "khargone", label: "Khargone", cities: [{ value: "khargone", label: "Khargone" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "maihar", label: "Maihar", cities: [{ value: "maihar", label: "Maihar" }, { value: "other", label: "Other", isOther: true }] },
       { value: "mandla", label: "Mandla", cities: [{ value: "mandla", label: "Mandla" }, { value: "other", label: "Other", isOther: true }] },
       { value: "mandsaur", label: "Mandsaur", cities: [{ value: "mandsaur", label: "Mandsaur" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "mauganj", label: "Mauganj", cities: [{ value: "mauganj", label: "Mauganj" }, { value: "other", label: "Other", isOther: true }] },
       { value: "morena", label: "Morena", cities: [{ value: "morena", label: "Morena" }, { value: "other", label: "Other", isOther: true }] },
       { value: "narsinghpur", label: "Narsinghpur", cities: [{ value: "narsinghpur", label: "Narsinghpur" }, { value: "other", label: "Other", isOther: true }] },
       { value: "neemuch", label: "Neemuch", cities: [{ value: "neemuch", label: "Neemuch" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "niwari", label: "Niwari", cities: [{ value: "niwari", label: "Niwari" }, { value: "other", label: "Other", isOther: true }] },
       { value: "panna", label: "Panna", cities: [{ value: "panna", label: "Panna" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "pandhurna", label: "Pandhurna", cities: [{ value: "pandhurna", label: "Pandhurna" }, { value: "other", label: "Other", isOther: true }] },
       { value: "raisen", label: "Raisen", cities: [{ value: "raisen", label: "Raisen" }, { value: "other", label: "Other", isOther: true }] },
       { value: "rajgarh", label: "Rajgarh", cities: [{ value: "rajgarh", label: "Rajgarh" }, { value: "other", label: "Other", isOther: true }] },
       { value: "ratlam", label: "Ratlam", cities: [{ value: "ratlam", label: "Ratlam" }, { value: "other", label: "Other", isOther: true }] },
@@ -575,6 +607,7 @@ export const indianStates: StateEntry[] = [
       { value: "east-garo-hills", label: "East Garo Hills", cities: [{ value: "williamnagar", label: "Williamnagar" }, { value: "other", label: "Other", isOther: true }] },
       { value: "east-jaintia-hills", label: "East Jaintia Hills", cities: [{ value: "khliehriat", label: "Khliehriat" }, { value: "other", label: "Other", isOther: true }] },
       { value: "east-khasi-hills", label: "East Khasi Hills", cities: [{ value: "shillong", label: "Shillong" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "eastern-west-khasi-hills", label: "Eastern West Khasi Hills", cities: [{ value: "mairang", label: "Mairang" }, { value: "other", label: "Other", isOther: true }] },
       { value: "north-garo-hills", label: "North Garo Hills", cities: [{ value: "resubelpara", label: "Resubelpara" }, { value: "other", label: "Other", isOther: true }] },
       { value: "ri-bhoi", label: "Ri Bhoi", cities: [{ value: "nongpoh", label: "Nongpoh" }, { value: "other", label: "Other", isOther: true }] },
       { value: "south-garo-hills", label: "South Garo Hills", cities: [{ value: "baghmara", label: "Baghmara" }, { value: "other", label: "Other", isOther: true }] },
@@ -591,11 +624,14 @@ export const indianStates: StateEntry[] = [
     districts: [
       { value: "aizawl", label: "Aizawl", cities: [{ value: "aizawl", label: "Aizawl" }, { value: "other", label: "Other", isOther: true }] },
       { value: "champhai", label: "Champhai", cities: [{ value: "champhai", label: "Champhai" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "hnahthial", label: "Hnahthial", cities: [{ value: "hnahthial", label: "Hnahthial" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "khawzawl", label: "Khawzawl", cities: [{ value: "khawzawl", label: "Khawzawl" }, { value: "other", label: "Other", isOther: true }] },
       { value: "kolasib", label: "Kolasib", cities: [{ value: "kolasib", label: "Kolasib" }, { value: "other", label: "Other", isOther: true }] },
       { value: "lawngtlai", label: "Lawngtlai", cities: [{ value: "lawngtlai", label: "Lawngtlai" }, { value: "other", label: "Other", isOther: true }] },
       { value: "lunglei", label: "Lunglei", cities: [{ value: "lunglei", label: "Lunglei" }, { value: "other", label: "Other", isOther: true }] },
       { value: "mamit", label: "Mamit", cities: [{ value: "mamit", label: "Mamit" }, { value: "other", label: "Other", isOther: true }] },
       { value: "saiha", label: "Saiha", cities: [{ value: "saiha", label: "Saiha" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "saitual", label: "Saitual", cities: [{ value: "saitual", label: "Saitual" }, { value: "other", label: "Other", isOther: true }] },
       { value: "serchhip", label: "Serchhip", cities: [{ value: "serchhip", label: "Serchhip" }, { value: "other", label: "Other", isOther: true }] }
     ]
   },
@@ -603,14 +639,20 @@ export const indianStates: StateEntry[] = [
     value: "nagaland",
     label: "Nagaland",
     districts: [
+      { value: "chumoukedima", label: "Chumoukedima", cities: [{ value: "chumukedima", label: "Chumukedima" }, { value: "other", label: "Other", isOther: true }] },
       { value: "dimapur", label: "Dimapur", cities: [{ value: "dimapur", label: "Dimapur" }, { value: "other", label: "Other", isOther: true }] },
       { value: "kiphire", label: "Kiphire", cities: [{ value: "kiphire", label: "Kiphire" }, { value: "other", label: "Other", isOther: true }] },
       { value: "kohima", label: "Kohima", cities: [{ value: "kohima", label: "Kohima" }, { value: "other", label: "Other", isOther: true }] },
       { value: "longleng", label: "Longleng", cities: [{ value: "longleng", label: "Longleng" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "meluri", label: "Meluri", cities: [{ value: "meluri", label: "Meluri" }, { value: "other", label: "Other", isOther: true }] },
       { value: "mokokchung", label: "Mokokchung", cities: [{ value: "mokokchung", label: "Mokokchung" }, { value: "other", label: "Other", isOther: true }] },
       { value: "mon", label: "Mon", cities: [{ value: "mon", label: "Mon" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "niuland", label: "Niuland", cities: [{ value: "niuland", label: "Niuland" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "noklak", label: "Noklak", cities: [{ value: "noklak", label: "Noklak" }, { value: "other", label: "Other", isOther: true }] },
       { value: "peren", label: "Peren", cities: [{ value: "peren", label: "Peren" }, { value: "other", label: "Other", isOther: true }] },
       { value: "phek", label: "Phek", cities: [{ value: "phek", label: "Phek" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "shamator", label: "Shamator", cities: [{ value: "shamator", label: "Shamator" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "tseminyu", label: "Tseminyu", cities: [{ value: "tseminyu", label: "Tseminyu" }, { value: "other", label: "Other", isOther: true }] },
       { value: "tuensang", label: "Tuensang", cities: [{ value: "tuensang", label: "Tuensang" }, { value: "other", label: "Other", isOther: true }] },
       { value: "wokha", label: "Wokha", cities: [{ value: "wokha", label: "Wokha" }, { value: "other", label: "Other", isOther: true }] },
       { value: "zunheboto", label: "Zunheboto", cities: [{ value: "zunheboto", label: "Zunheboto" }, { value: "other", label: "Other", isOther: true }] }
@@ -678,6 +720,7 @@ export const indianStates: StateEntry[] = [
       { value: "jalandhar", label: "Jalandhar", cities: [{ value: "jalandhar", label: "Jalandhar" }, { value: "other", label: "Other", isOther: true }] },
       { value: "kapurthala", label: "Kapurthala", cities: [{ value: "kapurthala", label: "Kapurthala" }, { value: "other", label: "Other", isOther: true }] },
       { value: "ludhiana", label: "Ludhiana", cities: [{ value: "ludhiana", label: "Ludhiana" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "malerkotla", label: "Malerkotla", cities: [{ value: "malerkotla", label: "Malerkotla" }, { value: "other", label: "Other", isOther: true }] },
       { value: "mansa", label: "Mansa", cities: [{ value: "mansa", label: "Mansa" }, { value: "other", label: "Other", isOther: true }] },
       { value: "moga", label: "Moga", cities: [{ value: "moga", label: "Moga" }, { value: "other", label: "Other", isOther: true }] },
       { value: "mohali", label: "Mohali", cities: [{ value: "mohali", label: "Mohali" }, { value: "other", label: "Other", isOther: true }] },
@@ -696,6 +739,8 @@ export const indianStates: StateEntry[] = [
     districts: [
       { value: "ajmer", label: "Ajmer", cities: [{ value: "ajmer", label: "Ajmer" }, { value: "other", label: "Other", isOther: true }] },
       { value: "alwar", label: "Alwar", cities: [{ value: "alwar", label: "Alwar" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "anupgarh", label: "Anupgarh", cities: [{ value: "anupgarh", label: "Anupgarh" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "balotara", label: "Balotara", cities: [{ value: "balotara", label: "Balotara" }, { value: "other", label: "Other", isOther: true }] },
       { value: "banswara", label: "Banswara", cities: [{ value: "banswara", label: "Banswara" }, { value: "other", label: "Other", isOther: true }] },
       { value: "baran", label: "Baran", cities: [{ value: "baran", label: "Baran" }, { value: "other", label: "Other", isOther: true }] },
       { value: "barmer", label: "Barmer", cities: [{ value: "barmer", label: "Barmer" }, { value: "other", label: "Other", isOther: true }] },
@@ -706,8 +751,11 @@ export const indianStates: StateEntry[] = [
       { value: "chittorgarh", label: "Chittorgarh", cities: [{ value: "chittorgarh", label: "Chittorgarh" }, { value: "other", label: "Other", isOther: true }] },
       { value: "churu", label: "Churu", cities: [{ value: "churu", label: "Churu" }, { value: "other", label: "Other", isOther: true }] },
       { value: "dausa", label: "Dausa", cities: [{ value: "dausa", label: "Dausa" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "deeg", label: "Deeg", cities: [{ value: "deeg", label: "Deeg" }, { value: "other", label: "Other", isOther: true }] },
       { value: "dholpur", label: "Dholpur", cities: [{ value: "dholpur", label: "Dholpur" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "dudu", label: "Dudu", cities: [{ value: "dudu", label: "Dudu" }, { value: "other", label: "Other", isOther: true }] },
       { value: "dungarpur", label: "Dungarpur", cities: [{ value: "dungarpur", label: "Dungarpur" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "gangapur-city", label: "Gangapur City", cities: [{ value: "gangapur-city", label: "Gangapur City" }, { value: "other", label: "Other", isOther: true }] },
       { value: "ganganagar", label: "Ganganagar", cities: [{ value: "ganganagar", label: "Ganganagar" }, { value: "other", label: "Other", isOther: true }] },
       { value: "hanumangarh", label: "Hanumangarh", cities: [{ value: "hanumangarh", label: "Hanumangarh" }, { value: "other", label: "Other", isOther: true }] },
       { value: "jaipur", label: "Jaipur", cities: [{ value: "jaipur", label: "Jaipur" }, { value: "other", label: "Other", isOther: true }] },
@@ -718,13 +766,16 @@ export const indianStates: StateEntry[] = [
       { value: "jodhpur", label: "Jodhpur", cities: [{ value: "jodhpur", label: "Jodhpur" }, { value: "other", label: "Other", isOther: true }] },
       { value: "karauli", label: "Karauli", cities: [{ value: "karauli", label: "Karauli" }, { value: "other", label: "Other", isOther: true }] },
       { value: "kota", label: "Kota", cities: [{ value: "kota", label: "Kota" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "kotputli-behror", label: "Kotputli-Behror", cities: [{ value: "kotputli", label: "Kotputli" }, { value: "behror", label: "Behror" }, { value: "other", label: "Other", isOther: true }] },
       { value: "nagaur", label: "Nagaur", cities: [{ value: "nagaur", label: "Nagaur" }, { value: "other", label: "Other", isOther: true }] },
       { value: "pali", label: "Pali", cities: [{ value: "pali", label: "Pali" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "phalodi", label: "Phalodi", cities: [{ value: "phalodi", label: "Phalodi" }, { value: "other", label: "Other", isOther: true }] },
       { value: "pratapgarh", label: "Pratapgarh", cities: [{ value: "pratapgarh", label: "Pratapgarh" }, { value: "other", label: "Other", isOther: true }] },
       { value: "rajsamand", label: "Rajsamand", cities: [{ value: "rajsamand", label: "Rajsamand" }, { value: "other", label: "Other", isOther: true }] },
       { value: "sawai-madhopur", label: "Sawai Madhopur", cities: [{ value: "sawai-madhopur", label: "Sawai Madhopur" }, { value: "other", label: "Other", isOther: true }] },
       { value: "sikar", label: "Sikar", cities: [{ value: "sikar", label: "Sikar" }, { value: "other", label: "Other", isOther: true }] },
       { value: "sirohi", label: "Sirohi", cities: [{ value: "sirohi", label: "Sirohi" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "sri-ganganagar", label: "Sri Ganganagar", cities: [{ value: "sri-ganganagar", label: "Sri Ganganagar" }, { value: "other", label: "Other", isOther: true }] },
       { value: "tonk", label: "Tonk", cities: [{ value: "tonk", label: "Tonk" }, { value: "other", label: "Other", isOther: true }] },
       { value: "udaipur", label: "Udaipur", cities: [{ value: "udaipur", label: "Udaipur" }, { value: "other", label: "Other", isOther: true }] }
     ]
@@ -735,6 +786,8 @@ export const indianStates: StateEntry[] = [
     districts: [
       { value: "east-sikkim", label: "East Sikkim", cities: [{ value: "gangtok", label: "Gangtok" }, { value: "other", label: "Other", isOther: true }] },
       { value: "north-sikkim", label: "North Sikkim", cities: [{ value: "mangan", label: "Mangan" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "pakyong", label: "Pakyong", cities: [{ value: "pakyong", label: "Pakyong" }, { value: "other", label: "Other", isOther: true }] },
+      { value: "soreng", label: "Soreng", cities: [{ value: "soreng", label: "Soreng" }, { value: "other", label: "Other", isOther: true }] },
       { value: "south-sikkim", label: "South Sikkim", cities: [{ value: "namchi", label: "Namchi" }, { value: "other", label: "Other", isOther: true }] },
       { value: "west-sikkim", label: "West Sikkim", cities: [{ value: "geyzing", label: "Geyzing" }, { value: "other", label: "Other", isOther: true }] }
     ]
