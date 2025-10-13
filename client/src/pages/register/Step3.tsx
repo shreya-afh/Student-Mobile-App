@@ -30,30 +30,36 @@ export default function RegisterStep3() {
     return phoneRegex.test(number);
   };
 
+  const computeContactErrors = (studentNum: string, guardianNum: string) => {
+    const newErrors = { studentContact: "", guardianContact: "", whatsappNumber: errors.whatsappNumber };
+    
+    // Validate student number - check invalid first, then duplicate
+    if (studentNum && !validatePhoneNumber(studentNum)) {
+      newErrors.studentContact = "Enter a valid 10-digit mobile number";
+    } else if (studentNum && guardianNum && studentNum === guardianNum && studentNum.length === 10) {
+      newErrors.studentContact = "Student and guardian numbers must be different";
+    }
+    
+    // Validate guardian number - check invalid first, then duplicate
+    if (guardianNum && !validatePhoneNumber(guardianNum)) {
+      newErrors.guardianContact = "Enter a valid 10-digit mobile number";
+    } else if (studentNum && guardianNum && studentNum === guardianNum && guardianNum.length === 10) {
+      newErrors.guardianContact = "Guardian and student numbers must be different";
+    }
+    
+    return newErrors;
+  };
+
   const handleStudentContactChange = (value: string) => {
     const numericValue = value.replace(/\D/g, '').slice(0, 10);
     setFormData({ ...formData, studentContact: numericValue });
-    
-    if (numericValue && !validatePhoneNumber(numericValue)) {
-      setErrors({ ...errors, studentContact: "Enter a valid 10-digit mobile number" });
-    } else if (numericValue === formData.guardianContact && numericValue.length === 10) {
-      setErrors({ ...errors, studentContact: "Student and guardian numbers must be different" });
-    } else {
-      setErrors({ ...errors, studentContact: "" });
-    }
+    setErrors(computeContactErrors(numericValue, formData.guardianContact));
   };
 
   const handleGuardianContactChange = (value: string) => {
     const numericValue = value.replace(/\D/g, '').slice(0, 10);
     setFormData({ ...formData, guardianContact: numericValue });
-    
-    if (numericValue && !validatePhoneNumber(numericValue)) {
-      setErrors({ ...errors, guardianContact: "Enter a valid 10-digit mobile number" });
-    } else if (numericValue === formData.studentContact && numericValue.length === 10) {
-      setErrors({ ...errors, guardianContact: "Guardian and student numbers must be different" });
-    } else {
-      setErrors({ ...errors, guardianContact: "" });
-    }
+    setErrors(computeContactErrors(formData.studentContact, numericValue));
   };
 
   const handleWhatsappNumberChange = (value: string) => {
