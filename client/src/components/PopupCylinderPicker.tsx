@@ -5,9 +5,10 @@ interface PopupCylinderPickerProps {
   value: string;
   onChange: (value: string) => void;
   label: string;
+  disabled?: boolean;
 }
 
-export function PopupCylinderPicker({ items, value, onChange, label }: PopupCylinderPickerProps) {
+export function PopupCylinderPicker({ items, value, onChange, label, disabled = false }: PopupCylinderPickerProps) {
   const [isOpen, setIsOpen] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -114,13 +115,20 @@ export function PopupCylinderPicker({ items, value, onChange, label }: PopupCyli
 
   return (
     <div>
-      <span className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs block mb-1">{label}</span>
+      <label className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm block mb-1">{label}</label>
       <button
         type="button"
-        onClick={() => setIsOpen(true)}
-        className="w-full h-[60px] border border-[#0000001a] rounded-lg bg-white flex items-center justify-center text-[#6d10b0] font-semibold hover:bg-[#6d10b0]/5 transition-colors"
+        onClick={() => !disabled && setIsOpen(true)}
+        disabled={disabled}
+        className={`w-full h-10 px-3 border border-input rounded-md bg-white flex items-center justify-between transition-colors ${
+          disabled 
+            ? 'opacity-50 cursor-not-allowed bg-gray-50' 
+            : 'hover:bg-gray-50 cursor-pointer'
+        }`}
       >
-        {getDisplayValue()}
+        <span className={value ? 'text-[#1d2838]' : 'text-muted-foreground'}>
+          {getDisplayValue()}
+        </span>
       </button>
 
       {isOpen && (

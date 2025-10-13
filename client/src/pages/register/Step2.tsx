@@ -221,6 +221,7 @@ export default function RegisterStep2() {
                 value={selectedDistrict}
                 onChange={handleDistrictChange}
                 label="District *"
+                disabled={!selectedState}
               />
               {errors.district ? (
                 <p className="font-['Inter',Helvetica] font-normal text-red-500 text-xs mt-1">
@@ -239,6 +240,7 @@ export default function RegisterStep2() {
                 value={showCityInput ? "other" : formData.city}
                 onChange={handleCityChange}
                 label="City *"
+                disabled={!selectedDistrict}
               />
               {errors.city ? (
                 <p className="font-['Inter',Helvetica] font-normal text-red-500 text-xs mt-1">
