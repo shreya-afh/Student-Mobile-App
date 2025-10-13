@@ -24,6 +24,8 @@ export default function VerifyOTP() {
 
   const sendOtpMutation = useMutation({
     mutationFn: async () => {
+      console.log('[OTP DEBUG] Sending OTP to:', mobileNumber);
+      console.log('[OTP DEBUG] API Base URL:', getApiBaseUrl());
       const response = await apiRequest("POST", "/api/send-otp", { mobileNumber });
       return response.json();
     },
@@ -37,6 +39,9 @@ export default function VerifyOTP() {
     onError: (error: any) => {
       // Stop timer on error so resend button is immediately available
       setTimer(0);
+      
+      console.error('[OTP ERROR]', error);
+      console.error('[OTP ERROR] Full error:', JSON.stringify(error, null, 2));
       
       // Parse error message from response
       let errorMessage = "Failed to send OTP. Please try again.";
