@@ -17,6 +17,7 @@ export default function RegisterStep2() {
   const [selectedDistrict, setSelectedDistrict] = useState(registrationData.step2.district);
   const [showCityInput, setShowCityInput] = useState(false);
   const [otherCityValue, setOtherCityValue] = useState("");
+  const [errors, setErrors] = useState({ state: "", district: "", city: "" });
   useAndroidBackButton("/register/step1");
 
   useEffect(() => {
@@ -41,6 +42,7 @@ export default function RegisterStep2() {
     setShowCityInput(false);
     setOtherCityValue("");
     setFormData({ ...formData, state: value, district: "", city: "" });
+    setErrors({ ...errors, state: "", district: "", city: "" });
   };
 
   const handleDistrictChange = (value: string) => {
@@ -48,6 +50,7 @@ export default function RegisterStep2() {
     setShowCityInput(false);
     setOtherCityValue("");
     setFormData({ ...formData, district: value, city: "" });
+    setErrors({ ...errors, district: "", city: "" });
   };
 
   const handleCityChange = (value: string) => {
@@ -58,16 +61,44 @@ export default function RegisterStep2() {
       setShowCityInput(false);
       setOtherCityValue("");
       setFormData({ ...formData, city: value });
+      setErrors({ ...errors, city: "" });
     }
   };
 
   const handleOtherCityChange = (value: string) => {
     setOtherCityValue(value);
     setFormData({ ...formData, city: value });
+    if (value.trim()) {
+      setErrors({ ...errors, city: "" });
+    }
   };
 
   const handleContinue = (e: React.FormEvent) => {
     e.preventDefault();
+
+    const newErrors = { state: "", district: "", city: "" };
+    let hasError = false;
+
+    if (!formData.state) {
+      newErrors.state = "Please select a state";
+      hasError = true;
+    }
+
+    if (!formData.district) {
+      newErrors.district = "Please select a district";
+      hasError = true;
+    }
+
+    if (!formData.city || (showCityInput && !formData.city.trim())) {
+      newErrors.city = "Please select or enter a city";
+      hasError = true;
+    }
+
+    if (hasError) {
+      setErrors(newErrors);
+      return;
+    }
+
     updateStep2(formData);
     setLocation("/register/step3");
   };
@@ -177,6 +208,11 @@ export default function RegisterStep2() {
                 onChange={handleStateChange}
                 label="State *"
               />
+              {errors.state && (
+                <p className="font-['Inter',Helvetica] font-normal text-red-500 text-xs mt-1">
+                  {errors.state}
+                </p>
+              )}
             </div>
 
             <div>
@@ -186,11 +222,15 @@ export default function RegisterStep2() {
                 onChange={handleDistrictChange}
                 label="District *"
               />
-              {!selectedState && (
+              {errors.district ? (
+                <p className="font-['Inter',Helvetica] font-normal text-red-500 text-xs mt-1">
+                  {errors.district}
+                </p>
+              ) : !selectedState ? (
                 <p className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs mt-1">
                   Please select a state first
                 </p>
-              )}
+              ) : null}
             </div>
 
             <div>
@@ -200,11 +240,15 @@ export default function RegisterStep2() {
                 onChange={handleCityChange}
                 label="City *"
               />
-              {!selectedDistrict && (
+              {errors.city ? (
+                <p className="font-['Inter',Helvetica] font-normal text-red-500 text-xs mt-1">
+                  {errors.city}
+                </p>
+              ) : !selectedDistrict ? (
                 <p className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs mt-1">
                   Please select a district first
                 </p>
-              )}
+              ) : null}
               {showCityInput && (
                 <div className="mt-2">
                   <Input
@@ -212,7 +256,7 @@ export default function RegisterStep2() {
                     placeholder="Enter city name"
                     value={otherCityValue}
                     onChange={(e) => handleOtherCityChange(e.target.value)}
-                    className="mt-1"
+                    className={`mt-1 ${errors.city ? 'border-red-500' : ''}`}
                     required
                     data-testid="input-other-city"
                   />
