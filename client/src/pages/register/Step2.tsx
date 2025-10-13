@@ -6,16 +6,65 @@ import { ChevronLeftIcon } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useRegistration } from "@/contexts/RegistrationContext";
 import { useAndroidBackButton } from "@/hooks/useAndroidBackButton";
+import { PopupCylinderPicker } from "@/components/PopupCylinderPicker";
+import { indianStates, getDistrictsForState, getCitiesForDistrict } from "@shared/locationData";
 
 export default function RegisterStep2() {
   const [, setLocation] = useLocation();
   const { registrationData, updateStep2 } = useRegistration();
   const [formData, setFormData] = useState(registrationData.step2);
+  const [selectedState, setSelectedState] = useState(registrationData.step2.state);
+  const [selectedDistrict, setSelectedDistrict] = useState(registrationData.step2.district);
+  const [showCityInput, setShowCityInput] = useState(false);
+  const [otherCityValue, setOtherCityValue] = useState("");
   useAndroidBackButton("/register/step1");
 
   useEffect(() => {
     setFormData(registrationData.step2);
+    setSelectedState(registrationData.step2.state);
+    setSelectedDistrict(registrationData.step2.district);
+    
+    // Check if current city is in the city options or if it's a custom "other" value
+    if (registrationData.step2.state && registrationData.step2.district) {
+      const cities = getCitiesForDistrict(registrationData.step2.state, registrationData.step2.district);
+      const cityExists = cities.some(c => c.value === registrationData.step2.city);
+      if (!cityExists && registrationData.step2.city) {
+        setShowCityInput(true);
+        setOtherCityValue(registrationData.step2.city);
+      }
+    }
   }, [registrationData.step2]);
+
+  const handleStateChange = (value: string) => {
+    setSelectedState(value);
+    setSelectedDistrict("");
+    setShowCityInput(false);
+    setOtherCityValue("");
+    setFormData({ ...formData, state: value, district: "", city: "" });
+  };
+
+  const handleDistrictChange = (value: string) => {
+    setSelectedDistrict(value);
+    setShowCityInput(false);
+    setOtherCityValue("");
+    setFormData({ ...formData, district: value, city: "" });
+  };
+
+  const handleCityChange = (value: string) => {
+    if (value === "other") {
+      setShowCityInput(true);
+      setFormData({ ...formData, city: otherCityValue });
+    } else {
+      setShowCityInput(false);
+      setOtherCityValue("");
+      setFormData({ ...formData, city: value });
+    }
+  };
+
+  const handleOtherCityChange = (value: string) => {
+    setOtherCityValue(value);
+    setFormData({ ...formData, city: value });
+  };
 
   const handleContinue = (e: React.FormEvent) => {
     e.preventDefault();
@@ -122,45 +171,53 @@ export default function RegisterStep2() {
             </div>
 
             <div>
-              <Label htmlFor="city" className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm">
-                City *
-              </Label>
-              <Input
-                id="city"
-                placeholder="Enter city"
-                value={formData.city}
-                onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                className="mt-1"
-                required
+              <PopupCylinderPicker
+                items={indianStates}
+                value={selectedState}
+                onChange={handleStateChange}
+                label="State *"
               />
             </div>
 
             <div>
-              <Label htmlFor="district" className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm">
-                District *
-              </Label>
-              <Input
-                id="district"
-                placeholder="Enter district"
-                value={formData.district}
-                onChange={(e) => setFormData({ ...formData, district: e.target.value })}
-                className="mt-1"
-                required
+              <PopupCylinderPicker
+                items={getDistrictsForState(selectedState)}
+                value={selectedDistrict}
+                onChange={handleDistrictChange}
+                label="District *"
               />
+              {!selectedState && (
+                <p className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs mt-1">
+                  Please select a state first
+                </p>
+              )}
             </div>
 
             <div>
-              <Label htmlFor="state" className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm">
-                State *
-              </Label>
-              <Input
-                id="state"
-                placeholder="Enter state"
-                value={formData.state}
-                onChange={(e) => setFormData({ ...formData, state: e.target.value })}
-                className="mt-1"
-                required
+              <PopupCylinderPicker
+                items={getCitiesForDistrict(selectedState, selectedDistrict)}
+                value={showCityInput ? "other" : formData.city}
+                onChange={handleCityChange}
+                label="City *"
               />
+              {!selectedDistrict && (
+                <p className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs mt-1">
+                  Please select a district first
+                </p>
+              )}
+              {showCityInput && (
+                <div className="mt-2">
+                  <Input
+                    id="otherCity"
+                    placeholder="Enter city name"
+                    value={otherCityValue}
+                    onChange={(e) => handleOtherCityChange(e.target.value)}
+                    className="mt-1"
+                    required
+                    data-testid="input-other-city"
+                  />
+                </div>
+              )}
             </div>
 
             <div>
@@ -175,6 +232,7 @@ export default function RegisterStep2() {
                 className="mt-1"
                 maxLength={6}
                 required
+                data-testid="input-pincode"
               />
             </div>
 
