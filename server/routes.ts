@@ -114,7 +114,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
         })
         .parse(req.body);
 
+      if (process.env.NODE_ENV === "development") {
+        console.log(`[OTP VERIFY] Looking for OTP for mobile: ${mobileNumber}, OTP: ${otp}`);
+      }
+
       const storedOtp = await storage.getOtp(mobileNumber);
+
+      if (process.env.NODE_ENV === "development") {
+        console.log(`[OTP VERIFY] Found stored OTP: ${storedOtp}`);
+      }
 
       if (!storedOtp) {
         return res.status(400).json({ 
