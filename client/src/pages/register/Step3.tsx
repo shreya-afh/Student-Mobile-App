@@ -18,14 +18,82 @@ export default function RegisterStep3() {
   const [, setLocation] = useLocation();
   const { registrationData, updateStep3 } = useRegistration();
   const [formData, setFormData] = useState(registrationData.step3);
+  const [errors, setErrors] = useState({ studentContact: "", guardianContact: "", whatsappNumber: "" });
   useAndroidBackButton("/register/step2");
 
   useEffect(() => {
     setFormData(registrationData.step3);
   }, [registrationData.step3]);
 
+  const validatePhoneNumber = (number: string): boolean => {
+    const phoneRegex = /^[6-9]\d{9}$/;
+    return phoneRegex.test(number);
+  };
+
+  const handleStudentContactChange = (value: string) => {
+    const numericValue = value.replace(/\D/g, '').slice(0, 10);
+    setFormData({ ...formData, studentContact: numericValue });
+    
+    if (numericValue && !validatePhoneNumber(numericValue)) {
+      setErrors({ ...errors, studentContact: "Enter a valid 10-digit mobile number" });
+    } else if (numericValue === formData.guardianContact && numericValue.length === 10) {
+      setErrors({ ...errors, studentContact: "Student and guardian numbers must be different" });
+    } else {
+      setErrors({ ...errors, studentContact: "" });
+    }
+  };
+
+  const handleGuardianContactChange = (value: string) => {
+    const numericValue = value.replace(/\D/g, '').slice(0, 10);
+    setFormData({ ...formData, guardianContact: numericValue });
+    
+    if (numericValue && !validatePhoneNumber(numericValue)) {
+      setErrors({ ...errors, guardianContact: "Enter a valid 10-digit mobile number" });
+    } else if (numericValue === formData.studentContact && numericValue.length === 10) {
+      setErrors({ ...errors, guardianContact: "Guardian and student numbers must be different" });
+    } else {
+      setErrors({ ...errors, guardianContact: "" });
+    }
+  };
+
+  const handleWhatsappNumberChange = (value: string) => {
+    const numericValue = value.replace(/\D/g, '').slice(0, 10);
+    setFormData({ ...formData, whatsappNumber: numericValue });
+    
+    if (numericValue && !validatePhoneNumber(numericValue)) {
+      setErrors({ ...errors, whatsappNumber: "Enter a valid 10-digit mobile number" });
+    } else {
+      setErrors({ ...errors, whatsappNumber: "" });
+    }
+  };
+
   const handleContinue = (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!validatePhoneNumber(formData.studentContact)) {
+      setErrors({ ...errors, studentContact: "Enter a valid 10-digit mobile number" });
+      return;
+    }
+
+    if (!validatePhoneNumber(formData.guardianContact)) {
+      setErrors({ ...errors, guardianContact: "Enter a valid 10-digit mobile number" });
+      return;
+    }
+
+    if (formData.studentContact === formData.guardianContact) {
+      setErrors({ 
+        ...errors, 
+        studentContact: "Student and guardian numbers must be different",
+        guardianContact: "Guardian and student numbers must be different"
+      });
+      return;
+    }
+
+    if (formData.whatsappNumber && !validatePhoneNumber(formData.whatsappNumber)) {
+      setErrors({ ...errors, whatsappNumber: "Enter a valid 10-digit mobile number" });
+      return;
+    }
+
     updateStep3(formData);
     setLocation("/register/step4");
   };
@@ -75,15 +143,23 @@ export default function RegisterStep3() {
               <Input
                 id="studentContact"
                 type="tel"
-                placeholder="Enter mobile number"
+                placeholder="Enter 10-digit mobile number"
                 value={formData.studentContact}
-                onChange={(e) => setFormData({ ...formData, studentContact: e.target.value })}
-                className="mt-1"
+                onChange={(e) => handleStudentContactChange(e.target.value)}
+                className={`mt-1 ${errors.studentContact ? 'border-red-500' : ''}`}
+                maxLength={10}
                 required
+                data-testid="input-student-contact"
               />
-              <p className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs mt-1">
-                This will be verified with OTP
-              </p>
+              {errors.studentContact ? (
+                <p className="font-['Inter',Helvetica] font-normal text-red-500 text-xs mt-1">
+                  {errors.studentContact}
+                </p>
+              ) : (
+                <p className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs mt-1">
+                  This will be verified with OTP
+                </p>
+              )}
             </div>
 
             <div>
@@ -93,11 +169,18 @@ export default function RegisterStep3() {
               <Input
                 id="whatsappNumber"
                 type="tel"
-                placeholder="Enter WhatsApp number if different"
+                placeholder="Enter 10-digit WhatsApp number"
                 value={formData.whatsappNumber}
-                onChange={(e) => setFormData({ ...formData, whatsappNumber: e.target.value })}
-                className="mt-1"
+                onChange={(e) => handleWhatsappNumberChange(e.target.value)}
+                className={`mt-1 ${errors.whatsappNumber ? 'border-red-500' : ''}`}
+                maxLength={10}
+                data-testid="input-whatsapp"
               />
+              {errors.whatsappNumber && (
+                <p className="font-['Inter',Helvetica] font-normal text-red-500 text-xs mt-1">
+                  {errors.whatsappNumber}
+                </p>
+              )}
             </div>
 
             <div>
@@ -107,12 +190,19 @@ export default function RegisterStep3() {
               <Input
                 id="guardianContact"
                 type="tel"
-                placeholder="Enter guardian's mobile number"
+                placeholder="Enter 10-digit guardian mobile number"
                 value={formData.guardianContact}
-                onChange={(e) => setFormData({ ...formData, guardianContact: e.target.value })}
-                className="mt-1"
+                onChange={(e) => handleGuardianContactChange(e.target.value)}
+                className={`mt-1 ${errors.guardianContact ? 'border-red-500' : ''}`}
+                maxLength={10}
                 required
+                data-testid="input-guardian-contact"
               />
+              {errors.guardianContact && (
+                <p className="font-['Inter',Helvetica] font-normal text-red-500 text-xs mt-1">
+                  {errors.guardianContact}
+                </p>
+              )}
             </div>
 
             <div>

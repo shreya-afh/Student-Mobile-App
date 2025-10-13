@@ -14,6 +14,7 @@ export default function RegisterStep4() {
   const { registrationData, updateStep4, resetRegistration } = useRegistration();
   const [formData, setFormData] = useState(registrationData.step4);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [aadhaarError, setAadhaarError] = useState("");
   const { toast } = useToast();
   useAndroidBackButton("/register/step3");
 
@@ -21,8 +22,32 @@ export default function RegisterStep4() {
     setFormData(registrationData.step4);
   }, [registrationData.step4]);
 
+  const validateAadhaar = (number: string): boolean => {
+    const aadhaarRegex = /^\d{12}$/;
+    return aadhaarRegex.test(number);
+  };
+
+  const handleAadhaarChange = (value: string) => {
+    const numericValue = value.replace(/\D/g, '').slice(0, 12);
+    setFormData({ ...formData, aadhaar: numericValue });
+    
+    if (numericValue && numericValue.length > 0 && numericValue.length < 12) {
+      setAadhaarError("Aadhaar must be exactly 12 digits");
+    } else if (numericValue && !validateAadhaar(numericValue)) {
+      setAadhaarError("Enter a valid 12-digit Aadhaar number");
+    } else {
+      setAadhaarError("");
+    }
+  };
+
   const handleComplete = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!validateAadhaar(formData.aadhaar)) {
+      setAadhaarError("Enter a valid 12-digit Aadhaar number");
+      return;
+    }
+
     updateStep4(formData);
     setIsSubmitting(true);
 
@@ -146,16 +171,24 @@ export default function RegisterStep4() {
               </Label>
               <Input
                 id="aadhaar"
+                type="tel"
                 placeholder="Enter 12-digit Aadhaar number"
                 value={formData.aadhaar}
-                onChange={(e) => setFormData({ ...formData, aadhaar: e.target.value })}
-                className="mt-1"
+                onChange={(e) => handleAadhaarChange(e.target.value)}
+                className={`mt-1 ${aadhaarError ? 'border-red-500' : ''}`}
                 maxLength={12}
                 required
+                data-testid="input-aadhaar"
               />
-              <p className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs mt-1">
-                Will be safely stored with encryption
-              </p>
+              {aadhaarError ? (
+                <p className="font-['Inter',Helvetica] font-normal text-red-500 text-xs mt-1">
+                  {aadhaarError}
+                </p>
+              ) : (
+                <p className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs mt-1">
+                  Will be safely stored with encryption
+                </p>
+              )}
             </div>
 
             <div>
