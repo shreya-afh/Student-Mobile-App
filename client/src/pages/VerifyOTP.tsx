@@ -13,7 +13,7 @@ import { useAndroidBackButton } from "@/hooks/useAndroidBackButton";
 export default function VerifyOTP() {
   const [, setLocation] = useLocation();
   const { login } = useAuth();
-  const { registrationData } = useRegistration();
+  const { registrationData, resetRegistration } = useRegistration();
   const { toast } = useToast();
   const [otp, setOtp] = useState(["", "", "", "", ""]);
   const [timer, setTimer] = useState(0); // Start at 0, will be set to 60 when OTP is successfully sent
@@ -62,15 +62,51 @@ export default function VerifyOTP() {
 
   const verifyOtpMutation = useMutation({
     mutationFn: async (otpCode: string) => {
-      const response = await apiRequest("POST", "/api/verify-otp", { mobileNumber, otp: otpCode });
-      return response.json();
+      // First verify OTP
+      const verifyResponse = await apiRequest("POST", "/api/verify-otp", { mobileNumber, otp: otpCode });
+      const verifyResult = await verifyResponse.json();
+      
+      if (!verifyResult.success) {
+        throw new Error(JSON.stringify(verifyResult));
+      }
+
+      // Then submit registration data
+      const formDataToSend = new FormData();
+      formDataToSend.append("data", JSON.stringify({
+        step1: registrationData.step1,
+        step2: registrationData.step2,
+        step3: registrationData.step3,
+        step4: {
+          aadhaar: registrationData.step4.aadhaar,
+          isPWD: registrationData.step4.isPWD,
+          isGovtEmployee: registrationData.step4.isGovtEmployee,
+        },
+      }));
+
+      if (registrationData.step4.selfie) {
+        formDataToSend.append("selfie", registrationData.step4.selfie);
+      }
+
+      const registerResponse = await fetch("/api/register", {
+        method: "POST",
+        body: formDataToSend,
+      });
+
+      const registerResult = await registerResponse.json();
+      
+      if (!registerResult.success) {
+        throw new Error(JSON.stringify(registerResult));
+      }
+
+      return registerResult;
     },
     onSuccess: () => {
       toast({
-        title: "Success",
-        description: "Phone number verified successfully",
+        title: "Registration Successful",
+        description: "Your data has been saved successfully!",
       });
       login({ phone: mobileNumber });
+      resetRegistration();
       setLocation("/dashboard");
     },
     onError: (error: any) => {
@@ -80,13 +116,9 @@ export default function VerifyOTP() {
       
       try {
         const errorText = error.message || "";
-        // Extract JSON from error message like "400: {"success":false,"message":"...","errorType":"..."}"
-        const match = errorText.match(/\d+:\s*(\{.*\})/);
-        if (match && match[1]) {
-          const errorData = JSON.parse(match[1]);
-          errorMessage = errorData.message || errorMessage;
-          errorType = errorData.errorType || errorType;
-        }
+        const errorData = JSON.parse(errorText);
+        errorMessage = errorData.message || errorMessage;
+        errorType = errorData.errorType || errorType;
       } catch (e) {
         // Use default message if parsing fails
       }
