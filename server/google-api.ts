@@ -54,6 +54,7 @@ export async function uploadToDrive(
     requestBody: fileMetadata,
     media: media,
     fields: 'id, webViewLink',
+    supportsAllDrives: true,
   });
 
   // Make the file publicly viewable
@@ -63,6 +64,7 @@ export async function uploadToDrive(
       role: 'reader',
       type: 'anyone',
     },
+    supportsAllDrives: true,
   });
 
   return response.data.webViewLink || `https://drive.google.com/file/d/${response.data.id}/view`;

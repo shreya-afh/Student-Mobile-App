@@ -7,7 +7,7 @@ import { z } from "zod";
 
 const upload = multer({ storage: multer.memoryStorage() });
 
-const GOOGLE_DRIVE_FOLDER_ID = "1V6PmBGmLBp-FJKH6xSUYEeYAsDr28EZN";
+const GOOGLE_DRIVE_FOLDER_ID = "0APKlsIj58AdeUk9PVA";
 const GOOGLE_SHEET_ID = "1IzB51OMk0R14D_AoHy1aJxNZ5myY05eHMx-Y3bQnjoE";
 
 export async function registerRoutes(app: Express): Promise<Server> {
