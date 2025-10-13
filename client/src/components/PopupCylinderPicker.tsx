@@ -14,7 +14,8 @@ export function PopupCylinderPicker({ items, value, onChange, label }: PopupCyli
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const isScrollingRef = useRef(false);
 
-  const infiniteItems = [...items, ...items, ...items];
+  const useInfiniteScroll = items.length >= 5;
+  const infiniteItems = useInfiniteScroll ? [...items, ...items, ...items] : items;
 
   const getDisplayValue = () => {
     if (!value) return "Select";
@@ -32,12 +33,12 @@ export function PopupCylinderPicker({ items, value, onChange, label }: PopupCyli
       
       if (originalIndex !== -1 && scrollRef.current) {
         const itemHeight = 40;
-        const middleSetIndex = items.length + originalIndex;
+        const middleSetIndex = useInfiniteScroll ? items.length + originalIndex : originalIndex;
         scrollRef.current.scrollTop = middleSetIndex * itemHeight;
         setCenteredIndex(middleSetIndex);
       }
     }
-  }, [isOpen, value, items]);
+  }, [isOpen, value, items, useInfiniteScroll]);
 
   const getCenteredIndex = (): number => {
     if (!scrollRef.current) return 0;
@@ -88,7 +89,9 @@ export function PopupCylinderPicker({ items, value, onChange, label }: PopupCyli
 
     scrollTimeoutRef.current = setTimeout(() => {
       if (scrollRef.current) {
-        handleInfiniteScroll();
+        if (useInfiniteScroll) {
+          handleInfiniteScroll();
+        }
         snapToNearest();
       }
     }, 100);
