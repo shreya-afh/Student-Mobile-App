@@ -26,7 +26,7 @@ function getGoogleAuth(): JWT {
     key: credentials.private_key,
     scopes: [
       'https://www.googleapis.com/auth/spreadsheets',
-      'https://www.googleapis.com/auth/drive.file',
+      'https://www.googleapis.com/auth/drive',
     ],
   });
 }
