@@ -6,8 +6,9 @@ const config: CapacitorConfig = {
   webDir: 'dist/public',
   server: {
     androidScheme: 'https',
-    // Backend server URL for Android app
-    url: 'http://192.168.29.88:5000',
+    // For Android Emulator: 10.0.2.2 maps to host machine's localhost
+    // For Real Device: use your Mac's IP (e.g., http://192.168.29.88:5000)
+    url: 'http://10.0.2.2:5000',
     cleartext: true, // Allow HTTP for local development
   },
   android: {
