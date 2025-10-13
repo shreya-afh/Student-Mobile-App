@@ -9,13 +9,22 @@ interface PopupCylinderPickerProps {
 
 export function PopupCylinderPicker({ items, value, onChange, label }: PopupCylinderPickerProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [centeredIndex, setCenteredIndex] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const isScrollingRef = useRef(false);
 
   const useInfiniteScroll = items.length >= 5;
   const infiniteItems = useInfiniteScroll ? [...items, ...items, ...items] : items;
+
+  const getInitialCenteredIndex = () => {
+    const originalIndex = items.findIndex((item: any) => 
+      typeof item === 'string' ? item === value : item.value === value
+    );
+    if (originalIndex === -1) return 0;
+    return useInfiniteScroll ? items.length + originalIndex : originalIndex;
+  };
+
+  const [centeredIndex, setCenteredIndex] = useState(getInitialCenteredIndex);
 
   const getDisplayValue = () => {
     if (!value) return "Select";
