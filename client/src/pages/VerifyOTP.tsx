@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRegistration } from "@/contexts/RegistrationContext";
 import { useMutation } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
+import { apiRequest, getApiBaseUrl } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { useAndroidBackButton } from "@/hooks/useAndroidBackButton";
 
@@ -87,7 +87,7 @@ export default function VerifyOTP() {
         formDataToSend.append("selfie", registrationData.step4.selfie);
       }
 
-      const registerResponse = await fetch("/api/register", {
+      const registerResponse = await fetch(getApiBaseUrl() + "/api/register", {
         method: "POST",
         body: formDataToSend,
       });

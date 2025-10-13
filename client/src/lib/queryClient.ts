@@ -1,4 +1,19 @@
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
+import { Capacitor } from "@capacitor/core";
+
+// Get API base URL based on platform
+export function getApiBaseUrl(): string {
+  if (Capacitor.isNativePlatform()) {
+    // Running in native Android/iOS app
+    // For Android Emulator: use 10.0.2.2
+    // For Real Device: use your Mac's IP (e.g., 192.168.29.88)
+    return "http://10.0.2.2:5000";
+  }
+  // Running in web browser - use relative URLs
+  return "";
+}
+
+const API_BASE_URL = getApiBaseUrl();
 
 async function throwIfResNotOk(res: Response) {
   if (!res.ok) {
@@ -12,7 +27,8 @@ export async function apiRequest(
   url: string,
   data?: unknown | undefined,
 ): Promise<Response> {
-  const res = await fetch(url, {
+  const fullUrl = API_BASE_URL + url;
+  const res = await fetch(fullUrl, {
     method,
     headers: data ? { "Content-Type": "application/json" } : {},
     body: data ? JSON.stringify(data) : undefined,
@@ -29,7 +45,9 @@ export const getQueryFn: <T>(options: {
 }) => QueryFunction<T> =
   ({ on401: unauthorizedBehavior }) =>
   async ({ queryKey }) => {
-    const res = await fetch(queryKey.join("/") as string, {
+    const url = queryKey.join("/") as string;
+    const fullUrl = API_BASE_URL + url;
+    const res = await fetch(fullUrl, {
       credentials: "include",
     });
 
