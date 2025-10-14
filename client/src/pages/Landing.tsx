@@ -9,8 +9,8 @@ export default function Landing() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#faf9fb] to-white">
       {/* Header with Logos */}
-      <div className="w-full bg-white shadow-sm border-b border-gray-100">
-        <div className="max-w-6xl mx-auto px-4 py-6">
+      <div className="w-full">
+        <div className="max-w-6xl mx-auto px-4 pt-8 pb-4">
           <div className="flex items-center justify-center gap-8 flex-wrap">
             <img 
               src={infosysLogo} 
