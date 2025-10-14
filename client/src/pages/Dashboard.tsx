@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useLocation } from "wouter";
-import { QrCodeIcon, BriefcaseIcon, AwardIcon, UserIcon, BookOpenIcon, TrendingUpIcon, LogOutIcon } from "lucide-react";
+import { QrCodeIcon, BriefcaseIcon, AwardIcon, UserIcon, TrendingUpIcon, LogOutIcon } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import infosysLogo from "@assets/infosys-foundation-logo-blue_1760417156143.png";
 import aspireForHerLogo from "@assets/image_1760420610980.png";
@@ -21,12 +21,6 @@ export default function Dashboard() {
       label: "Attendance and Feedback",
       subtitle: "Scan QR & rate your session",
       onClick: () => setLocation("/attendance"),
-    },
-    {
-      icon: BookOpenIcon,
-      label: "Enroll in Course",
-      subtitle: "Find & join new courses",
-      onClick: () => setLocation("/course-enrollment"),
     },
     {
       icon: BriefcaseIcon,

@@ -50,7 +50,7 @@ export default function RegisterStep4() {
     }
 
     updateStep4(formData);
-    setLocation("/course-enrollment");
+    setLocation("/verify-otp");
   };
 
   const handleCaptureSelfie = async () => {

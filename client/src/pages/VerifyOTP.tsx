@@ -113,7 +113,7 @@ export default function VerifyOTP() {
       });
       login({ phone: mobileNumber });
       resetRegistration();
-      setLocation("/dashboard");
+      setLocation("/course-enrollment");
     },
     onError: (error: any) => {
       // Parse error message and type from response
