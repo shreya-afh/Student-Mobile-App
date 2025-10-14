@@ -107,11 +107,15 @@ export default function VerifyOTP() {
 
       return registerResult;
     },
-    onSuccess: () => {
+    onSuccess: (result) => {
       toast({
         title: "Registration Successful",
       });
-      login({ phone: mobileNumber, name: registrationData.step1.fullName });
+      login({ 
+        id: result.userId, 
+        phone: mobileNumber, 
+        name: registrationData.step1.fullName 
+      });
       resetRegistration();
       setLocation("/course-enrollment");
     },

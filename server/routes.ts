@@ -220,12 +220,65 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Append to Google Sheet
       await appendToSheet(GOOGLE_SHEET_ID, sheetRow);
 
-      res.json({ success: true, message: "Registration submitted successfully" });
+      // Save user to database
+      const user = await storage.createUser({
+        fullName: registrationData.step1.fullName,
+        gender: registrationData.step1.gender,
+        guardianName: registrationData.step1.guardianName,
+        guardianOccupation: registrationData.step1.guardianOccupation,
+        dateOfBirth: JSON.stringify(registrationData.step1.dateOfBirth),
+        collegeName: registrationData.step2.collegeName,
+        course: registrationData.step2.course,
+        startYear: registrationData.step2.startYear,
+        endYear: registrationData.step2.endYear,
+        city: registrationData.step2.city,
+        district: registrationData.step2.district,
+        state: registrationData.step2.state,
+        pincode: registrationData.step2.pincode,
+        studentContact: registrationData.step3.studentContact,
+        whatsappNumber: registrationData.step3.whatsappNumber,
+        guardianContact: registrationData.step3.guardianContact,
+        email: registrationData.step3.email,
+        familyIncome: registrationData.step3.familyIncome,
+        aadhaar: registrationData.step4.aadhaar,
+        isPWD: registrationData.step4.isPWD,
+        isGovtEmployee: registrationData.step4.isGovtEmployee,
+        selfieUrl: photoUrl || null,
+      });
+
+      res.json({ 
+        success: true, 
+        message: "Registration submitted successfully",
+        userId: user.id 
+      });
     } catch (error) {
       console.error("Registration error:", error);
       res.status(500).json({ 
         success: false, 
         message: error instanceof Error ? error.message : "Failed to submit registration" 
+      });
+    }
+  });
+
+  // Get user profile by ID
+  app.get("/api/user/:id", async (req, res) => {
+    try {
+      const userId = req.params.id;
+      const user = await storage.getUser(userId);
+      
+      if (!user) {
+        return res.status(404).json({ 
+          success: false, 
+          message: "User not found" 
+        });
+      }
+
+      res.json({ success: true, user });
+    } catch (error) {
+      console.error("Get user error:", error);
+      res.status(500).json({ 
+        success: false, 
+        message: "Failed to fetch user data" 
       });
     }
   });
