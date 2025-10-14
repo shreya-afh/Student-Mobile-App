@@ -5,13 +5,44 @@ import { ChevronLeftIcon, QrCodeIcon } from "lucide-react";
 import { useAndroidBackButton } from "@/hooks/useAndroidBackButton";
 import infosysLogo from "@assets/infosys-foundation-logo-blue_1760417156143.png";
 import aspireForHerLogo from "@assets/image_1760420610980.png";
+import { QRScanner } from "@/components/QRScanner";
+import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 export default function AttendanceStep1() {
   const [, setLocation] = useLocation();
+  const [showScanner, setShowScanner] = useState(false);
+  const { toast } = useToast();
   useAndroidBackButton("/dashboard");
 
   const handleScanQR = () => {
-    setLocation("/attendance/mode");
+    setShowScanner(true);
+  };
+
+  const handleScanSuccess = (decodedText: string) => {
+    setShowScanner(false);
+    
+    try {
+      const qrData = JSON.parse(decodedText);
+      
+      toast({
+        title: "QR Code Scanned",
+        description: "Attendance data captured successfully",
+      });
+      
+      localStorage.setItem("attendance_qr_data", JSON.stringify(qrData));
+      setLocation("/attendance/mode");
+    } catch (error) {
+      toast({
+        title: "Invalid QR Code",
+        description: "Please scan a valid attendance QR code",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleCloseScanner = () => {
+    setShowScanner(false);
   };
 
   return (
@@ -83,6 +114,7 @@ export default function AttendanceStep1() {
             <Button
               onClick={handleScanQR}
               className="w-full max-w-xs h-12 bg-[#5C4C7D] hover:bg-[#4C3C6D] text-white rounded-lg font-['Inter',Helvetica] font-medium text-base"
+              data-testid="button-scan-qr"
             >
               Scan QR Code
             </Button>
@@ -92,6 +124,13 @@ export default function AttendanceStep1() {
           </div>
         </div>
       </div>
+
+      {showScanner && (
+        <QRScanner
+          onScanSuccess={handleScanSuccess}
+          onClose={handleCloseScanner}
+        />
+      )}
     </div>
   );
 }
