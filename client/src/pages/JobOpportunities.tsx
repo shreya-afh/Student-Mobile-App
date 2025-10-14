@@ -78,7 +78,7 @@ export default function JobOpportunities() {
             <img 
               src={aspireForHerLogo} 
               alt="AspireForHer" 
-              className="h-6 object-contain"
+              className="h-8 object-contain"
             />
           </div>
         </div>
