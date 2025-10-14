@@ -1,7 +1,8 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useLocation } from "wouter";
-import { QrCodeIcon, BriefcaseIcon, AwardIcon, UserIcon, TrendingUpIcon, LogOutIcon } from "lucide-react";
+import { QrCodeIcon, BriefcaseIcon, AwardIcon, TrendingUpIcon, LogOutIcon } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import infosysLogo from "@assets/infosys-foundation-logo-blue_1760417156143.png";
 import aspireForHerLogo from "@assets/image_1760420610980.png";
@@ -40,12 +41,6 @@ export default function Dashboard() {
       subtitle: "Explore placement options",
       onClick: () => setLocation("/job-opportunities"),
     },
-    {
-      icon: UserIcon,
-      label: "Profile",
-      subtitle: "Manage your account",
-      onClick: () => setLocation("/profile"),
-    },
   ];
 
   return (
@@ -75,14 +70,30 @@ export default function Dashboard() {
             <h1 className="font-['Inter',Helvetica] font-bold text-[#1d2838] text-xl">
               Welcome back!
             </h1>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={handleLogout}
-              className="h-8 w-8 p-0 hover:bg-gray-100"
-            >
-              <LogOutIcon className="w-5 h-5 text-[#495565]" />
-            </Button>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setLocation("/profile")}
+                className="rounded-full focus:outline-none focus:ring-2 focus:ring-[#5C4C7D] focus:ring-offset-2"
+                data-testid="button-profile"
+                aria-label="View profile"
+              >
+                <Avatar className="h-8 w-8 cursor-pointer hover:opacity-80 transition-opacity">
+                  <AvatarFallback className="bg-[#5C4C7D] text-white text-sm">
+                    U
+                  </AvatarFallback>
+                </Avatar>
+              </button>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={handleLogout}
+                className="h-8 w-8 p-0 hover:bg-gray-100"
+                data-testid="button-logout"
+                aria-label="Logout"
+              >
+                <LogOutIcon className="w-5 h-5 text-[#495565]" />
+              </Button>
+            </div>
           </div>
 
           {/* Current Course Card */}
