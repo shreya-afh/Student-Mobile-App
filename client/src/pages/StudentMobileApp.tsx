@@ -12,7 +12,7 @@ export const StudentMobileApp = (): JSX.Element => {
 
   return (
     <div className="flex flex-col w-full h-screen bg-[#faf9fb] overflow-hidden">
-      <header className="bg-[linear-gradient(90deg,rgba(218,178,255,1)_0%,rgba(196,180,255,1)_100%)] pt-safe pb-4 px-4 flex-shrink-0">
+      <header className="bg-[#6d10b0] pt-safe pb-4 px-4 flex-shrink-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Button
@@ -21,9 +21,9 @@ export const StudentMobileApp = (): JSX.Element => {
               onClick={() => setLocation("/dashboard")}
               className="h-10 w-10 p-0 hover:bg-transparent relative z-10 -ml-2"
             >
-              <ChevronLeftIcon className="w-6 h-6 text-[#6d10b0]" />
+              <ChevronLeftIcon className="w-6 h-6 text-white" />
             </Button>
-            <h1 className="font-['Inter',Helvetica] font-semibold text-[#6d10b0] text-lg">
+            <h1 className="font-['Inter',Helvetica] font-semibold text-white text-lg">
               My Profile
             </h1>
           </div>
