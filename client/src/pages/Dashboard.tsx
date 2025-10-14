@@ -135,28 +135,16 @@ export default function Dashboard() {
                 </p>
               </div>
 
-              <div className="mt-3 pt-3 border-t border-[#0000001a] space-y-2">
+              <div className="mt-3 pt-3 border-t border-[#0000001a]">
                 <div className="flex items-center justify-between">
                   <p className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm">
                     Next session: Tomorrow, 10:00 AM
                   </p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs">
-                        Your Attendance
-                      </span>
-                      <span className="font-['Inter',Helvetica] font-semibold text-[#5C4C7D] text-xs">
-                        92%
-                      </span>
-                    </div>
-                    <div className="w-full bg-[#e5e7eb] rounded-full h-1.5">
-                      <div className="bg-[#5C4C7D] h-1.5 rounded-full" style={{ width: "92%" }}></div>
-                    </div>
-                  </div>
-                  <div className="bg-[#eff1ff] rounded-lg px-3 py-1.5">
-                    <span className="font-['Inter',Helvetica] font-bold text-[#5C4C7D] text-sm">
+                  <div className="flex items-center gap-1.5">
+                    <span className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs">
+                      Attendance:
+                    </span>
+                    <span className="font-['Inter',Helvetica] font-semibold text-[#5C4C7D] text-sm">
                       92%
                     </span>
                   </div>
