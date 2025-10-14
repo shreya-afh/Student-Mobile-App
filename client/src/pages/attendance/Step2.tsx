@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useLocation } from "wouter";
 import { ChevronLeftIcon, MonitorIcon, UsersIcon } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAndroidBackButton } from "@/hooks/useAndroidBackButton";
 import infosysLogo from "@assets/infosys-foundation-logo-blue_1760417156143.png";
 import aspireForHerLogo from "@assets/image_1760420610980.png";
@@ -10,7 +10,19 @@ import aspireForHerLogo from "@assets/image_1760420610980.png";
 export default function AttendanceStep2() {
   const [, setLocation] = useLocation();
   const [sessionMode, setSessionMode] = useState("");
+  const [qrData, setQrData] = useState<any>(null);
   useAndroidBackButton("/attendance");
+
+  useEffect(() => {
+    const storedData = localStorage.getItem("attendance_qr_data");
+    if (storedData) {
+      try {
+        setQrData(JSON.parse(storedData));
+      } catch (error) {
+        console.error("Error parsing QR data:", error);
+      }
+    }
+  }, []);
 
   const handleContinue = () => {
     if (sessionMode) {
@@ -75,6 +87,33 @@ export default function AttendanceStep2() {
               Please select your session mode
             </p>
           </div>
+
+          {qrData && (
+            <Card className="mb-6 border-[#5C4C7D] bg-[#eff1ff]">
+              <CardContent className="p-4">
+                <h3 className="font-['Inter',Helvetica] font-semibold text-[#1d2838] text-sm mb-2">
+                  Session Information
+                </h3>
+                <div className="space-y-1 text-sm">
+                  {qrData.session && (
+                    <p className="font-['Inter',Helvetica] font-normal text-[#495565]">
+                      <span className="font-medium">Session:</span> {qrData.session}
+                    </p>
+                  )}
+                  {qrData.date && (
+                    <p className="font-['Inter',Helvetica] font-normal text-[#495565]">
+                      <span className="font-medium">Date:</span> {qrData.date}
+                    </p>
+                  )}
+                  {qrData.course && (
+                    <p className="font-['Inter',Helvetica] font-normal text-[#495565]">
+                      <span className="font-medium">Course:</span> {qrData.course}
+                    </p>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
           <h3 className="font-['Inter',Helvetica] font-semibold text-[#1d2838] text-base mb-4">
             Is this session Online or Offline?
