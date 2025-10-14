@@ -24,6 +24,7 @@ import Certificates from "@/pages/Certificates";
 import JobOffers from "@/pages/JobOffers";
 import JobOpportunities from "@/pages/JobOpportunities";
 import { StudentMobileApp } from "@/pages/StudentMobileApp";
+import TestQR from "@/pages/TestQR";
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useAuth();
@@ -112,6 +113,11 @@ function Router() {
       <Route path="/profile">
         <ProtectedRoute>
           <StudentMobileApp />
+        </ProtectedRoute>
+      </Route>
+      <Route path="/test-qr">
+        <ProtectedRoute>
+          <TestQR />
         </ProtectedRoute>
       </Route>
       <Route component={NotFound} />
