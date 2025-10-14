@@ -78,7 +78,7 @@ export default function Dashboard() {
         </div>
 
         {/* Current Course Card */}
-        <Card className="border-none shadow-sm">
+        <Card className="border-gray-200 shadow-sm">
           <CardContent className="p-4">
             <div className="flex items-start justify-between mb-2">
               <div>
