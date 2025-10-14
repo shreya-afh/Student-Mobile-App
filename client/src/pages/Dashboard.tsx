@@ -136,19 +136,12 @@ export default function Dashboard() {
               </div>
 
               <div className="mt-3 pt-3 border-t border-[#0000001a]">
-                <div className="flex items-center justify-between">
-                  <p className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm">
-                    Next session: Tomorrow, 10:00 AM
-                  </p>
-                  <div className="flex items-center gap-1.5">
-                    <span className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs">
-                      Attendance:
-                    </span>
-                    <span className="font-['Inter',Helvetica] font-semibold text-[#5C4C7D] text-sm">
-                      92%
-                    </span>
-                  </div>
-                </div>
+                <p className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm mb-1">
+                  Next session: Tomorrow, 10:00 AM
+                </p>
+                <p className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs">
+                  Attendance: <span className="text-[#5C4C7D] font-medium">92%</span>
+                </p>
               </div>
             </CardContent>
           </Card>
