@@ -118,6 +118,7 @@ export default function AttendanceStep2() {
                 size="icon"
                 onClick={() => setLocation("/attendance")}
                 className="h-10 w-10 p-0 hover:bg-gray-100 relative z-10 -ml-2"
+                data-testid="button-back-attendance"
               >
                 <ChevronLeftIcon className="w-6 h-6 text-[#495565]" />
               </Button>
