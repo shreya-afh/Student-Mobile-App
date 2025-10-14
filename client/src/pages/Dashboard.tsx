@@ -79,27 +79,47 @@ export default function Dashboard() {
 
         {/* Current Course Card */}
         <Card className="border-gray-200 shadow-sm">
-          <CardContent className="p-3">
-            <div className="flex items-center justify-between">
-              <div className="flex-1 min-w-0">
-                <h2 className="font-['Inter',Helvetica] font-semibold text-[#1d2838] text-sm truncate">
+          <CardContent className="p-4">
+            <div className="flex items-start justify-between mb-2">
+              <div>
+                <p className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs mb-1">
+                  Current Course
+                </p>
+                <h2 className="font-['Inter',Helvetica] font-semibold text-[#1d2838] text-base">
                   Digital Marketing Fundamentals
                 </h2>
-                <p className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs">
-                  Next: Tomorrow, 10:00 AM
+                <p className="font-['Inter',Helvetica] font-normal text-[#495565] text-sm">
+                  Trainer: Priya Sharma
                 </p>
               </div>
-              <div className="ml-3 flex items-center gap-2">
-                <div className="text-right">
-                  <p className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-xs">39/60 hrs</p>
-                  <p className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs">65%</p>
-                </div>
-                <div className="bg-[#eff1ff] rounded-lg px-2 py-1">
-                  <span className="font-['Inter',Helvetica] font-semibold text-[#5C4C7D] text-xs">
-                    DM2024B3
-                  </span>
-                </div>
+              <div className="bg-[#eff1ff] rounded-lg px-3 py-1">
+                <span className="font-['Inter',Helvetica] font-semibold text-[#5C4C7D] text-sm">
+                  DM2024B3
+                </span>
               </div>
+            </div>
+
+            <div className="mt-4">
+              <div className="flex justify-between items-center mb-1">
+                <span className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs">
+                  Progress
+                </span>
+                <span className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm">
+                  39/60 hours
+                </span>
+              </div>
+              <div className="w-full bg-[#e5e7eb] rounded-full h-2">
+                <div className="bg-[#5C4C7D] h-2 rounded-full" style={{ width: "65%" }}></div>
+              </div>
+              <p className="font-['Inter',Helvetica] font-normal text-[#495565] text-xs mt-1">
+                65% completed
+              </p>
+            </div>
+
+            <div className="mt-3 pt-3 border-t border-[#0000001a]">
+              <p className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm">
+                Next session: Tomorrow, 10:00 AM
+              </p>
             </div>
           </CardContent>
         </Card>
