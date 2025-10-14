@@ -56,25 +56,23 @@ export default function Dashboard() {
     <div className="h-screen bg-white flex flex-col overflow-hidden">
       {/* Header */}
       <header className="bg-white border-b border-gray-200 p-4 flex-shrink-0">
+        <div className="text-center mb-3">
+          <p className="font-['Inter',Helvetica] font-medium text-[#697282] text-xs tracking-wide">
+            INFOSYS × ASPIREFORHER
+          </p>
+        </div>
         <div className="flex items-center justify-between mb-4">
           <h1 className="font-['Inter',Helvetica] font-bold text-[#1d2838] text-xl">
             Welcome back!
           </h1>
-          <div className="flex items-center gap-2">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={handleLogout}
-              className="h-8 w-8 p-0 hover:bg-gray-100"
-            >
-              <LogOutIcon className="w-5 h-5 text-[#495565]" />
-            </Button>
-            <div className="bg-[#eff1ff] rounded-[10px] px-3 py-1.5">
-              <span className="font-['Inter',Helvetica] font-normal text-[#1d2838] text-xs">
-                Infosys X AspireForHer
-              </span>
-            </div>
-          </div>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={handleLogout}
+            className="h-8 w-8 p-0 hover:bg-gray-100"
+          >
+            <LogOutIcon className="w-5 h-5 text-[#495565]" />
+          </Button>
         </div>
 
         {/* Current Course Card */}

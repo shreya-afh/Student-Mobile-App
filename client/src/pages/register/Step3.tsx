@@ -108,6 +108,11 @@ export default function RegisterStep3() {
     <div className="h-screen bg-[#faf9fb] flex flex-col overflow-hidden">
       {/* Header */}
       <header className="bg-white border-b border-gray-200 pt-safe pb-4 px-4 flex-shrink-0">
+        <div className="text-center mb-3">
+          <p className="font-['Inter',Helvetica] font-medium text-[#697282] text-xs tracking-wide">
+            INFOSYS × ASPIREFORHER
+          </p>
+        </div>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Button
@@ -126,11 +131,6 @@ export default function RegisterStep3() {
             <span className="font-['Inter',Helvetica] font-normal text-[#495565] text-xs">
               Step 3 of 4
             </span>
-            <div className="bg-[#ffffffe6] rounded-[10px] px-3 py-1.5">
-              <span className="font-['Inter',Helvetica] font-normal text-[#1d2838] text-xs">
-                Infosys X AspireForHer
-              </span>
-            </div>
           </div>
         </div>
       </header>

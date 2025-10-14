@@ -25,6 +25,11 @@ export default function Login() {
     <div className="min-h-screen bg-[#faf9fb] flex flex-col">
       {/* Header */}
       <header className="bg-white border-b border-gray-200 p-4">
+        <div className="text-center mb-3">
+          <p className="font-['Inter',Helvetica] font-medium text-[#697282] text-xs tracking-wide">
+            INFOSYS × ASPIREFORHER
+          </p>
+        </div>
         <div className="flex items-center justify-between">
           <Button
             variant="ghost"
@@ -34,11 +39,6 @@ export default function Login() {
           >
             <ChevronLeftIcon className="w-6 h-6 text-[#495565]" />
           </Button>
-          <div className="bg-[#ffffffe6] rounded-[10px] px-3 py-1.5">
-            <span className="font-['Inter',Helvetica] font-normal text-[#1d2838] text-xs">
-              Infosys X AspireForHer
-            </span>
-          </div>
         </div>
       </header>
 

@@ -183,6 +183,11 @@ export default function VerifyOTP() {
     <div className="h-screen bg-[#faf9fb] flex flex-col overflow-hidden">
       {/* Header */}
       <header className="flex-shrink-0 bg-white border-b border-gray-200 p-4 pt-safe">
+        <div className="text-center mb-3">
+          <p className="font-['Inter',Helvetica] font-medium text-[#697282] text-xs tracking-wide">
+            INFOSYS × ASPIREFORHER
+          </p>
+        </div>
         <div className="flex items-center gap-2">
           <Button
             variant="ghost"
