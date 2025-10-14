@@ -11,18 +11,18 @@ export default function Landing() {
       {/* Header with Logos */}
       <div className="w-full bg-white shadow-sm border-b border-gray-100">
         <div className="max-w-6xl mx-auto px-4 py-6">
-          <div className="flex items-center justify-center gap-6 flex-wrap">
+          <div className="flex items-center justify-center gap-8 flex-wrap">
             <img 
               src={infosysLogo} 
               alt="Infosys Foundation" 
-              className="h-10 object-contain"
+              className="h-12 object-contain"
               data-testid="logo-infosys"
             />
-            <div className="h-8 w-px bg-gray-300"></div>
+            <div className="text-2xl font-bold text-gray-400">×</div>
             <img 
               src={aspireForHerLogo} 
               alt="AspireForHer" 
-              className="h-10 object-contain"
+              className="h-12 object-contain"
               data-testid="logo-aspireforher"
             />
           </div>
