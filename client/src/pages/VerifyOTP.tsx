@@ -182,7 +182,7 @@ export default function VerifyOTP() {
   return (
     <div className="h-screen bg-[#faf9fb] flex flex-col overflow-hidden">
       {/* Header */}
-      <header className="flex-shrink-0 bg-[linear-gradient(90deg,rgba(218,178,255,1)_0%,rgba(196,180,255,1)_100%)] p-4 pt-safe">
+      <header className="flex-shrink-0 bg-[#6d10b0] p-4 pt-safe">
         <div className="flex items-center gap-2">
           <Button
             variant="ghost"
@@ -191,9 +191,9 @@ export default function VerifyOTP() {
             className="h-10 w-10 p-0 hover:bg-transparent"
             data-testid="button-back"
           >
-            <ChevronLeftIcon className="w-6 h-6 text-[#6d10b0]" />
+            <ChevronLeftIcon className="w-6 h-6 text-white" />
           </Button>
-          <span className="font-['Inter',Helvetica] font-medium text-[#6d10b0] text-sm">
+          <span className="font-['Inter',Helvetica] font-medium text-white text-sm">
             Back
           </span>
         </div>

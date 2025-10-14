@@ -7,7 +7,7 @@ export default function Landing() {
   const [, setLocation] = useLocation();
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#faf9fb] to-white">
+    <div className="min-h-screen bg-[#faf9fb]">
       {/* Header with Logos */}
       <div className="w-full">
         <div className="max-w-6xl mx-auto px-4 pt-8 pb-4">
@@ -40,7 +40,7 @@ export default function Landing() {
           <div className="flex flex-col gap-4 max-w-sm mx-auto mb-12">
             <Button
               onClick={() => setLocation("/register/step1")}
-              className="h-12 bg-gradient-to-r from-[#0075C9] to-[#6d10b0] hover:opacity-90 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all"
+              className="h-12 bg-[#6d10b0] hover:bg-[#5a0d94] text-white rounded-lg font-semibold transition-all"
               data-testid="button-start-journey"
             >
               Start Your Journey

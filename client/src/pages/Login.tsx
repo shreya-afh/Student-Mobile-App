@@ -24,7 +24,7 @@ export default function Login() {
   return (
     <div className="min-h-screen bg-[#faf9fb] flex flex-col">
       {/* Header */}
-      <header className="bg-[linear-gradient(90deg,rgba(218,178,255,1)_0%,rgba(196,180,255,1)_100%)] p-4">
+      <header className="bg-[#6d10b0] p-4">
         <div className="flex items-center justify-between">
           <Button
             variant="ghost"
@@ -32,7 +32,7 @@ export default function Login() {
             onClick={() => setLocation("/")}
             className="h-8 w-9 p-0 hover:bg-transparent"
           >
-            <ChevronLeftIcon className="w-6 h-6 text-[#6d10b0]" />
+            <ChevronLeftIcon className="w-6 h-6 text-white" />
           </Button>
           <div className="bg-[#ffffffe6] rounded-[10px] px-3 py-1.5">
             <span className="font-['Inter',Helvetica] font-normal text-[#1d2838] text-xs">

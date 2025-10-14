@@ -55,9 +55,9 @@ export default function Dashboard() {
   return (
     <div className="h-screen bg-[#faf9fb] flex flex-col overflow-hidden">
       {/* Header */}
-      <header className="bg-[linear-gradient(90deg,rgba(218,178,255,1)_0%,rgba(196,180,255,1)_100%)] p-4 flex-shrink-0">
+      <header className="bg-[#6d10b0] p-4 flex-shrink-0">
         <div className="flex items-center justify-between mb-4">
-          <h1 className="font-['Inter',Helvetica] font-bold text-[#6d10b0] text-xl">
+          <h1 className="font-['Inter',Helvetica] font-bold text-white text-xl">
             Welcome back!
           </h1>
           <div className="flex items-center gap-2">
@@ -67,7 +67,7 @@ export default function Dashboard() {
               onClick={handleLogout}
               className="h-8 w-8 p-0 hover:bg-white/20"
             >
-              <LogOutIcon className="w-5 h-5 text-[#6d10b0]" />
+              <LogOutIcon className="w-5 h-5 text-white" />
             </Button>
             <div className="bg-[#ffffffe6] rounded-[10px] px-3 py-1.5">
               <span className="font-['Inter',Helvetica] font-normal text-[#1d2838] text-xs">

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 
 export const ProfileSection = (): JSX.Element => {
   return (
-    <header className="flex flex-col items-start pt-4 pb-0 px-4 w-full bg-[linear-gradient(90deg,rgba(218,178,255,1)_0%,rgba(196,180,255,1)_100%)]">
+    <header className="flex flex-col items-start pt-4 pb-0 px-4 w-full bg-[#6d10b0]">
       <div className="flex h-8 items-center justify-between w-full">
         <div className="flex items-center gap-3">
           <Button
@@ -13,12 +13,12 @@ export const ProfileSection = (): JSX.Element => {
             size="icon"
             className="h-8 w-9 p-0 hover:bg-transparent"
           >
-            <ChevronLeftIcon className="w-6 h-6 text-[#6d10b0]" />
+            <ChevronLeftIcon className="w-6 h-6 text-white" />
           </Button>
 
           <div className="flex h-6 items-center gap-2">
-            <UserIcon className="w-5 h-5 text-[#6d10b0]" />
-            <span className="[font-family:'Inter',Helvetica] font-normal text-[#6d10b0] text-base tracking-[-0.31px] leading-6 whitespace-nowrap">
+            <UserIcon className="w-5 h-5 text-white" />
+            <span className="[font-family:'Inter',Helvetica] font-normal text-white text-base tracking-[-0.31px] leading-6 whitespace-nowrap">
               My Profile
             </span>
           </div>
