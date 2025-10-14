@@ -26,18 +26,18 @@ export default function CourseEnrollment() {
   return (
     <div className="h-screen bg-[#faf9fb] flex flex-col overflow-hidden">
       {/* Header */}
-      <header className="bg-[#5C4C7D] pt-safe pb-4 px-4 flex-shrink-0">
+      <header className="bg-white border-b border-gray-200 pt-safe pb-4 px-4 flex-shrink-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Button
               variant="ghost"
               size="icon"
               onClick={() => setLocation("/dashboard")}
-              className="h-10 w-10 p-0 hover:bg-transparent relative z-10 -ml-2"
+              className="h-10 w-10 p-0 hover:bg-gray-100 relative z-10 -ml-2"
             >
-              <ChevronLeftIcon className="w-6 h-6 text-white" />
+              <ChevronLeftIcon className="w-6 h-6 text-[#495565]" />
             </Button>
-            <h1 className="font-['Inter',Helvetica] font-semibold text-white text-lg">
+            <h1 className="font-['Inter',Helvetica] font-semibold text-[#1d2838] text-lg">
               Course Enrollment
             </h1>
           </div>
@@ -77,7 +77,7 @@ export default function CourseEnrollment() {
           </div>
 
           {showCourse && (
-            <Card className="border-[#5C4C7D] mb-6">
+            <Card className="border-gray-200 hover:shadow-md transition-all mb-6">
               <CardContent className="p-4">
                 <div className="flex items-start justify-between mb-3">
                   <div>
@@ -167,7 +167,7 @@ export default function CourseEnrollment() {
             </Card>
           )}
 
-          <Card className="bg-[#f3f4f6] border-[#0000001a]">
+          <Card className="bg-[#f3f4f6] border-gray-200">
             <CardContent className="p-4">
               <h3 className="font-['Inter',Helvetica] font-semibold text-[#1d2838] text-sm mb-2">
                 How to get Course Code?

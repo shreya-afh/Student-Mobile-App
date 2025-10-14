@@ -12,18 +12,18 @@ export const StudentMobileApp = (): JSX.Element => {
 
   return (
     <div className="flex flex-col w-full h-screen bg-[#faf9fb] overflow-hidden">
-      <header className="bg-[#5C4C7D] pt-safe pb-4 px-4 flex-shrink-0">
+      <header className="bg-white border-b border-gray-200 pt-safe pb-4 px-4 flex-shrink-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Button
               variant="ghost"
               size="icon"
               onClick={() => setLocation("/dashboard")}
-              className="h-10 w-10 p-0 hover:bg-transparent relative z-10 -ml-2"
+              className="h-10 w-10 p-0 hover:bg-gray-100 relative z-10 -ml-2"
             >
-              <ChevronLeftIcon className="w-6 h-6 text-white" />
+              <ChevronLeftIcon className="w-6 h-6 text-[#495565]" />
             </Button>
-            <h1 className="font-['Inter',Helvetica] font-semibold text-white text-lg">
+            <h1 className="font-['Inter',Helvetica] font-semibold text-[#1d2838] text-lg">
               My Profile
             </h1>
           </div>

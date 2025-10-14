@@ -90,18 +90,18 @@ This is a digitally generated certificate.
   return (
     <div className="h-screen bg-[#faf9fb] flex flex-col overflow-hidden">
       {/* Header */}
-      <header className="bg-[#5C4C7D] pt-safe pb-4 px-4 flex-shrink-0">
+      <header className="bg-white border-b border-gray-200 pt-safe pb-4 px-4 flex-shrink-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Button
               variant="ghost"
               size="icon"
               onClick={() => setLocation("/dashboard")}
-              className="h-10 w-10 p-0 hover:bg-transparent relative z-10 -ml-2"
+              className="h-10 w-10 p-0 hover:bg-gray-100 relative z-10 -ml-2"
             >
-              <ChevronLeftIcon className="w-6 h-6 text-white" />
+              <ChevronLeftIcon className="w-6 h-6 text-[#495565]" />
             </Button>
-            <h1 className="font-['Inter',Helvetica] font-semibold text-white text-lg">
+            <h1 className="font-['Inter',Helvetica] font-semibold text-[#1d2838] text-lg">
               My Certificates
             </h1>
           </div>
@@ -116,7 +116,7 @@ This is a digitally generated certificate.
       <div className="flex-1 overflow-y-auto p-4">
         {/* Stats */}
         <div className="grid grid-cols-3 gap-3 mb-6">
-          <Card className="border-[#0000001a]">
+          <Card className="border-gray-200 hover:shadow-md transition-all">
             <CardContent className="p-3 text-center">
               <div className="font-['Inter',Helvetica] font-bold text-[#5C4C7D] text-2xl">1</div>
               <div className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs mt-1">
@@ -125,7 +125,7 @@ This is a digitally generated certificate.
             </CardContent>
           </Card>
 
-          <Card className="border-[#0000001a]">
+          <Card className="border-gray-200 hover:shadow-md transition-all">
             <CardContent className="p-3 text-center">
               <div className="font-['Inter',Helvetica] font-bold text-[#5C4C7D] text-2xl">1</div>
               <div className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs mt-1">
@@ -134,7 +134,7 @@ This is a digitally generated certificate.
             </CardContent>
           </Card>
 
-          <Card className="border-[#0000001a]">
+          <Card className="border-gray-200 hover:shadow-md transition-all">
             <CardContent className="p-3 text-center">
               <div className="font-['Inter',Helvetica] font-bold text-[#5C4C7D] text-2xl">1</div>
               <div className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs mt-1">
@@ -149,7 +149,7 @@ This is a digitally generated certificate.
           Earned Certificates
         </h2>
 
-        <Card className="border-[#0000001a] mb-6">
+        <Card className="border-gray-200 hover:shadow-md transition-all mb-6">
           <CardContent className="p-4">
             <div className="flex items-start justify-between mb-2">
               <div>
@@ -199,7 +199,7 @@ This is a digitally generated certificate.
           In Progress
         </h2>
 
-        <Card className="border-[#0000001a] mb-6">
+        <Card className="border-gray-200 hover:shadow-md transition-all mb-6">
           <CardContent className="p-4">
             <div className="flex items-start justify-between mb-2">
               <div>
@@ -243,7 +243,7 @@ This is a digitally generated certificate.
           Pending
         </h2>
 
-        <Card className="border-[#0000001a] mb-6">
+        <Card className="border-gray-200 hover:shadow-md transition-all mb-6">
           <CardContent className="p-4">
             <div className="flex items-start justify-between mb-2">
               <div>
@@ -283,7 +283,7 @@ This is a digitally generated certificate.
         </Card>
 
         {/* About AFH Certificates */}
-        <Card className="bg-[#f3f4f6] border-[#0000001a]">
+        <Card className="bg-[#f3f4f6] border-gray-200">
           <CardContent className="p-4">
             <h3 className="font-['Inter',Helvetica] font-semibold text-[#1d2838] text-sm mb-2">
               About AFH Certificates

@@ -47,18 +47,18 @@ export default function JobOffers() {
   return (
     <div className="h-screen bg-[#faf9fb] flex flex-col overflow-hidden">
       {/* Header */}
-      <header className="bg-[#5C4C7D] pt-safe pb-4 px-4 flex-shrink-0">
+      <header className="bg-white border-b border-gray-200 pt-safe pb-4 px-4 flex-shrink-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Button
               variant="ghost"
               size="icon"
               onClick={() => setLocation("/dashboard")}
-              className="h-10 w-10 p-0 hover:bg-transparent relative z-10 -ml-2"
+              className="h-10 w-10 p-0 hover:bg-gray-100 relative z-10 -ml-2"
             >
-              <ChevronLeftIcon className="w-6 h-6 text-white" />
+              <ChevronLeftIcon className="w-6 h-6 text-[#495565]" />
             </Button>
-            <h1 className="font-['Inter',Helvetica] font-semibold text-white text-lg">
+            <h1 className="font-['Inter',Helvetica] font-semibold text-[#1d2838] text-lg">
               Job Offers
             </h1>
           </div>
@@ -72,7 +72,7 @@ export default function JobOffers() {
 
       <div className="flex-1 overflow-y-auto p-4">
         {/* Upload Section */}
-        <Card className="bg-[#eff1ff] border-[#5C4C7D] mb-6">
+        <Card className="bg-[#eff1ff] border-gray-200 hover:shadow-md transition-all mb-6">
           <CardContent className="p-4">
             <h2 className="font-['Inter',Helvetica] font-semibold text-[#1d2838] text-base mb-2">
               Got a Job Offer?
@@ -101,7 +101,7 @@ export default function JobOffers() {
         </div>
 
         {/* Accepted Offer */}
-        <Card className="border-[#00a63e] mb-4">
+        <Card className="border-[#00a63e] hover:shadow-md transition-all mb-4">
           <CardContent className="p-4">
             <div className="flex items-start justify-between mb-3">
               <div>
@@ -161,7 +161,7 @@ export default function JobOffers() {
         </Card>
 
         {/* Pending Offer */}
-        <Card className="border-[#f59e0b] mb-4">
+        <Card className="border-[#f59e0b] hover:shadow-md transition-all mb-4">
           <CardContent className="p-4">
             <div className="flex items-start justify-between mb-3">
               <div>

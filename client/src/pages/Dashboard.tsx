@@ -53,11 +53,11 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="h-screen bg-[#faf9fb] flex flex-col overflow-hidden">
+    <div className="h-screen bg-white flex flex-col overflow-hidden">
       {/* Header */}
-      <header className="bg-[#5C4C7D] p-4 flex-shrink-0">
+      <header className="bg-white border-b border-gray-200 p-4 flex-shrink-0">
         <div className="flex items-center justify-between mb-4">
-          <h1 className="font-['Inter',Helvetica] font-bold text-white text-xl">
+          <h1 className="font-['Inter',Helvetica] font-bold text-[#1d2838] text-xl">
             Welcome back!
           </h1>
           <div className="flex items-center gap-2">
@@ -65,11 +65,11 @@ export default function Dashboard() {
               variant="ghost"
               size="icon"
               onClick={handleLogout}
-              className="h-8 w-8 p-0 hover:bg-white/20"
+              className="h-8 w-8 p-0 hover:bg-gray-100"
             >
-              <LogOutIcon className="w-5 h-5 text-white" />
+              <LogOutIcon className="w-5 h-5 text-[#495565]" />
             </Button>
-            <div className="bg-[#ffffffe6] rounded-[10px] px-3 py-1.5">
+            <div className="bg-[#eff1ff] rounded-[10px] px-3 py-1.5">
               <span className="font-['Inter',Helvetica] font-normal text-[#1d2838] text-xs">
                 Infosys X AspireForHer
               </span>
@@ -125,7 +125,7 @@ export default function Dashboard() {
         </Card>
       </header>
 
-      <div className="flex-1 overflow-y-auto p-4 pb-20">
+      <div className="flex-1 overflow-y-auto p-4 pb-20 bg-[#faf9fb]">
         {/* Quick Actions */}
         <h2 className="font-['Inter',Helvetica] font-bold text-[#1d2838] text-lg mb-4">
           Quick Actions
@@ -136,7 +136,7 @@ export default function Dashboard() {
             <Card
               key={index}
               onClick={action.onClick}
-              className="border-[#0000001a] cursor-pointer hover:border-[#5C4C7D] transition-colors"
+              className="border-gray-200 cursor-pointer hover:border-[#5C4C7D] hover:shadow-md transition-all"
             >
               <CardContent className="p-4">
                 <action.icon className="w-6 h-6 text-[#5C4C7D] mb-2" />
@@ -157,7 +157,7 @@ export default function Dashboard() {
         </h2>
 
         <div className="grid grid-cols-3 gap-3 mb-6">
-          <Card className="border-[#0000001a]">
+          <Card className="border-gray-200">
             <CardContent className="p-3 text-center">
               <div className="font-['Inter',Helvetica] font-bold text-[#5C4C7D] text-xl">39</div>
               <div className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs mt-1">
@@ -166,7 +166,7 @@ export default function Dashboard() {
             </CardContent>
           </Card>
 
-          <Card className="border-[#0000001a]">
+          <Card className="border-gray-200">
             <CardContent className="p-3 text-center">
               <div className="font-['Inter',Helvetica] font-bold text-[#5C4C7D] text-xl">2</div>
               <div className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs mt-1">
@@ -175,7 +175,7 @@ export default function Dashboard() {
             </CardContent>
           </Card>
 
-          <Card className="border-[#0000001a]">
+          <Card className="border-gray-200">
             <CardContent className="p-3 text-center">
               <div className="font-['Inter',Helvetica] font-bold text-[#5C4C7D] text-xl">92%</div>
               <div className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs mt-1">
@@ -197,7 +197,7 @@ export default function Dashboard() {
             <Button
               onClick={() => setLocation("/job-opportunities")}
               variant="link"
-              className="p-0 h-auto font-['Inter',Helvetica] font-medium text-[#5C4C7D] text-sm"
+              className="p-0 h-auto font-['Inter',Helvetica] font-medium text-[#5C4C7D] text-sm hover:text-[#4C3C6D]"
             >
               View Jobs →
             </Button>

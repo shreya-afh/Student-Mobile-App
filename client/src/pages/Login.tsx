@@ -24,15 +24,15 @@ export default function Login() {
   return (
     <div className="min-h-screen bg-[#faf9fb] flex flex-col">
       {/* Header */}
-      <header className="bg-[#5C4C7D] p-4">
+      <header className="bg-white border-b border-gray-200 p-4">
         <div className="flex items-center justify-between">
           <Button
             variant="ghost"
             size="icon"
             onClick={() => setLocation("/")}
-            className="h-8 w-9 p-0 hover:bg-transparent"
+            className="h-8 w-9 p-0 hover:bg-gray-100"
           >
-            <ChevronLeftIcon className="w-6 h-6 text-white" />
+            <ChevronLeftIcon className="w-6 h-6 text-[#495565]" />
           </Button>
           <div className="bg-[#ffffffe6] rounded-[10px] px-3 py-1.5">
             <span className="font-['Inter',Helvetica] font-normal text-[#1d2838] text-xs">

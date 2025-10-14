@@ -63,18 +63,18 @@ export default function JobOpportunities() {
   return (
     <div className="h-screen bg-[#faf9fb] flex flex-col overflow-hidden">
       {/* Header */}
-      <header className="bg-[#5C4C7D] pt-safe pb-4 px-4 flex-shrink-0">
+      <header className="bg-white border-b border-gray-200 pt-safe pb-4 px-4 flex-shrink-0">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <Button
               variant="ghost"
               size="icon"
               onClick={() => setLocation("/dashboard")}
-              className="h-10 w-10 p-0 hover:bg-transparent relative z-10 -ml-2"
+              className="h-10 w-10 p-0 hover:bg-gray-100 relative z-10 -ml-2"
             >
-              <ChevronLeftIcon className="w-6 h-6 text-white" />
+              <ChevronLeftIcon className="w-6 h-6 text-[#495565]" />
             </Button>
-            <h1 className="font-['Inter',Helvetica] font-semibold text-white text-lg">
+            <h1 className="font-['Inter',Helvetica] font-semibold text-[#1d2838] text-lg">
               Job Opportunities
             </h1>
           </div>
@@ -86,13 +86,13 @@ export default function JobOpportunities() {
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-1 bg-white/20 p-1 rounded-lg">
+        <div className="flex gap-1 bg-gray-100 p-1 rounded-lg">
           <button
             onClick={() => setActiveTab("available")}
             className={`flex-1 py-2 px-3 rounded-md font-['Inter',Helvetica] font-medium text-sm transition-colors ${
               activeTab === "available"
-                ? "bg-white text-[#5C4C7D]"
-                : "text-white"
+                ? "bg-white text-[#5C4C7D] shadow-sm"
+                : "text-[#495565]"
             }`}
           >
             Available Jobs (3)
@@ -101,8 +101,8 @@ export default function JobOpportunities() {
             onClick={() => setActiveTab("applied")}
             className={`flex-1 py-2 px-3 rounded-md font-['Inter',Helvetica] font-medium text-sm transition-colors ${
               activeTab === "applied"
-                ? "bg-white text-[#5C4C7D]"
-                : "text-white"
+                ? "bg-white text-[#5C4C7D] shadow-sm"
+                : "text-[#495565]"
             }`}
           >
             Applied (1)
@@ -111,8 +111,8 @@ export default function JobOpportunities() {
             onClick={() => setActiveTab("recent")}
             className={`flex-1 py-2 px-3 rounded-md font-['Inter',Helvetica] font-medium text-sm transition-colors ${
               activeTab === "recent"
-                ? "bg-white text-[#5C4C7D]"
-                : "text-white"
+                ? "bg-white text-[#5C4C7D] shadow-sm"
+                : "text-[#495565]"
             }`}
           >
             Recent Placements (2)
@@ -134,10 +134,10 @@ export default function JobOpportunities() {
           </div>
 
           <div className="flex gap-2">
-            <Button variant="outline" className="flex-1 h-10 border-[#0000001a] text-[#495565]">
+            <Button variant="outline" className="flex-1 h-10 border-gray-200 text-[#495565]">
               All Locations
             </Button>
-            <Button variant="outline" className="flex-1 h-10 border-[#0000001a] text-[#495565]">
+            <Button variant="outline" className="flex-1 h-10 border-gray-200 text-[#495565]">
               All Types
             </Button>
           </div>
@@ -146,7 +146,7 @@ export default function JobOpportunities() {
         {/* Job Listings */}
         <div className="space-y-4">
           {jobs.map((job, index) => (
-            <Card key={index} className="border-[#0000001a]">
+            <Card key={index} className="border-gray-200 hover:shadow-md transition-all">
               <CardContent className="p-4">
                 <div className="flex items-start justify-between mb-2">
                   <div className="flex-1">
@@ -199,7 +199,7 @@ export default function JobOpportunities() {
 
                 <div className="flex flex-wrap gap-2 mb-3">
                   {job.skills.map((skill, i) => (
-                    <Badge key={i} variant="outline" className="border-[#0000001a] text-[#495565]">
+                    <Badge key={i} variant="outline" className="border-gray-200 text-[#495565]">
                       {skill}
                     </Badge>
                   ))}
