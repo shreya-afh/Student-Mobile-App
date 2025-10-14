@@ -63,7 +63,7 @@ export default function JobOpportunities() {
   return (
     <div className="h-screen bg-[#faf9fb] flex flex-col overflow-hidden">
       {/* Header */}
-      <header className="bg-[#6d10b0] pt-safe pb-4 px-4 flex-shrink-0">
+      <header className="bg-[#B4A5D5] pt-safe pb-4 px-4 flex-shrink-0">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <Button
@@ -72,9 +72,9 @@ export default function JobOpportunities() {
               onClick={() => setLocation("/dashboard")}
               className="h-10 w-10 p-0 hover:bg-transparent relative z-10 -ml-2"
             >
-              <ChevronLeftIcon className="w-6 h-6 text-white" />
+              <ChevronLeftIcon className="w-6 h-6 text-[#1d2838]" />
             </Button>
-            <h1 className="font-['Inter',Helvetica] font-semibold text-white text-lg">
+            <h1 className="font-['Inter',Helvetica] font-semibold text-[#1d2838] text-lg">
               Job Opportunities
             </h1>
           </div>
@@ -91,8 +91,8 @@ export default function JobOpportunities() {
             onClick={() => setActiveTab("available")}
             className={`flex-1 py-2 px-3 rounded-md font-['Inter',Helvetica] font-medium text-sm transition-colors ${
               activeTab === "available"
-                ? "bg-white text-[#6d10b0]"
-                : "text-white"
+                ? "bg-white text-[#B4A5D5]"
+                : "text-[#1d2838]"
             }`}
           >
             Available Jobs (3)
@@ -101,8 +101,8 @@ export default function JobOpportunities() {
             onClick={() => setActiveTab("applied")}
             className={`flex-1 py-2 px-3 rounded-md font-['Inter',Helvetica] font-medium text-sm transition-colors ${
               activeTab === "applied"
-                ? "bg-white text-[#6d10b0]"
-                : "text-white"
+                ? "bg-white text-[#B4A5D5]"
+                : "text-[#1d2838]"
             }`}
           >
             Applied (1)
@@ -111,8 +111,8 @@ export default function JobOpportunities() {
             onClick={() => setActiveTab("recent")}
             className={`flex-1 py-2 px-3 rounded-md font-['Inter',Helvetica] font-medium text-sm transition-colors ${
               activeTab === "recent"
-                ? "bg-white text-[#6d10b0]"
-                : "text-white"
+                ? "bg-white text-[#B4A5D5]"
+                : "text-[#1d2838]"
             }`}
           >
             Recent Placements (2)
@@ -159,14 +159,14 @@ export default function JobOpportunities() {
                   </div>
                   <div className="flex flex-col items-end gap-1">
                     <Badge className={`
-                      ${job.type === "Full-time" ? "bg-[#eff1ff] text-[#6d10b0]" : ""}
+                      ${job.type === "Full-time" ? "bg-[#eff1ff] text-[#B4A5D5]" : ""}
                       ${job.type === "Internship" ? "bg-[#fef3c7] text-[#92400e]" : ""}
                       ${job.type === "Part-time" ? "bg-[#f0fdf4] text-[#166534]" : ""}
                       border-transparent
                     `}>
                       {job.type}
                     </Badge>
-                    <Badge className="bg-[#6d10b0] text-white border-transparent hover:bg-[#6d10b0]">
+                    <Badge className="bg-[#B4A5D5] text-[#1d2838] border-transparent hover:bg-[#B4A5D5]">
                       {job.match} match
                     </Badge>
                   </div>
@@ -208,7 +208,7 @@ export default function JobOpportunities() {
                 <Button 
                   onClick={() => handleApply(job.title)}
                   disabled={appliedJobs.includes(job.title)}
-                  className="w-full h-10 bg-[#6d10b0] hover:bg-[#5a0d94] text-white disabled:opacity-50"
+                  className="w-full h-10 bg-[#B4A5D5] hover:bg-[#9B8BC4] text-[#1d2838] disabled:opacity-50"
                 >
                   {appliedJobs.includes(job.title) ? "Applied ✓" : "Apply Now"}
                 </Button>

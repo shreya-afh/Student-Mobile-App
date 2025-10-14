@@ -47,7 +47,7 @@ export default function JobOffers() {
   return (
     <div className="h-screen bg-[#faf9fb] flex flex-col overflow-hidden">
       {/* Header */}
-      <header className="bg-[#6d10b0] pt-safe pb-4 px-4 flex-shrink-0">
+      <header className="bg-[#B4A5D5] pt-safe pb-4 px-4 flex-shrink-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Button
@@ -56,9 +56,9 @@ export default function JobOffers() {
               onClick={() => setLocation("/dashboard")}
               className="h-10 w-10 p-0 hover:bg-transparent relative z-10 -ml-2"
             >
-              <ChevronLeftIcon className="w-6 h-6 text-white" />
+              <ChevronLeftIcon className="w-6 h-6 text-[#1d2838]" />
             </Button>
-            <h1 className="font-['Inter',Helvetica] font-semibold text-white text-lg">
+            <h1 className="font-['Inter',Helvetica] font-semibold text-[#1d2838] text-lg">
               Job Offers
             </h1>
           </div>
@@ -72,7 +72,7 @@ export default function JobOffers() {
 
       <div className="flex-1 overflow-y-auto p-4">
         {/* Upload Section */}
-        <Card className="bg-[#eff1ff] border-[#6d10b0] mb-6">
+        <Card className="bg-[#eff1ff] border-[#B4A5D5] mb-6">
           <CardContent className="p-4">
             <h2 className="font-['Inter',Helvetica] font-semibold text-[#1d2838] text-base mb-2">
               Got a Job Offer?
@@ -82,7 +82,7 @@ export default function JobOffers() {
             </p>
             <Button 
               onClick={handleUpload}
-              className="w-full h-10 bg-[#6d10b0] hover:bg-[#5a0d94] text-white"
+              className="w-full h-10 bg-[#B4A5D5] hover:bg-[#9B8BC4] text-[#1d2838]"
             >
               <UploadIcon className="w-4 h-4 mr-2" />
               Upload Offer Letter
@@ -152,7 +152,7 @@ export default function JobOffers() {
               <Button 
                 onClick={() => handleViewLetter("Infosys")}
                 variant="link" 
-                className="p-0 h-auto text-[#6d10b0]"
+                className="p-0 h-auto text-[#B4A5D5]"
               >
                 View Letter
               </Button>
@@ -213,14 +213,14 @@ export default function JobOffers() {
                 <Button 
                   onClick={() => handleViewLetter("Wipro")}
                   variant="link" 
-                  className="p-0 h-auto text-[#6d10b0]"
+                  className="p-0 h-auto text-[#B4A5D5]"
                 >
                   View Letter
                 </Button>
                 <Button 
                   onClick={() => handleAccept("Wipro")}
                   disabled={acceptedOffers.includes("Wipro")}
-                  className="h-8 px-4 bg-[#6d10b0] hover:bg-[#5a0d94] text-white text-sm disabled:opacity-50"
+                  className="h-8 px-4 bg-[#B4A5D5] hover:bg-[#9B8BC4] text-[#1d2838] text-sm disabled:opacity-50"
                 >
                   {acceptedOffers.includes("Wipro") ? "Accepted" : "Accept"}
                 </Button>

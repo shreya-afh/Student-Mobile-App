@@ -15,7 +15,7 @@ export default function AttendanceStep1() {
   return (
     <div className="h-screen bg-[#faf9fb] flex flex-col overflow-hidden">
       {/* Header */}
-      <header className="bg-[#6d10b0] pt-safe pb-4 px-4 flex-shrink-0">
+      <header className="bg-[#B4A5D5] pt-safe pb-4 px-4 flex-shrink-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Button
@@ -24,14 +24,14 @@ export default function AttendanceStep1() {
               onClick={() => setLocation("/dashboard")}
               className="h-10 w-10 p-0 hover:bg-transparent relative z-10 -ml-2"
             >
-              <ChevronLeftIcon className="w-6 h-6 text-white" />
+              <ChevronLeftIcon className="w-6 h-6 text-[#1d2838]" />
             </Button>
-            <h1 className="font-['Inter',Helvetica] font-semibold text-white text-lg">
+            <h1 className="font-['Inter',Helvetica] font-semibold text-[#1d2838] text-lg">
               Attendance and Feedback
             </h1>
           </div>
           <div className="flex items-center gap-2">
-            <span className="font-['Inter',Helvetica] font-normal text-white text-xs">
+            <span className="font-['Inter',Helvetica] font-normal text-[#1d2838] text-xs">
               Step 1 of 3
             </span>
             <div className="bg-[#ffffffe6] rounded-[10px] px-3 py-1.5">
@@ -45,7 +45,7 @@ export default function AttendanceStep1() {
 
       <div className="flex-1 overflow-y-auto p-4 flex flex-col justify-center">
         <div className="max-w-md mx-auto w-full">
-          <Card className="border-[#6d10b0] bg-[#eff1ff] mb-6">
+          <Card className="border-[#B4A5D5] bg-[#eff1ff] mb-6">
             <CardContent className="p-4">
               <h2 className="font-['Inter',Helvetica] font-bold text-[#1d2838] text-lg mb-2">
                 Feedback Required
@@ -61,13 +61,13 @@ export default function AttendanceStep1() {
           </h2>
 
           <div className="flex flex-col items-center">
-            <div className="w-48 h-48 border-4 border-[#6d10b0] border-dashed rounded-lg flex items-center justify-center mb-6">
-              <QrCodeIcon className="w-24 h-24 text-[#6d10b0]" />
+            <div className="w-48 h-48 border-4 border-[#B4A5D5] border-dashed rounded-lg flex items-center justify-center mb-6">
+              <QrCodeIcon className="w-24 h-24 text-[#B4A5D5]" />
             </div>
 
             <Button
               onClick={handleScanQR}
-              className="w-full max-w-xs h-12 bg-[#6d10b0] hover:bg-[#5a0d94] text-white rounded-lg font-['Inter',Helvetica] font-medium text-base"
+              className="w-full max-w-xs h-12 bg-[#B4A5D5] hover:bg-[#9B8BC4] text-[#1d2838] rounded-lg font-['Inter',Helvetica] font-medium text-base"
             >
               Scan QR Code
             </Button>
