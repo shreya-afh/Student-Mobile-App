@@ -6,6 +6,8 @@ import { useLocation } from "wouter";
 import { ChevronLeftIcon } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
+import infosysLogo from "@assets/infosys-foundation-logo-blue_1760417156143.png";
+import aspireForHerLogo from "@assets/image_1760420610980.png";
 
 export default function Login() {
   const [, setLocation] = useLocation();
@@ -24,21 +26,34 @@ export default function Login() {
   return (
     <div className="min-h-screen bg-[#faf9fb] flex flex-col">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 p-4">
-        <div className="text-center mb-3">
-          <p className="font-['Inter',Helvetica] font-medium text-[#697282] text-xs tracking-wide">
-            INFOSYS × ASPIREFORHER
-          </p>
+      <header className="bg-white border-b border-gray-200">
+        {/* Logo Bar */}
+        <div className="bg-[#f8f9fa] border-b border-gray-200 py-2 px-4">
+          <div className="flex items-center justify-center gap-3">
+            <img 
+              src={infosysLogo} 
+              alt="Infosys Foundation" 
+              className="h-6 object-contain"
+            />
+            <span className="text-gray-400 text-sm">×</span>
+            <img 
+              src={aspireForHerLogo} 
+              alt="AspireForHer" 
+              className="h-6 object-contain"
+            />
+          </div>
         </div>
-        <div className="flex items-center justify-between">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setLocation("/")}
-            className="h-8 w-9 p-0 hover:bg-gray-100"
-          >
-            <ChevronLeftIcon className="w-6 h-6 text-[#495565]" />
-          </Button>
+        <div className="p-4">
+          <div className="flex items-center justify-between">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setLocation("/")}
+              className="h-8 w-9 p-0 hover:bg-gray-100"
+            >
+              <ChevronLeftIcon className="w-6 h-6 text-[#495565]" />
+            </Button>
+          </div>
         </div>
       </header>
 

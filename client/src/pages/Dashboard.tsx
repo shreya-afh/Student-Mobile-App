@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { useLocation } from "wouter";
 import { QrCodeIcon, BriefcaseIcon, AwardIcon, UserIcon, BookOpenIcon, TrendingUpIcon, LogOutIcon } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import infosysLogo from "@assets/infosys-foundation-logo-blue_1760417156143.png";
+import aspireForHerLogo from "@assets/image_1760420610980.png";
 
 export default function Dashboard() {
   const [, setLocation] = useLocation();
@@ -55,72 +57,87 @@ export default function Dashboard() {
   return (
     <div className="h-screen bg-white flex flex-col overflow-hidden">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 p-4 flex-shrink-0">
-        <div className="text-center mb-3">
-          <p className="font-['Inter',Helvetica] font-medium text-[#697282] text-xs tracking-wide">
-            INFOSYS × ASPIREFORHER
-          </p>
+      <header className="bg-white border-b border-gray-200 flex-shrink-0">
+        {/* Logo Bar */}
+        <div className="bg-[#f8f9fa] border-b border-gray-200 py-2 px-4">
+          <div className="flex items-center justify-center gap-3">
+            <img 
+              src={infosysLogo} 
+              alt="Infosys Foundation" 
+              className="h-6 object-contain"
+            />
+            <span className="text-gray-400 text-sm">×</span>
+            <img 
+              src={aspireForHerLogo} 
+              alt="AspireForHer" 
+              className="h-6 object-contain"
+            />
+          </div>
         </div>
-        <div className="flex items-center justify-between mb-4">
-          <h1 className="font-['Inter',Helvetica] font-bold text-[#1d2838] text-xl">
-            Welcome back!
-          </h1>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={handleLogout}
-            className="h-8 w-8 p-0 hover:bg-gray-100"
-          >
-            <LogOutIcon className="w-5 h-5 text-[#495565]" />
-          </Button>
+        
+        {/* Main Header Content */}
+        <div className="p-4">
+          <div className="flex items-center justify-between mb-4">
+            <h1 className="font-['Inter',Helvetica] font-bold text-[#1d2838] text-xl">
+              Welcome back!
+            </h1>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleLogout}
+              className="h-8 w-8 p-0 hover:bg-gray-100"
+            >
+              <LogOutIcon className="w-5 h-5 text-[#495565]" />
+            </Button>
+          </div>
+
+          {/* Current Course Card */}
+          <Card className="border-gray-200 shadow-sm">
+            <CardContent className="p-4">
+              <div className="flex items-start justify-between mb-2">
+                <div>
+                  <p className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs mb-1">
+                    Current Course
+                  </p>
+                  <h2 className="font-['Inter',Helvetica] font-semibold text-[#1d2838] text-base">
+                    Digital Marketing Fundamentals
+                  </h2>
+                  <p className="font-['Inter',Helvetica] font-normal text-[#495565] text-sm">
+                    Trainer: Priya Sharma
+                  </p>
+                </div>
+                <div className="bg-[#eff1ff] rounded-lg px-3 py-1">
+                  <span className="font-['Inter',Helvetica] font-semibold text-[#5C4C7D] text-sm">
+                    DM2024B3
+                  </span>
+                </div>
+              </div>
+
+              <div className="mt-4">
+                <div className="flex justify-between items-center mb-1">
+                  <span className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs">
+                    Progress
+                  </span>
+                  <span className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm">
+                    39/60 hours
+                  </span>
+                </div>
+                <div className="w-full bg-[#e5e7eb] rounded-full h-2">
+                  <div className="bg-[#5C4C7D] h-2 rounded-full" style={{ width: "65%" }}></div>
+                </div>
+                <p className="font-['Inter',Helvetica] font-normal text-[#495565] text-xs mt-1">
+                  65% completed
+                </p>
+              </div>
+
+              <div className="mt-3 pt-3 border-t border-[#0000001a]">
+                <p className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm">
+                  Next session: Tomorrow, 10:00 AM
+                </p>
+              </div>
+            </CardContent>
+          </Card>
         </div>
-
-        {/* Current Course Card */}
-        <Card className="border-gray-200 shadow-sm">
-          <CardContent className="p-4">
-            <div className="flex items-start justify-between mb-2">
-              <div>
-                <p className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs mb-1">
-                  Current Course
-                </p>
-                <h2 className="font-['Inter',Helvetica] font-semibold text-[#1d2838] text-base">
-                  Digital Marketing Fundamentals
-                </h2>
-                <p className="font-['Inter',Helvetica] font-normal text-[#495565] text-sm">
-                  Trainer: Priya Sharma
-                </p>
-              </div>
-              <div className="bg-[#eff1ff] rounded-lg px-3 py-1">
-                <span className="font-['Inter',Helvetica] font-semibold text-[#5C4C7D] text-sm">
-                  DM2024B3
-                </span>
-              </div>
-            </div>
-
-            <div className="mt-4">
-              <div className="flex justify-between items-center mb-1">
-                <span className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs">
-                  Progress
-                </span>
-                <span className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm">
-                  39/60 hours
-                </span>
-              </div>
-              <div className="w-full bg-[#e5e7eb] rounded-full h-2">
-                <div className="bg-[#5C4C7D] h-2 rounded-full" style={{ width: "65%" }}></div>
-              </div>
-              <p className="font-['Inter',Helvetica] font-normal text-[#495565] text-xs mt-1">
-                65% completed
-              </p>
-            </div>
-
-            <div className="mt-3 pt-3 border-t border-[#0000001a]">
-              <p className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm">
-                Next session: Tomorrow, 10:00 AM
-              </p>
-            </div>
-          </CardContent>
-        </Card>
       </header>
 
       <div className="flex-1 overflow-y-auto p-4 pb-20 bg-[#faf9fb]">
