@@ -107,7 +107,7 @@ export default function RegisterStep3() {
   return (
     <div className="h-screen bg-[#faf9fb] flex flex-col overflow-hidden">
       {/* Header */}
-      <header className="bg-[#B4A5D5] pt-safe pb-4 px-4 flex-shrink-0">
+      <header className="bg-[#5C4C7D] pt-safe pb-4 px-4 flex-shrink-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Button
@@ -116,14 +116,14 @@ export default function RegisterStep3() {
               onClick={() => setLocation("/register/step2")}
               className="h-10 w-10 p-0 hover:bg-transparent relative z-10 -ml-2"
             >
-              <ChevronLeftIcon className="w-6 h-6 text-[#1d2838]" />
+              <ChevronLeftIcon className="w-6 h-6 text-white" />
             </Button>
-            <span className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm">
+            <span className="font-['Inter',Helvetica] font-medium text-white text-sm">
               Back
             </span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="font-['Inter',Helvetica] font-normal text-[#1d2838] text-xs">
+            <span className="font-['Inter',Helvetica] font-normal text-white text-xs">
               Step 3 of 4
             </span>
             <div className="bg-[#ffffffe6] rounded-[10px] px-3 py-1.5">
@@ -245,7 +245,7 @@ export default function RegisterStep3() {
 
             <Button
               type="submit"
-              className="w-full h-12 bg-[#B4A5D5] hover:bg-[#9B8BC4] text-[#1d2838] rounded-lg font-['Inter',Helvetica] font-medium text-base mt-6"
+              className="w-full h-12 bg-[#5C4C7D] hover:bg-[#4C3C6D] text-white rounded-lg font-['Inter',Helvetica] font-medium text-base mt-6"
             >
               Continue
             </Button>

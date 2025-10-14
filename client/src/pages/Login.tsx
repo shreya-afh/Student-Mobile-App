@@ -24,7 +24,7 @@ export default function Login() {
   return (
     <div className="min-h-screen bg-[#faf9fb] flex flex-col">
       {/* Header */}
-      <header className="bg-[#B4A5D5] p-4">
+      <header className="bg-[#5C4C7D] p-4">
         <div className="flex items-center justify-between">
           <Button
             variant="ghost"
@@ -32,7 +32,7 @@ export default function Login() {
             onClick={() => setLocation("/")}
             className="h-8 w-9 p-0 hover:bg-transparent"
           >
-            <ChevronLeftIcon className="w-6 h-6 text-[#1d2838]" />
+            <ChevronLeftIcon className="w-6 h-6 text-white" />
           </Button>
           <div className="bg-[#ffffffe6] rounded-[10px] px-3 py-1.5">
             <span className="font-['Inter',Helvetica] font-normal text-[#1d2838] text-xs">
@@ -81,7 +81,7 @@ export default function Login() {
 
             <Button
               type="submit"
-              className="w-full h-12 bg-[#B4A5D5] hover:bg-[#9B8BC4] text-[#1d2838] rounded-lg font-['Inter',Helvetica] font-medium text-base mt-6"
+              className="w-full h-12 bg-[#5C4C7D] hover:bg-[#4C3C6D] text-white rounded-lg font-['Inter',Helvetica] font-medium text-base mt-6"
             >
               Login
             </Button>
@@ -90,7 +90,7 @@ export default function Login() {
           <div className="mt-4 text-center">
             <button
               onClick={() => setLocation("/register/step1")}
-              className="font-['Inter',Helvetica] font-normal text-[#B4A5D5] text-sm hover:underline"
+              className="font-['Inter',Helvetica] font-normal text-[#5C4C7D] text-sm hover:underline"
             >
               Don't have an account? Register
             </button>

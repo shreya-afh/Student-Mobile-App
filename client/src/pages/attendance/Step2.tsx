@@ -19,7 +19,7 @@ export default function AttendanceStep2() {
   return (
     <div className="h-screen bg-[#faf9fb] flex flex-col overflow-hidden">
       {/* Header */}
-      <header className="bg-[#B4A5D5] pt-safe pb-4 px-4 flex-shrink-0">
+      <header className="bg-[#5C4C7D] pt-safe pb-4 px-4 flex-shrink-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Button
@@ -28,14 +28,14 @@ export default function AttendanceStep2() {
               onClick={() => setLocation("/attendance")}
               className="h-10 w-10 p-0 hover:bg-transparent relative z-10 -ml-2"
             >
-              <ChevronLeftIcon className="w-6 h-6 text-[#1d2838]" />
+              <ChevronLeftIcon className="w-6 h-6 text-white" />
             </Button>
-            <h1 className="font-['Inter',Helvetica] font-semibold text-[#1d2838] text-lg">
+            <h1 className="font-['Inter',Helvetica] font-semibold text-white text-lg">
               Session Mode
             </h1>
           </div>
           <div className="flex items-center gap-2">
-            <span className="font-['Inter',Helvetica] font-normal text-[#1d2838] text-xs">
+            <span className="font-['Inter',Helvetica] font-normal text-white text-xs">
               Step 2 of 3
             </span>
             <div className="bg-[#ffffffe6] rounded-[10px] px-3 py-1.5">
@@ -50,8 +50,8 @@ export default function AttendanceStep2() {
       <div className="flex-1 overflow-y-auto p-4 flex flex-col justify-center">
         <div className="max-w-md mx-auto w-full">
           <div className="text-center mb-6">
-            <div className="w-16 h-16 bg-[#B4A5D5] rounded-full flex items-center justify-center mx-auto mb-3">
-              <span className="text-[#1d2838] text-2xl">✓</span>
+            <div className="w-16 h-16 bg-[#5C4C7D] rounded-full flex items-center justify-center mx-auto mb-3">
+              <span className="text-white text-2xl">✓</span>
             </div>
             <h2 className="font-['Inter',Helvetica] font-bold text-[#1d2838] text-xl mb-2">
               QR Code Scanned
@@ -70,16 +70,16 @@ export default function AttendanceStep2() {
               onClick={() => setSessionMode("offline")}
               className={`cursor-pointer transition-all ${
                 sessionMode === "offline"
-                  ? "border-[#B4A5D5] bg-[#eff1ff]"
+                  ? "border-[#5C4C7D] bg-[#eff1ff]"
                   : "border-[#0000001a]"
               }`}
             >
               <CardContent className="p-4 flex items-center gap-4">
                 <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${
-                  sessionMode === "offline" ? "bg-[#B4A5D5]" : "bg-[#f3f4f6]"
+                  sessionMode === "offline" ? "bg-[#5C4C7D]" : "bg-[#f3f4f6]"
                 }`}>
                   <UsersIcon className={`w-6 h-6 ${
-                    sessionMode === "offline" ? "text-[#1d2838]" : "text-[#697282]"
+                    sessionMode === "offline" ? "text-white" : "text-[#697282]"
                   }`} />
                 </div>
                 <div>
@@ -97,16 +97,16 @@ export default function AttendanceStep2() {
               onClick={() => setSessionMode("online")}
               className={`cursor-pointer transition-all ${
                 sessionMode === "online"
-                  ? "border-[#B4A5D5] bg-[#eff1ff]"
+                  ? "border-[#5C4C7D] bg-[#eff1ff]"
                   : "border-[#0000001a]"
               }`}
             >
               <CardContent className="p-4 flex items-center gap-4">
                 <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${
-                  sessionMode === "online" ? "bg-[#B4A5D5]" : "bg-[#f3f4f6]"
+                  sessionMode === "online" ? "bg-[#5C4C7D]" : "bg-[#f3f4f6]"
                 }`}>
                   <MonitorIcon className={`w-6 h-6 ${
-                    sessionMode === "online" ? "text-[#1d2838]" : "text-[#697282]"
+                    sessionMode === "online" ? "text-white" : "text-[#697282]"
                   }`} />
                 </div>
                 <div>
@@ -124,7 +124,7 @@ export default function AttendanceStep2() {
           <Button
             onClick={handleContinue}
             disabled={!sessionMode}
-            className="w-full h-12 bg-[#B4A5D5] hover:bg-[#9B8BC4] text-[#1d2838] rounded-lg font-['Inter',Helvetica] font-medium text-base disabled:opacity-50"
+            className="w-full h-12 bg-[#5C4C7D] hover:bg-[#4C3C6D] text-white rounded-lg font-['Inter',Helvetica] font-medium text-base disabled:opacity-50"
           >
             Continue
           </Button>

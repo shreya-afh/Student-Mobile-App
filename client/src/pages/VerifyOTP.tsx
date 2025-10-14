@@ -182,7 +182,7 @@ export default function VerifyOTP() {
   return (
     <div className="h-screen bg-[#faf9fb] flex flex-col overflow-hidden">
       {/* Header */}
-      <header className="flex-shrink-0 bg-[#B4A5D5] p-4 pt-safe">
+      <header className="flex-shrink-0 bg-[#5C4C7D] p-4 pt-safe">
         <div className="flex items-center gap-2">
           <Button
             variant="ghost"
@@ -191,9 +191,9 @@ export default function VerifyOTP() {
             className="h-10 w-10 p-0 hover:bg-transparent"
             data-testid="button-back"
           >
-            <ChevronLeftIcon className="w-6 h-6 text-[#1d2838]" />
+            <ChevronLeftIcon className="w-6 h-6 text-white" />
           </Button>
-          <span className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm">
+          <span className="font-['Inter',Helvetica] font-medium text-white text-sm">
             Back
           </span>
         </div>
@@ -207,7 +207,7 @@ export default function VerifyOTP() {
           <p className="font-['Inter',Helvetica] font-normal text-[#495565] text-sm mb-2">
             We've sent a 5-digit code to
           </p>
-          <p className="font-['Inter',Helvetica] font-semibold text-[#B4A5D5] text-base mb-8" data-testid="text-phone">
+          <p className="font-['Inter',Helvetica] font-semibold text-[#5C4C7D] text-base mb-8" data-testid="text-phone">
             {mobileNumber}
           </p>
 
@@ -230,7 +230,7 @@ export default function VerifyOTP() {
           <Button
             onClick={handleVerify}
             disabled={otp.some((d) => !d) || verifyOtpMutation.isPending}
-            className="w-full h-12 bg-[#B4A5D5] hover:bg-[#9B8BC4] text-[#1d2838] rounded-lg font-['Inter',Helvetica] font-medium text-base mb-4"
+            className="w-full h-12 bg-[#5C4C7D] hover:bg-[#4C3C6D] text-white rounded-lg font-['Inter',Helvetica] font-medium text-base mb-4"
             data-testid="button-verify"
           >
             {verifyOtpMutation.isPending ? "Verifying..." : "Verify OTP"}
@@ -243,7 +243,7 @@ export default function VerifyOTP() {
               <button
                 onClick={handleResend}
                 disabled={sendOtpMutation.isPending}
-                className="text-[#B4A5D5] hover:underline disabled:opacity-50"
+                className="text-[#5C4C7D] hover:underline disabled:opacity-50"
                 data-testid="button-resend"
               >
                 {sendOtpMutation.isPending ? "Sending..." : "Resend code"}

@@ -26,7 +26,7 @@ export default function CourseEnrollment() {
   return (
     <div className="h-screen bg-[#faf9fb] flex flex-col overflow-hidden">
       {/* Header */}
-      <header className="bg-[#B4A5D5] pt-safe pb-4 px-4 flex-shrink-0">
+      <header className="bg-[#5C4C7D] pt-safe pb-4 px-4 flex-shrink-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Button
@@ -35,9 +35,9 @@ export default function CourseEnrollment() {
               onClick={() => setLocation("/dashboard")}
               className="h-10 w-10 p-0 hover:bg-transparent relative z-10 -ml-2"
             >
-              <ChevronLeftIcon className="w-6 h-6 text-[#1d2838]" />
+              <ChevronLeftIcon className="w-6 h-6 text-white" />
             </Button>
-            <h1 className="font-['Inter',Helvetica] font-semibold text-[#1d2838] text-lg">
+            <h1 className="font-['Inter',Helvetica] font-semibold text-white text-lg">
               Course Enrollment
             </h1>
           </div>
@@ -70,14 +70,14 @@ export default function CourseEnrollment() {
             />
             <Button
               onClick={handleSearch}
-              className="w-full h-12 bg-[#B4A5D5] hover:bg-[#9B8BC4] text-[#1d2838] rounded-lg font-['Inter',Helvetica] font-medium text-base"
+              className="w-full h-12 bg-[#5C4C7D] hover:bg-[#4C3C6D] text-white rounded-lg font-['Inter',Helvetica] font-medium text-base"
             >
               Search Course
             </Button>
           </div>
 
           {showCourse && (
-            <Card className="border-[#B4A5D5] mb-6">
+            <Card className="border-[#5C4C7D] mb-6">
               <CardContent className="p-4">
                 <div className="flex items-start justify-between mb-3">
                   <div>
@@ -88,7 +88,7 @@ export default function CourseEnrollment() {
                       Code: DM2024B4
                     </p>
                   </div>
-                  <Badge className="bg-[#eff1ff] text-[#B4A5D5] border-transparent hover:bg-[#eff1ff]">
+                  <Badge className="bg-[#eff1ff] text-[#5C4C7D] border-transparent hover:bg-[#eff1ff]">
                     Digital Marketing
                   </Badge>
                 </div>
@@ -150,7 +150,7 @@ export default function CourseEnrollment() {
                       "Analytics & Reporting",
                     ].map((module, i) => (
                       <li key={i} className="font-['Inter',Helvetica] font-normal text-[#495565] text-sm flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#B4A5D5]"></span>
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#5C4C7D]"></span>
                         {module}
                       </li>
                     ))}
@@ -159,7 +159,7 @@ export default function CourseEnrollment() {
 
                 <Button
                   onClick={handleEnroll}
-                  className="w-full h-12 bg-[#B4A5D5] hover:bg-[#9B8BC4] text-[#1d2838] rounded-lg font-['Inter',Helvetica] font-medium text-base mt-4"
+                  className="w-full h-12 bg-[#5C4C7D] hover:bg-[#4C3C6D] text-white rounded-lg font-['Inter',Helvetica] font-medium text-base mt-4"
                 >
                   Enroll Now
                 </Button>
@@ -180,7 +180,7 @@ export default function CourseEnrollment() {
                   "Visit local AFH center",
                 ].map((item, i) => (
                   <li key={i} className="font-['Inter',Helvetica] font-normal text-[#495565] text-sm flex items-center gap-2">
-                    <span className="text-[#B4A5D5]">•</span>
+                    <span className="text-[#5C4C7D]">•</span>
                     {item}
                   </li>
                 ))}

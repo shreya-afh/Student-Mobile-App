@@ -55,9 +55,9 @@ export default function Dashboard() {
   return (
     <div className="h-screen bg-[#faf9fb] flex flex-col overflow-hidden">
       {/* Header */}
-      <header className="bg-[#B4A5D5] p-4 flex-shrink-0">
+      <header className="bg-[#5C4C7D] p-4 flex-shrink-0">
         <div className="flex items-center justify-between mb-4">
-          <h1 className="font-['Inter',Helvetica] font-bold text-[#1d2838] text-xl">
+          <h1 className="font-['Inter',Helvetica] font-bold text-white text-xl">
             Welcome back!
           </h1>
           <div className="flex items-center gap-2">
@@ -67,7 +67,7 @@ export default function Dashboard() {
               onClick={handleLogout}
               className="h-8 w-8 p-0 hover:bg-white/20"
             >
-              <LogOutIcon className="w-5 h-5 text-[#1d2838]" />
+              <LogOutIcon className="w-5 h-5 text-white" />
             </Button>
             <div className="bg-[#ffffffe6] rounded-[10px] px-3 py-1.5">
               <span className="font-['Inter',Helvetica] font-normal text-[#1d2838] text-xs">
@@ -93,7 +93,7 @@ export default function Dashboard() {
                 </p>
               </div>
               <div className="bg-[#eff1ff] rounded-lg px-3 py-1">
-                <span className="font-['Inter',Helvetica] font-semibold text-[#B4A5D5] text-sm">
+                <span className="font-['Inter',Helvetica] font-semibold text-[#5C4C7D] text-sm">
                   DM2024B3
                 </span>
               </div>
@@ -109,7 +109,7 @@ export default function Dashboard() {
                 </span>
               </div>
               <div className="w-full bg-[#e5e7eb] rounded-full h-2">
-                <div className="bg-[#B4A5D5] h-2 rounded-full" style={{ width: "65%" }}></div>
+                <div className="bg-[#5C4C7D] h-2 rounded-full" style={{ width: "65%" }}></div>
               </div>
               <p className="font-['Inter',Helvetica] font-normal text-[#495565] text-xs mt-1">
                 65% completed
@@ -136,10 +136,10 @@ export default function Dashboard() {
             <Card
               key={index}
               onClick={action.onClick}
-              className="border-[#0000001a] cursor-pointer hover:border-[#B4A5D5] transition-colors"
+              className="border-[#0000001a] cursor-pointer hover:border-[#5C4C7D] transition-colors"
             >
               <CardContent className="p-4">
-                <action.icon className="w-6 h-6 text-[#B4A5D5] mb-2" />
+                <action.icon className="w-6 h-6 text-[#5C4C7D] mb-2" />
                 <h3 className="font-['Inter',Helvetica] font-semibold text-[#1d2838] text-sm mb-1">
                   {action.label}
                 </h3>
@@ -159,7 +159,7 @@ export default function Dashboard() {
         <div className="grid grid-cols-3 gap-3 mb-6">
           <Card className="border-[#0000001a]">
             <CardContent className="p-3 text-center">
-              <div className="font-['Inter',Helvetica] font-bold text-[#B4A5D5] text-xl">39</div>
+              <div className="font-['Inter',Helvetica] font-bold text-[#5C4C7D] text-xl">39</div>
               <div className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs mt-1">
                 Hours Completed
               </div>
@@ -168,7 +168,7 @@ export default function Dashboard() {
 
           <Card className="border-[#0000001a]">
             <CardContent className="p-3 text-center">
-              <div className="font-['Inter',Helvetica] font-bold text-[#B4A5D5] text-xl">2</div>
+              <div className="font-['Inter',Helvetica] font-bold text-[#5C4C7D] text-xl">2</div>
               <div className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs mt-1">
                 Certificates
               </div>
@@ -177,7 +177,7 @@ export default function Dashboard() {
 
           <Card className="border-[#0000001a]">
             <CardContent className="p-3 text-center">
-              <div className="font-['Inter',Helvetica] font-bold text-[#B4A5D5] text-xl">92%</div>
+              <div className="font-['Inter',Helvetica] font-bold text-[#5C4C7D] text-xl">92%</div>
               <div className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs mt-1">
                 Attendance
               </div>
@@ -186,7 +186,7 @@ export default function Dashboard() {
         </div>
 
         {/* Job Alert */}
-        <Card className="border-[#B4A5D5] bg-[#eff1ff]">
+        <Card className="border-[#5C4C7D] bg-[#eff1ff]">
           <CardContent className="p-4">
             <h3 className="font-['Inter',Helvetica] font-semibold text-[#1d2838] text-base mb-1">
               New Job Opportunities!
@@ -197,7 +197,7 @@ export default function Dashboard() {
             <Button
               onClick={() => setLocation("/job-opportunities")}
               variant="link"
-              className="p-0 h-auto font-['Inter',Helvetica] font-medium text-[#B4A5D5] text-sm"
+              className="p-0 h-auto font-['Inter',Helvetica] font-medium text-[#5C4C7D] text-sm"
             >
               View Jobs →
             </Button>

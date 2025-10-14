@@ -40,7 +40,7 @@ export default function Landing() {
           <div className="flex flex-col gap-4 max-w-sm mx-auto mb-12">
             <Button
               onClick={() => setLocation("/register/step1")}
-              className="h-12 bg-[#B4A5D5] hover:bg-[#9B8BC4] text-[#1d2838] rounded-lg font-semibold transition-all"
+              className="h-12 bg-[#5C4C7D] hover:bg-[#4C3C6D] text-white rounded-lg font-semibold transition-all"
               data-testid="button-start-journey"
             >
               Start Your Journey
@@ -49,7 +49,7 @@ export default function Landing() {
             <Button
               onClick={() => setLocation("/login")}
               variant="outline"
-              className="h-12 border-2 border-[#B4A5D5] text-[#B4A5D5] hover:bg-[#B4A5D5]/10 rounded-lg font-semibold transition-all"
+              className="h-12 border-2 border-[#5C4C7D] text-[#5C4C7D] hover:bg-[#5C4C7D]/10 rounded-lg font-semibold transition-all"
               data-testid="button-login"
             >
               Login
@@ -59,15 +59,15 @@ export default function Landing() {
           {/* Compact Stats */}
           <div className="grid grid-cols-3 gap-4 text-center">
             <div>
-              <div className="text-2xl font-bold text-[#B4A5D5]" data-testid="stat-placement-rate">95%</div>
+              <div className="text-2xl font-bold text-[#5C4C7D]" data-testid="stat-placement-rate">95%</div>
               <div className="text-xs text-[#495565] mt-1">Placement</div>
             </div>
             <div>
-              <div className="text-2xl font-bold text-[#B4A5D5]" data-testid="stat-students-trained">10K+</div>
+              <div className="text-2xl font-bold text-[#5C4C7D]" data-testid="stat-students-trained">10K+</div>
               <div className="text-xs text-[#495565] mt-1">Students</div>
             </div>
             <div>
-              <div className="text-2xl font-bold text-[#B4A5D5]" data-testid="stat-partner-companies">500+</div>
+              <div className="text-2xl font-bold text-[#5C4C7D]" data-testid="stat-partner-companies">500+</div>
               <div className="text-xs text-[#495565] mt-1">Companies</div>
             </div>
           </div>

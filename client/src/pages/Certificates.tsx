@@ -90,7 +90,7 @@ This is a digitally generated certificate.
   return (
     <div className="h-screen bg-[#faf9fb] flex flex-col overflow-hidden">
       {/* Header */}
-      <header className="bg-[#B4A5D5] pt-safe pb-4 px-4 flex-shrink-0">
+      <header className="bg-[#5C4C7D] pt-safe pb-4 px-4 flex-shrink-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Button
@@ -99,9 +99,9 @@ This is a digitally generated certificate.
               onClick={() => setLocation("/dashboard")}
               className="h-10 w-10 p-0 hover:bg-transparent relative z-10 -ml-2"
             >
-              <ChevronLeftIcon className="w-6 h-6 text-[#1d2838]" />
+              <ChevronLeftIcon className="w-6 h-6 text-white" />
             </Button>
-            <h1 className="font-['Inter',Helvetica] font-semibold text-[#1d2838] text-lg">
+            <h1 className="font-['Inter',Helvetica] font-semibold text-white text-lg">
               My Certificates
             </h1>
           </div>
@@ -118,7 +118,7 @@ This is a digitally generated certificate.
         <div className="grid grid-cols-3 gap-3 mb-6">
           <Card className="border-[#0000001a]">
             <CardContent className="p-3 text-center">
-              <div className="font-['Inter',Helvetica] font-bold text-[#B4A5D5] text-2xl">1</div>
+              <div className="font-['Inter',Helvetica] font-bold text-[#5C4C7D] text-2xl">1</div>
               <div className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs mt-1">
                 Earned
               </div>
@@ -127,7 +127,7 @@ This is a digitally generated certificate.
 
           <Card className="border-[#0000001a]">
             <CardContent className="p-3 text-center">
-              <div className="font-['Inter',Helvetica] font-bold text-[#B4A5D5] text-2xl">1</div>
+              <div className="font-['Inter',Helvetica] font-bold text-[#5C4C7D] text-2xl">1</div>
               <div className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs mt-1">
                 In Progress
               </div>
@@ -136,7 +136,7 @@ This is a digitally generated certificate.
 
           <Card className="border-[#0000001a]">
             <CardContent className="p-3 text-center">
-              <div className="font-['Inter',Helvetica] font-bold text-[#B4A5D5] text-2xl">1</div>
+              <div className="font-['Inter',Helvetica] font-bold text-[#5C4C7D] text-2xl">1</div>
               <div className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs mt-1">
                 Pending
               </div>
@@ -177,7 +177,7 @@ This is a digitally generated certificate.
             <div className="flex gap-2">
               <Button 
                 onClick={() => handleDownload("Basic Computer Skills")}
-                className="flex-1 h-10 bg-[#B4A5D5] hover:bg-[#9B8BC4] text-[#1d2838]"
+                className="flex-1 h-10 bg-[#5C4C7D] hover:bg-[#4C3C6D] text-white"
               >
                 <DownloadIcon className="w-4 h-4 mr-2" />
                 Download
@@ -185,7 +185,7 @@ This is a digitally generated certificate.
               <Button 
                 onClick={() => handleShare("Basic Computer Skills")}
                 variant="outline" 
-                className="flex-1 h-10 border-[#B4A5D5] text-[#B4A5D5]"
+                className="flex-1 h-10 border-[#5C4C7D] text-[#5C4C7D]"
               >
                 <Share2Icon className="w-4 h-4 mr-2" />
                 Share
@@ -229,7 +229,7 @@ This is a digitally generated certificate.
                 </span>
               </div>
               <div className="w-full bg-[#e5e7eb] rounded-full h-2">
-                <div className="bg-[#B4A5D5] h-2 rounded-full" style={{ width: "65%" }}></div>
+                <div className="bg-[#5C4C7D] h-2 rounded-full" style={{ width: "65%" }}></div>
               </div>
               <p className="font-['Inter',Helvetica] font-normal text-[#495565] text-xs mt-1">
                 65% complete • 21 hours remaining
@@ -273,7 +273,7 @@ This is a digitally generated certificate.
                 </span>
               </div>
               <div className="w-full bg-[#e5e7eb] rounded-full h-2">
-                <div className="bg-[#B4A5D5] h-2 rounded-full" style={{ width: "33%" }}></div>
+                <div className="bg-[#5C4C7D] h-2 rounded-full" style={{ width: "33%" }}></div>
               </div>
               <p className="font-['Inter',Helvetica] font-normal text-[#495565] text-xs mt-1">
                 Complete 20 more hours to earn certificate
@@ -296,7 +296,7 @@ This is a digitally generated certificate.
                 "Use certificates to enhance your job applications",
               ].map((item, i) => (
                 <li key={i} className="font-['Inter',Helvetica] font-normal text-[#495565] text-sm flex items-start gap-2">
-                  <span className="text-[#B4A5D5] mt-0.5">•</span>
+                  <span className="text-[#5C4C7D] mt-0.5">•</span>
                   {item}
                 </li>
               ))}
