@@ -111,7 +111,7 @@ export default function VerifyOTP() {
       toast({
         title: "Registration Successful",
       });
-      login({ phone: mobileNumber });
+      login({ phone: mobileNumber, name: registrationData.step1.fullName });
       resetRegistration();
       setLocation("/course-enrollment");
     },

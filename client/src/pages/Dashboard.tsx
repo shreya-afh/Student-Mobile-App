@@ -9,7 +9,17 @@ import aspireForHerLogo from "@assets/image_1760420610980.png";
 
 export default function Dashboard() {
   const [, setLocation] = useLocation();
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
+
+  // Generate initials from user name
+  const getInitials = (name?: string) => {
+    if (!name) return "U";
+    const nameParts = name.trim().split(" ");
+    if (nameParts.length === 1) {
+      return nameParts[0].charAt(0).toUpperCase();
+    }
+    return (nameParts[0].charAt(0) + nameParts[nameParts.length - 1].charAt(0)).toUpperCase();
+  };
 
   const handleLogout = () => {
     logout();
@@ -79,7 +89,7 @@ export default function Dashboard() {
               >
                 <Avatar className="h-8 w-8 cursor-pointer hover:opacity-80 transition-opacity">
                   <AvatarFallback className="bg-[#5C4C7D] text-white text-sm">
-                    U
+                    {getInitials(user?.name)}
                   </AvatarFallback>
                 </Avatar>
               </button>
