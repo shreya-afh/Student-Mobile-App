@@ -127,6 +127,7 @@ export default function AttendanceStep2() {
                   ? "border-[#5C4C7D] bg-[#eff1ff]"
                   : "border-gray-200"
               }`}
+              data-testid="card-session-offline"
             >
               <CardContent className="p-4 flex items-center gap-4">
                 <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${
@@ -154,6 +155,7 @@ export default function AttendanceStep2() {
                   ? "border-[#5C4C7D] bg-[#eff1ff]"
                   : "border-gray-200"
               }`}
+              data-testid="card-session-online"
             >
               <CardContent className="p-4 flex items-center gap-4">
                 <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${
@@ -179,6 +181,7 @@ export default function AttendanceStep2() {
             onClick={handleContinue}
             disabled={!sessionMode}
             className="w-full h-12 bg-[#5C4C7D] hover:bg-[#4C3C6D] text-white rounded-lg font-['Inter',Helvetica] font-medium text-base disabled:opacity-50"
+            data-testid="button-continue-session"
           >
             Continue
           </Button>

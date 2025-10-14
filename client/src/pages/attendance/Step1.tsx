@@ -19,23 +19,50 @@ export default function AttendanceStep1() {
     setShowScanner(true);
   };
 
+  const validateQRData = (data: any): boolean => {
+    return (
+      data &&
+      typeof data === 'object' &&
+      typeof data.sessionId === 'string' &&
+      data.sessionId.trim() !== '' &&
+      (data.session || data.course || data.date)
+    );
+  };
+
   const handleScanSuccess = (decodedText: string) => {
     setShowScanner(false);
     
     try {
       const qrData = JSON.parse(decodedText);
       
+      if (!validateQRData(qrData)) {
+        toast({
+          title: "Invalid QR Code",
+          description: "QR code does not contain valid attendance information",
+          variant: "destructive",
+        });
+        return;
+      }
+      
       toast({
         title: "QR Code Scanned",
         description: "Attendance data captured successfully",
       });
       
-      localStorage.setItem("attendance_qr_data", JSON.stringify(qrData));
-      setLocation("/attendance/mode");
+      try {
+        localStorage.setItem("attendance_qr_data", JSON.stringify(qrData));
+        setLocation("/attendance/mode");
+      } catch (storageError) {
+        toast({
+          title: "Storage Error",
+          description: "Unable to save attendance data. Please try again.",
+          variant: "destructive",
+        });
+      }
     } catch (error) {
       toast({
         title: "Invalid QR Code",
-        description: "Please scan a valid attendance QR code",
+        description: "Please scan a valid attendance QR code with JSON format",
         variant: "destructive",
       });
     }
