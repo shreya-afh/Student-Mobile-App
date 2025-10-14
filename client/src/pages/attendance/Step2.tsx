@@ -18,7 +18,21 @@ export default function AttendanceStep2() {
   useAndroidBackButton("/attendance");
 
   useEffect(() => {
-    const storedData = localStorage.getItem("attendance_qr_data");
+    let storedData: string | null = null;
+    
+    try {
+      storedData = localStorage.getItem("attendance_qr_data");
+    } catch (storageError) {
+      console.error("localStorage access error:", storageError);
+      toast({
+        title: "Storage Access Error",
+        description: "Unable to access session data. Please try scanning again.",
+        variant: "destructive",
+      });
+      setLocation("/attendance");
+      return;
+    }
+
     if (!storedData) {
       toast({
         title: "No Attendance Data",
@@ -39,7 +53,11 @@ export default function AttendanceStep2() {
           description: validationResult.error,
           variant: "destructive",
         });
-        localStorage.removeItem("attendance_qr_data");
+        try {
+          localStorage.removeItem("attendance_qr_data");
+        } catch (e) {
+          console.error("Failed to remove invalid data:", e);
+        }
         setLocation("/attendance");
         return;
       }
@@ -53,7 +71,11 @@ export default function AttendanceStep2() {
         description: "Failed to load attendance information",
         variant: "destructive",
       });
-      localStorage.removeItem("attendance_qr_data");
+      try {
+        localStorage.removeItem("attendance_qr_data");
+      } catch (e) {
+        console.error("Failed to remove corrupted data:", e);
+      }
       setLocation("/attendance");
     }
   }, [setLocation, toast]);
