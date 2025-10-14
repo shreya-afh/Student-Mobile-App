@@ -6,23 +6,61 @@ import { useState, useEffect } from "react";
 import { useAndroidBackButton } from "@/hooks/useAndroidBackButton";
 import infosysLogo from "@assets/infosys-foundation-logo-blue_1760417156143.png";
 import aspireForHerLogo from "@assets/image_1760420610980.png";
+import { validateAttendanceQR, type AttendanceQRData } from "@shared/attendance-schema";
+import { useToast } from "@/hooks/use-toast";
 
 export default function AttendanceStep2() {
   const [, setLocation] = useLocation();
   const [sessionMode, setSessionMode] = useState("");
-  const [qrData, setQrData] = useState<any>(null);
+  const [qrData, setQrData] = useState<AttendanceQRData | null>(null);
+  const [isValidating, setIsValidating] = useState(true);
+  const { toast } = useToast();
   useAndroidBackButton("/attendance");
 
   useEffect(() => {
     const storedData = localStorage.getItem("attendance_qr_data");
-    if (storedData) {
-      try {
-        setQrData(JSON.parse(storedData));
-      } catch (error) {
-        console.error("Error parsing QR data:", error);
-      }
+    if (!storedData) {
+      toast({
+        title: "No Attendance Data",
+        description: "Please scan a QR code first",
+        variant: "destructive",
+      });
+      setLocation("/attendance");
+      return;
     }
-  }, []);
+
+    try {
+      const parsedData = JSON.parse(storedData);
+      const validationResult = validateAttendanceQR(parsedData);
+      
+      if (!validationResult.success) {
+        toast({
+          title: "Invalid Attendance Data",
+          description: validationResult.error,
+          variant: "destructive",
+        });
+        localStorage.removeItem("attendance_qr_data");
+        setLocation("/attendance");
+        return;
+      }
+      
+      setQrData(validationResult.data);
+      setIsValidating(false);
+    } catch (error) {
+      console.error("Error parsing QR data:", error);
+      toast({
+        title: "Error Loading Data",
+        description: "Failed to load attendance information",
+        variant: "destructive",
+      });
+      localStorage.removeItem("attendance_qr_data");
+      setLocation("/attendance");
+    }
+  }, [setLocation, toast]);
+
+  if (isValidating) {
+    return null;
+  }
 
   const handleContinue = () => {
     if (sessionMode) {

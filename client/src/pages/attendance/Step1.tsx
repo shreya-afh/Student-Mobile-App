@@ -8,6 +8,7 @@ import aspireForHerLogo from "@assets/image_1760420610980.png";
 import { QRScanner } from "@/components/QRScanner";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { validateAttendanceQR } from "@shared/attendance-schema";
 
 export default function AttendanceStep1() {
   const [, setLocation] = useLocation();
@@ -19,26 +20,17 @@ export default function AttendanceStep1() {
     setShowScanner(true);
   };
 
-  const validateQRData = (data: any): boolean => {
-    return (
-      data &&
-      typeof data === 'object' &&
-      typeof data.sessionId === 'string' &&
-      data.sessionId.trim() !== '' &&
-      (data.session || data.course || data.date)
-    );
-  };
-
   const handleScanSuccess = (decodedText: string) => {
     setShowScanner(false);
     
     try {
-      const qrData = JSON.parse(decodedText);
+      const parsedData = JSON.parse(decodedText);
+      const validationResult = validateAttendanceQR(parsedData);
       
-      if (!validateQRData(qrData)) {
+      if (!validationResult.success) {
         toast({
           title: "Invalid QR Code",
-          description: "QR code does not contain valid attendance information",
+          description: validationResult.error,
           variant: "destructive",
         });
         return;
@@ -50,7 +42,7 @@ export default function AttendanceStep1() {
       });
       
       try {
-        localStorage.setItem("attendance_qr_data", JSON.stringify(qrData));
+        localStorage.setItem("attendance_qr_data", JSON.stringify(validationResult.data));
         setLocation("/attendance/mode");
       } catch (storageError) {
         toast({
