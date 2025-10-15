@@ -19,7 +19,7 @@ export default function JobOpportunities() {
   useAndroidBackButton("/dashboard");
 
   const handleApply = (jobTitle: string) => {
-    setAppliedJobs([...appliedJobs, jobTitle]);
+    setAppliedJobs(prev => prev.includes(jobTitle) ? prev : [...prev, jobTitle]);
     toast({
       title: "Application Submitted",
       description: `Your application for ${jobTitle} has been submitted successfully!`,
