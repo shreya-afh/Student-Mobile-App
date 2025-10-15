@@ -10,19 +10,19 @@ export default function Landing() {
     <div className="min-h-screen bg-[#faf9fb]">
       {/* Header with Logos */}
       <div className="w-full">
-        <div className="max-w-6xl mx-auto px-4 pt-8 pb-4">
-          <div className="flex items-center justify-center gap-8 flex-wrap">
+        <div className="max-w-6xl mx-auto px-4 pt-12 pb-8">
+          <div className="flex items-center justify-center gap-12 flex-wrap">
             <img 
               src={infosysLogo} 
               alt="Infosys Foundation" 
-              className="h-12 object-contain"
+              className="h-24 md:h-32 object-contain"
               data-testid="logo-infosys"
             />
-            <div className="text-2xl font-bold text-gray-400">×</div>
+            <div className="text-4xl md:text-5xl font-bold text-gray-400">×</div>
             <img 
               src={aspireForHerLogo} 
               alt="AspireForHer" 
-              className="h-12 object-contain"
+              className="h-24 md:h-32 object-contain"
               data-testid="logo-aspireforher"
             />
           </div>
