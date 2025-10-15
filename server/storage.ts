@@ -8,6 +8,7 @@ import {
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc } from "drizzle-orm";
+import { generateAFHId } from "./utils/id-generator";
 
 // modify the interface with any CRUD methods
 // you might need
@@ -43,9 +44,10 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
+    const id = await generateAFHId();
     const [user] = await db
       .insert(users)
-      .values(insertUser)
+      .values({ ...insertUser, id })
       .returning();
     return user;
   }
