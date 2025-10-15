@@ -8,11 +8,10 @@ function detectPlatform(): string {
       const Capacitor = (window as any).Capacitor;
       if (Capacitor.isNativePlatform && Capacitor.isNativePlatform()) {
         // Running in native Android/iOS app
-        // For Android Emulator: use 10.0.2.2
-        // For Real Device: use your Mac's IP (e.g., 192.168.29.88)
-        const url = "http://10.0.2.2:5000";
-        console.log('🤖 Android/iOS app detected - API URL:', url);
-        return url;
+        // Use Replit's public development URL
+        const replitUrl = "https://a361360c-65bc-4f71-bb6c-dae8ac8c4f3f-00-3bbk0hpsl2nyh.worf.replit.dev";
+        console.log('🤖 Android/iOS app detected - API URL:', replitUrl);
+        return replitUrl;
       }
     }
     console.log('🌐 Web browser detected - using relative URLs');
