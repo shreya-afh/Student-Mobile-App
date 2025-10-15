@@ -9,7 +9,7 @@ export function useAndroidBackButton(backPath: string) {
     
     const setupListener = async () => {
       try {
-        const { App } = await import('@capacitor/app');
+        const { App } = await import(/* @vite-ignore */ '@capacitor/app');
         handler = await App.addListener('backButton', () => {
           setLocation(backPath);
         });

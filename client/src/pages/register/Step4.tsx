@@ -6,7 +6,6 @@ import { ChevronLeftIcon, CameraIcon, EyeIcon, EyeOffIcon } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useRegistration } from "@/contexts/RegistrationContext";
 import { useToast } from "@/hooks/use-toast";
-import { Camera, CameraResultType, CameraSource, CameraDirection } from '@capacitor/camera';
 import { useAndroidBackButton } from "@/hooks/useAndroidBackButton";
 import infosysLogo from "@assets/infosys-foundation-logo-blue_1760417156143.png";
 import aspireForHerLogo from "@assets/image_1760420610980.png";
@@ -69,6 +68,8 @@ export default function RegisterStep4() {
 
   const handleCaptureSelfie = async () => {
     try {
+      const { Camera, CameraResultType, CameraSource, CameraDirection } = await import(/* @vite-ignore */ '@capacitor/camera');
+      
       const image = await Camera.getPhoto({
         quality: 90,
         allowEditing: false,

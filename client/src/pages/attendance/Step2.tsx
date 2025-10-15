@@ -108,7 +108,7 @@ export default function AttendanceStep2() {
     setLocationError(null);
 
     try {
-      const { Geolocation } = await import('@capacitor/geolocation');
+      const { Geolocation } = await import(/* @vite-ignore */ '@capacitor/geolocation');
       
       const permission = await Geolocation.checkPermissions();
       
