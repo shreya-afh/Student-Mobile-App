@@ -56,7 +56,7 @@ export default function Dashboard() {
   return (
     <div className="h-screen bg-[#faf9fb] flex flex-col overflow-hidden">
       {/* Header */}
-      <header className="bg-white flex-shrink-0 border-b border-gray-200">
+      <header className="bg-white flex-shrink-0">
         {/* Logo Bar */}
         <div className="bg-[#f8f9fa] border-b border-gray-200 py-2 px-4">
           <div className="flex items-center justify-center gap-3">
