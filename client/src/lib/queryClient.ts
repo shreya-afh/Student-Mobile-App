@@ -8,8 +8,8 @@ function detectPlatform(): string {
       const Capacitor = (window as any).Capacitor;
       if (Capacitor.isNativePlatform && Capacitor.isNativePlatform()) {
         // Running in native Android/iOS app
-        // Use Replit's public development URL
-        const replitUrl = "https://a361360c-65bc-4f71-bb6c-dae8ac8c4f3f-00-3bbk0hpsl2nyh.worf.replit.dev";
+        // Use Replit's published production URL for better performance
+        const replitUrl = "https://ifafh-skilling.replit.app";
         console.log('🤖 Android/iOS app detected - API URL:', replitUrl);
         return replitUrl;
       }
