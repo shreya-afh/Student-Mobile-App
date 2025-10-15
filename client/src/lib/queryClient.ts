@@ -1,7 +1,7 @@
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
 
 // Get API base URL based on platform
-async function getApiBaseUrl(): Promise<string> {
+export async function getApiBaseUrl(): Promise<string> {
   try {
     const { Capacitor } = await import(/* @vite-ignore */ "@capacitor/core");
     if (Capacitor.isNativePlatform()) {

@@ -27,7 +27,8 @@ export default function VerifyOTP() {
   const sendOtpMutation = useMutation({
     mutationFn: async () => {
       console.log('[OTP DEBUG] Sending OTP to:', mobileNumber);
-      console.log('[OTP DEBUG] API Base URL:', getApiBaseUrl());
+      const baseUrl = await getApiBaseUrl();
+      console.log('[OTP DEBUG] API Base URL:', baseUrl);
       const response = await apiRequest("POST", "/api/send-otp", { mobileNumber });
       return response.json();
     },
@@ -95,7 +96,8 @@ export default function VerifyOTP() {
         formDataToSend.append("selfie", registrationData.step4.selfie);
       }
 
-      const registerResponse = await fetch(getApiBaseUrl() + "/api/register", {
+      const baseUrl = await getApiBaseUrl();
+      const registerResponse = await fetch(baseUrl + "/api/register", {
         method: "POST",
         body: formDataToSend,
       });
