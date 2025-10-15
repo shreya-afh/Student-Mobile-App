@@ -271,17 +271,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Login endpoint
   app.post("/api/login", async (req, res) => {
     try {
-      const { afhId, password } = z.object({
-        afhId: z.string(),
+      const { mobileNumber, password } = z.object({
+        mobileNumber: z.string(),
         password: z.string(),
       }).parse(req.body);
 
-      const user = await storage.getUser(afhId);
+      const user = await storage.getUserByPhone(mobileNumber);
       
       if (!user) {
         return res.status(401).json({ 
           success: false, 
-          message: "Invalid AFH ID or password" 
+          message: "Invalid mobile number or password" 
         });
       }
 
@@ -291,7 +291,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (!passwordMatch) {
         return res.status(401).json({ 
           success: false, 
-          message: "Invalid AFH ID or password" 
+          message: "Invalid mobile number or password" 
         });
       }
 

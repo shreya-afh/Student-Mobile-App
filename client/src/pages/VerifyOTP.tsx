@@ -111,8 +111,8 @@ export default function VerifyOTP() {
     onSuccess: (result) => {
       toast({
         title: "Registration Successful",
-        description: `Your AFH ID is ${result.userId}. Please note it down for login.`,
-        duration: 8000,
+        description: `Reg. ID: ${result.userId}`,
+        duration: 5000,
       });
       login({ 
         id: result.userId, 
@@ -120,12 +120,7 @@ export default function VerifyOTP() {
         name: registrationData.step1.fullName 
       });
       resetRegistration();
-      
-      // Show a modal/alert with AFH ID before navigating
-      setTimeout(() => {
-        alert(`✅ Registration Successful!\n\nYour AFH Student ID: ${result.userId}\n\nPlease note down this ID. You'll need it to login along with your password.`);
-        setLocation("/dashboard");
-      }, 500);
+      setLocation("/dashboard");
     },
     onError: (error: any) => {
       // Parse error message and type from response

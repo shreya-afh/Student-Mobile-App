@@ -138,9 +138,8 @@ Preferred communication style: Simple, everyday language.
   - Password stored securely in database (never sent in API responses)
   - Minimum 6-character password requirement enforced
 - **Post-Registration Flow**: 
-  - AFH ID displayed to user after successful registration with alert notification
-  - User prompted to note down AFH ID for future login
-  - Automatic redirect to dashboard after acknowledgment
+  - Simple success toast showing "Registration Successful - Reg. ID: AFH-0000001"
+  - Automatic redirect to dashboard after registration
 - **Implementation**: 
   - Created generateAFHId() utility function using PostgreSQL nextval() for thread-safe ID assignment
   - Updated storage layer to generate AFH IDs before user creation
@@ -148,10 +147,9 @@ Preferred communication style: Simple, everyday language.
 
 ### Login & Password Reset System
 - **Login Authentication**:
-  - Updated login to use AFH Student ID instead of phone number
+  - Login uses mobile number + password combination
   - Password-based authentication with bcrypt verification
-  - POST /api/login endpoint with AFH ID and password validation
-  - Auto-uppercase input for AFH ID field
+  - POST /api/login endpoint with mobile number and password validation
   - Show/hide password toggle for better UX
 - **Forgot Password Flow**:
   - Created 3-step forgot password process:

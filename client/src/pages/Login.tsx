@@ -17,7 +17,7 @@ export default function Login() {
   const { login } = useAuth();
   const { toast } = useToast();
   const [formData, setFormData] = useState({
-    afhId: "",
+    mobileNumber: "",
     password: "",
   });
   const [showPassword, setShowPassword] = useState(false);
@@ -25,7 +25,7 @@ export default function Login() {
   const loginMutation = useMutation({
     mutationFn: async () => {
       const response = await apiRequest("POST", "/api/login", {
-        afhId: formData.afhId,
+        mobileNumber: formData.mobileNumber,
         password: formData.password,
       });
       return response.json();
@@ -43,7 +43,7 @@ export default function Login() {
     onError: (error: any) => {
       toast({
         title: "Login Failed",
-        description: error.message || "Invalid AFH ID or password",
+        description: error.message || "Invalid mobile number or password",
         variant: "destructive",
       });
     },
@@ -96,18 +96,18 @@ export default function Login() {
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
-              <Label htmlFor="afhId" className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm">
-                AFH Student ID *
+              <Label htmlFor="mobileNumber" className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm">
+                Mobile Number *
               </Label>
               <Input
-                id="afhId"
-                type="text"
-                placeholder="Enter your AFH ID (e.g., AFH-0000001)"
-                value={formData.afhId}
-                onChange={(e) => setFormData({ ...formData, afhId: e.target.value.toUpperCase() })}
+                id="mobileNumber"
+                type="tel"
+                placeholder="Enter your mobile number"
+                value={formData.mobileNumber}
+                onChange={(e) => setFormData({ ...formData, mobileNumber: e.target.value })}
                 className="mt-1"
                 required
-                data-testid="input-afh-id"
+                data-testid="input-mobile-number"
               />
             </div>
 
