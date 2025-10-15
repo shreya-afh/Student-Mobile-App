@@ -134,7 +134,7 @@ export default function AttendanceStep2() {
         data.location.longitude
       );
 
-      const ALLOWED_DISTANCE = 100;
+      const ALLOWED_DISTANCE = 1000;
 
       if (distance <= ALLOWED_DISTANCE) {
         setLocationVerified(true);
