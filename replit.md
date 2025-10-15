@@ -128,6 +128,17 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes (October 15, 2025)
 
+### AFH Student ID System
+- **ID Format**: Implemented AFH-XXXXXX format for all student user IDs (6-digit zero-padded numbers)
+- **Thread-Safe Generation**: Uses PostgreSQL sequence (afh_id_seq) for atomic, race-condition-free ID generation
+- **Primary Key**: AFH IDs serve as primary keys for all student data across the system
+- **Format Examples**: AFH-000001, AFH-000002, AFH-695951
+- **Implementation**: 
+  - Removed database-level UUID defaults from user schema
+  - Created generateAFHId() utility function using PostgreSQL nextval() for thread-safe ID assignment
+  - Updated storage layer to generate AFH IDs before user creation
+  - All user references and foreign keys work with AFH-format IDs
+
 ### Attendance Recording and History System
 - **Database Integration**: Implemented PostgreSQL storage for attendance records with complete session tracking
 - **Attendance Schema**: Created comprehensive schema with userId, sessionId, courseId, sessionName, courseName, sessionDate, mode (online/offline), location data (lat/long/address), rating (1-5), and feedback text
