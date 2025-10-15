@@ -1,7 +1,7 @@
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
 
 // Get API base URL based on platform
-export async function getApiBaseUrl(): Promise<string> {
+async function getApiBaseUrl(): Promise<string> {
   try {
     const { Capacitor } = await import(/* @vite-ignore */ "@capacitor/core");
     if (Capacitor.isNativePlatform()) {
@@ -17,7 +17,19 @@ export async function getApiBaseUrl(): Promise<string> {
   return "";
 }
 
+// Initialize API_BASE_URL
 let API_BASE_URL = "";
+let apiBaseUrlPromise: Promise<string> | null = null;
+
+async function ensureApiBaseUrl(): Promise<string> {
+  if (!apiBaseUrlPromise) {
+    apiBaseUrlPromise = getApiBaseUrl().then(url => {
+      API_BASE_URL = url;
+      return url;
+    });
+  }
+  return apiBaseUrlPromise;
+}
 
 async function throwIfResNotOk(res: Response) {
   if (!res.ok) {
@@ -31,7 +43,8 @@ export async function apiRequest(
   url: string,
   data?: unknown | undefined,
 ): Promise<Response> {
-  const fullUrl = API_BASE_URL + url;
+  const baseUrl = await ensureApiBaseUrl();
+  const fullUrl = baseUrl + url;
   const res = await fetch(fullUrl, {
     method,
     headers: data ? { "Content-Type": "application/json" } : {},
@@ -49,8 +62,9 @@ export const getQueryFn: <T>(options: {
 }) => QueryFunction<T> =
   ({ on401: unauthorizedBehavior }) =>
   async ({ queryKey }) => {
+    const baseUrl = await ensureApiBaseUrl();
     const url = queryKey.join("/") as string;
-    const fullUrl = API_BASE_URL + url;
+    const fullUrl = baseUrl + url;
     const res = await fetch(fullUrl, {
       credentials: "include",
     });
