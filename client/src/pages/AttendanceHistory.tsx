@@ -14,8 +14,8 @@ export default function AttendanceHistory() {
   const { user } = useAuth();
   useAndroidBackButton("/dashboard");
 
-  const { data: attendanceData, isLoading } = useQuery<{ success: boolean; records: AttendanceRecord[] }>({
-    queryKey: ["/api/attendance", user?.id],
+  const { data: attendanceData, isLoading, isError, error, refetch } = useQuery<{ success: boolean; records: AttendanceRecord[] }>({
+    queryKey: [`/api/attendance/${user?.id}`],
     enabled: !!user?.id,
   });
 
@@ -54,6 +54,24 @@ export default function AttendanceHistory() {
           {isLoading ? (
             <div className="text-center py-8">
               <p className="text-gray-500">Loading attendance records...</p>
+            </div>
+          ) : isError ? (
+            <div className="text-center py-12">
+              <div className="bg-red-50 border border-red-200 rounded-lg p-6 mb-4">
+                <h3 className="font-['Inter',Helvetica] font-semibold text-red-800 text-lg mb-2">
+                  Error Loading Records
+                </h3>
+                <p className="font-['Inter',Helvetica] font-normal text-red-600 text-sm mb-4">
+                  {error instanceof Error ? error.message : "Failed to load attendance records. Please try again."}
+                </p>
+                <Button
+                  onClick={() => refetch()}
+                  className="bg-[#5C4C7D] hover:bg-[#4C3C6D]"
+                  data-testid="button-retry"
+                >
+                  Retry
+                </Button>
+              </div>
             </div>
           ) : records.length === 0 ? (
             <div className="text-center py-12">
