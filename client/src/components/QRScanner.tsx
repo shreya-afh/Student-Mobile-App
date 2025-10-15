@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { Html5Qrcode } from "html5-qrcode";
 import { Button } from "@/components/ui/button";
 import { XIcon, RefreshCwIcon } from "lucide-react";
 
@@ -11,7 +10,7 @@ interface QRScannerProps {
 export function QRScanner({ onScanSuccess, onClose }: QRScannerProps) {
   const [error, setError] = useState<string>("");
   const [isRetrying, setIsRetrying] = useState(false);
-  const scannerRef = useRef<Html5Qrcode | null>(null);
+  const scannerRef = useRef<any>(null);
   const isScanning = useRef(false);
   const isMounted = useRef(true);
 
@@ -48,6 +47,7 @@ export function QRScanner({ onScanSuccess, onClose }: QRScannerProps) {
     setIsRetrying(false);
 
     try {
+      const { Html5Qrcode } = await import(/* @vite-ignore */ "html5-qrcode");
       const html5QrCode = new Html5Qrcode("qr-reader");
       scannerRef.current = html5QrCode;
 
