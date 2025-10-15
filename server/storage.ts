@@ -32,6 +32,7 @@ export interface IStorage {
   getOfferLetters(userId: string): Promise<OfferLetter[]>;
   getOfferLetter(id: string): Promise<OfferLetter | undefined>;
   acceptOfferLetter(id: string): Promise<void>;
+  rejectOfferLetter(id: string): Promise<void>;
 }
 
 // DatabaseStorage uses PostgreSQL for persistent data
@@ -149,6 +150,13 @@ export class DatabaseStorage implements IStorage {
     await db
       .update(offerLetters)
       .set({ status: "accepted" })
+      .where(eq(offerLetters.id, id));
+  }
+
+  async rejectOfferLetter(id: string): Promise<void> {
+    await db
+      .update(offerLetters)
+      .set({ status: "rejected" })
       .where(eq(offerLetters.id, id));
   }
 

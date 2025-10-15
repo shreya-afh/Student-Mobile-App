@@ -547,6 +547,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Reject offer letter
+  app.post("/api/offer-letters/:id/reject", async (req, res) => {
+    try {
+      const id = req.params.id;
+      await storage.rejectOfferLetter(id);
+
+      res.json({ 
+        success: true, 
+        message: "Offer rejected successfully" 
+      });
+    } catch (error) {
+      console.error("Reject offer error:", error);
+      res.status(500).json({ 
+        success: false, 
+        message: "Failed to reject offer" 
+      });
+    }
+  });
+
   const httpServer = createServer(app);
 
   return httpServer;
