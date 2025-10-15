@@ -19,6 +19,16 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
@@ -30,6 +40,8 @@ export default function JobOffers() {
   const [uploadFile, setUploadFile] = useState<File | null>(null);
   const [company, setCompany] = useState("");
   const [position, setPosition] = useState("");
+  const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
+  const [offerToReject, setOfferToReject] = useState<string | null>(null);
   useAndroidBackButton("/dashboard");
 
   // Fetch offer letters
@@ -106,6 +118,29 @@ export default function JobOffers() {
     },
   });
 
+  // Reject mutation
+  const rejectMutation = useMutation({
+    mutationFn: async (offerId: string) => {
+      await apiRequest("POST", `/api/offer-letters/${offerId}/reject`, {});
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/offer-letters", user?.id] });
+      toast({
+        title: "Offer Rejected",
+        description: "You have rejected the offer.",
+      });
+      setRejectDialogOpen(false);
+      setOfferToReject(null);
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to reject offer",
+        variant: "destructive",
+      });
+    },
+  });
+
   const handleUpload = () => {
     setUploadDialogOpen(true);
   };
@@ -136,6 +171,17 @@ export default function JobOffers() {
 
   const handleAccept = (offerId: string) => {
     acceptMutation.mutate(offerId);
+  };
+
+  const handleRejectClick = (offerId: string) => {
+    setOfferToReject(offerId);
+    setRejectDialogOpen(true);
+  };
+
+  const handleConfirmReject = () => {
+    if (offerToReject) {
+      rejectMutation.mutate(offerToReject);
+    }
   };
 
   return (
@@ -298,7 +344,7 @@ export default function JobOffers() {
                         <span className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs">
                           {offer.receivedDate && `Received: ${offer.receivedDate}`}
                         </span>
-                        <div className="flex gap-2">
+                        <div className="flex gap-2 items-center">
                           <Button
                             onClick={() => handleViewLetter(offer.fileUrl)}
                             variant="link"
@@ -309,14 +355,25 @@ export default function JobOffers() {
                             View Letter
                           </Button>
                           {offer.status === 'pending' && (
-                            <Button
-                              onClick={() => handleAccept(offer.id)}
-                              disabled={acceptMutation.isPending}
-                              className="h-8 px-4 bg-[#5C4C7D] hover:bg-[#4C3C6D] text-white text-sm disabled:opacity-50"
-                              data-testid={`button-accept-${offer.id}`}
-                            >
-                              Accept
-                            </Button>
+                            <>
+                              <Button
+                                onClick={() => handleRejectClick(offer.id)}
+                                disabled={rejectMutation.isPending}
+                                variant="outline"
+                                className="h-8 px-4 border-red-500 text-red-500 hover:bg-red-50 hover:text-red-600 text-sm disabled:opacity-50"
+                                data-testid={`button-reject-${offer.id}`}
+                              >
+                                Reject
+                              </Button>
+                              <Button
+                                onClick={() => handleAccept(offer.id)}
+                                disabled={acceptMutation.isPending}
+                                className="h-8 px-4 bg-[#5C4C7D] hover:bg-[#4C3C6D] text-white text-sm disabled:opacity-50"
+                                data-testid={`button-accept-${offer.id}`}
+                              >
+                                Accept
+                              </Button>
+                            </>
                           )}
                         </div>
                       </div>
@@ -448,6 +505,27 @@ export default function JobOffers() {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Reject Confirmation Dialog */}
+      <AlertDialog open={rejectDialogOpen} onOpenChange={setRejectDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Reject Offer?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to reject this offer? This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleConfirmReject}
+              className="bg-red-500 hover:bg-red-600"
+            >
+              Reject Offer
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
