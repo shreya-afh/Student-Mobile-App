@@ -228,12 +228,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
         registrationData.step3.studentContact, // Contact
         registrationData.step2.state, // State
         registrationData.step2.district, // District
+        registrationData.step2.city, // City
         registrationData.step2.collegeName, // College Name
         registrationData.step2.course, // Highest Qualification Course
         registrationData.step3.familyIncome, // Annual Family Income in INR
         "", // Centre Name (empty)
-        registrationData.step2.district, // Training Location District Name
-        registrationData.step2.city, // Training Location City Name
+        "", // Training Location District Name
+        "", // Training Location City Name
         dobFormatted, // Date of Birth
         registrationData.step3.email, // Email ID
         registrationData.step1.guardianName, // Parent/Guardian Name
