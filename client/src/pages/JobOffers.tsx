@@ -267,7 +267,11 @@ export default function JobOffers() {
                   <Card
                     key={offer.id}
                     className={`hover:shadow-md transition-all mb-4 ${
-                      offer.status === 'accepted' ? 'border-[#00a63e]' : 'border-[#f59e0b]'
+                      offer.status === 'accepted' 
+                        ? 'border-[#00a63e]' 
+                        : offer.status === 'rejected' 
+                        ? 'border-red-500' 
+                        : 'border-[#f59e0b]'
                     }`}
                   >
                     <CardContent className="p-4">
@@ -284,10 +288,12 @@ export default function JobOffers() {
                           className={
                             offer.status === 'accepted'
                               ? 'bg-[#00a63e] text-white border-transparent hover:bg-[#00a63e]'
+                              : offer.status === 'rejected'
+                              ? 'bg-red-500 text-white border-transparent hover:bg-red-500'
                               : 'bg-[#fef3c7] text-[#92400e] border-transparent hover:bg-[#fef3c7]'
                           }
                         >
-                          {offer.status === 'accepted' ? 'accepted' : 'pending'}
+                          {offer.status === 'accepted' ? 'accepted' : offer.status === 'rejected' ? 'rejected' : 'pending'}
                         </Badge>
                       </div>
 
