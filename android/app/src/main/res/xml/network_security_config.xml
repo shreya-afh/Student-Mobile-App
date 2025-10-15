@@ -9,9 +9,10 @@
         <domain includeSubdomains="true">192.168.29.88</domain>
     </domain-config>
     
-    <!-- Allow Replit dev domain -->
+    <!-- Allow Replit domains -->
     <domain-config cleartextTrafficPermitted="false">
         <domain includeSubdomains="true">replit.dev</domain>
+        <domain includeSubdomains="true">replit.app</domain>
         <trust-anchors>
             <certificates src="system" />
         </trust-anchors>
