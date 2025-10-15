@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { pgTable, text, varchar, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, text, varchar, timestamp, integer } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -46,3 +46,35 @@ export const insertUserSchema = createInsertSchema(users).omit({
 
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
+
+export const attendanceRecords = pgTable("attendance_records", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  
+  // Session Information
+  sessionId: text("session_id").notNull(),
+  courseId: text("course_id").notNull(),
+  sessionName: text("session_name").notNull(),
+  courseName: text("course_name").notNull(),
+  sessionDate: text("session_date").notNull(),
+  
+  // Mode & Location
+  mode: text("mode").notNull(), // "online" or "offline"
+  locationLat: text("location_lat"),
+  locationLong: text("location_long"),
+  locationAddress: text("location_address"),
+  
+  // Feedback
+  rating: integer("rating").notNull(),
+  feedback: text("feedback"),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const insertAttendanceRecordSchema = createInsertSchema(attendanceRecords).omit({
+  id: true,
+  createdAt: true,
+});
+
+export type InsertAttendanceRecord = z.infer<typeof insertAttendanceRecordSchema>;
+export type AttendanceRecord = typeof attendanceRecords.$inferSelect;
