@@ -283,6 +283,78 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Save attendance record
+  app.post("/api/attendance", async (req, res) => {
+    try {
+      const attendanceData = z.object({
+        userId: z.string(),
+        sessionId: z.string(),
+        courseId: z.string(),
+        sessionName: z.string(),
+        courseName: z.string(),
+        sessionDate: z.string(),
+        mode: z.string(),
+        locationLat: z.string().optional(),
+        locationLong: z.string().optional(),
+        locationAddress: z.string().optional(),
+        rating: z.number(),
+        feedback: z.string().optional(),
+      }).parse(req.body);
+
+      const record = await storage.createAttendanceRecord(attendanceData);
+
+      res.json({ 
+        success: true, 
+        message: "Attendance recorded successfully",
+        record 
+      });
+    } catch (error) {
+      console.error("Save attendance error:", error);
+      res.status(500).json({ 
+        success: false, 
+        message: "Failed to save attendance record" 
+      });
+    }
+  });
+
+  // Get attendance records for a user
+  app.get("/api/attendance/:userId", async (req, res) => {
+    try {
+      const userId = req.params.userId;
+      const records = await storage.getAttendanceRecords(userId);
+
+      res.json({ 
+        success: true, 
+        records 
+      });
+    } catch (error) {
+      console.error("Get attendance error:", error);
+      res.status(500).json({ 
+        success: false, 
+        message: "Failed to fetch attendance records" 
+      });
+    }
+  });
+
+  // Get attendance stats for a user
+  app.get("/api/attendance/stats/:userId", async (req, res) => {
+    try {
+      const userId = req.params.userId;
+      const stats = await storage.getAttendanceStats(userId);
+
+      res.json({ 
+        success: true, 
+        stats 
+      });
+    } catch (error) {
+      console.error("Get attendance stats error:", error);
+      res.status(500).json({ 
+        success: false, 
+        message: "Failed to fetch attendance stats" 
+      });
+    }
+  });
+
   const httpServer = createServer(app);
 
   return httpServer;
