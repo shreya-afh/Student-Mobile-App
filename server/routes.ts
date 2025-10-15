@@ -457,6 +457,96 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Upload offer letter
+  app.post("/api/offer-letters/upload", upload.single("file"), async (req: Request & { file?: Express.Multer.File }, res) => {
+    try {
+      const { userId, company, position } = z.object({
+        userId: z.string(),
+        company: z.string(),
+        position: z.string(),
+      }).parse(JSON.parse(req.body.data));
+
+      if (!req.file) {
+        return res.status(400).json({ 
+          success: false, 
+          message: "No file uploaded" 
+        });
+      }
+
+      // Upload to Google Drive
+      const fileName = `${company.replace(/\s+/g, '_')}_${position.replace(/\s+/g, '_')}_${Date.now()}.${req.file.originalname.split('.').pop()}`;
+      const fileUrl = await uploadToDrive(
+        req.file.buffer,
+        fileName,
+        req.file.mimetype,
+        GOOGLE_DRIVE_FOLDER_ID
+      );
+
+      // Save to database
+      const offer = await storage.createOfferLetter({
+        userId,
+        type: "uploaded",
+        company,
+        position,
+        status: "pending",
+        fileName: req.file.originalname,
+        fileUrl,
+        fileType: req.file.mimetype,
+        receivedDate: new Date().toISOString().split('T')[0],
+      });
+
+      res.json({ 
+        success: true, 
+        message: "Offer letter uploaded successfully",
+        offer 
+      });
+    } catch (error) {
+      console.error("Upload offer letter error:", error);
+      res.status(500).json({ 
+        success: false, 
+        message: "Failed to upload offer letter" 
+      });
+    }
+  });
+
+  // Get offer letters for a user
+  app.get("/api/offer-letters/:userId", async (req, res) => {
+    try {
+      const userId = req.params.userId;
+      const offers = await storage.getOfferLetters(userId);
+
+      res.json({ 
+        success: true, 
+        offers 
+      });
+    } catch (error) {
+      console.error("Get offer letters error:", error);
+      res.status(500).json({ 
+        success: false, 
+        message: "Failed to fetch offer letters" 
+      });
+    }
+  });
+
+  // Accept offer letter
+  app.post("/api/offer-letters/:id/accept", async (req, res) => {
+    try {
+      const id = req.params.id;
+      await storage.acceptOfferLetter(id);
+
+      res.json({ 
+        success: true, 
+        message: "Offer accepted successfully" 
+      });
+    } catch (error) {
+      console.error("Accept offer error:", error);
+      res.status(500).json({ 
+        success: false, 
+        message: "Failed to accept offer" 
+      });
+    }
+  });
+
   const httpServer = createServer(app);
 
   return httpServer;
