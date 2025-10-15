@@ -3,24 +3,55 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { useLocation } from "wouter";
-import { ChevronLeftIcon } from "lucide-react";
+import { ChevronLeftIcon, EyeIcon, EyeOffIcon } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useMutation } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
 import infosysLogo from "@assets/infosys-foundation-logo-blue_1760417156143.png";
 import aspireForHerLogo from "@assets/image_1760420610980.png";
 
 export default function Login() {
   const [, setLocation] = useLocation();
   const { login } = useAuth();
+  const { toast } = useToast();
   const [formData, setFormData] = useState({
-    phone: "",
+    afhId: "",
     password: "",
+  });
+  const [showPassword, setShowPassword] = useState(false);
+
+  const loginMutation = useMutation({
+    mutationFn: async () => {
+      const response = await apiRequest("POST", "/api/login", {
+        afhId: formData.afhId,
+        password: formData.password,
+      });
+      return response.json();
+    },
+    onSuccess: (data) => {
+      if (data.success && data.user) {
+        login({
+          id: data.user.id,
+          phone: data.user.studentContact,
+          name: data.user.fullName,
+        });
+        setLocation("/dashboard");
+      }
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Login Failed",
+        description: error.message || "Invalid AFH ID or password",
+        variant: "destructive",
+      });
+    },
   });
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    login({ phone: formData.phone });
-    setLocation("/dashboard");
+    loginMutation.mutate();
   };
 
   return (
@@ -65,17 +96,18 @@ export default function Login() {
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
-              <Label htmlFor="phone" className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm">
-                Phone Number *
+              <Label htmlFor="afhId" className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm">
+                AFH Student ID *
               </Label>
               <Input
-                id="phone"
-                type="tel"
-                placeholder="Enter your mobile number"
-                value={formData.phone}
-                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                id="afhId"
+                type="text"
+                placeholder="Enter your AFH ID (e.g., AFH-0000001)"
+                value={formData.afhId}
+                onChange={(e) => setFormData({ ...formData, afhId: e.target.value.toUpperCase() })}
                 className="mt-1"
                 required
+                data-testid="input-afh-id"
               />
             </div>
 
@@ -83,22 +115,45 @@ export default function Login() {
               <Label htmlFor="password" className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm">
                 Password *
               </Label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="Enter your password"
-                value={formData.password}
-                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                className="mt-1"
-                required
-              />
+              <div className="relative mt-1">
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter your password"
+                  value={formData.password}
+                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  className="pr-10"
+                  required
+                  data-testid="input-password"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#697282] hover:text-[#495565]"
+                >
+                  {showPassword ? <EyeOffIcon className="w-5 h-5" /> : <EyeIcon className="w-5 h-5" />}
+                </button>
+              </div>
+            </div>
+
+            <div className="text-right">
+              <button
+                type="button"
+                onClick={() => setLocation("/forgot-password")}
+                className="font-['Inter',Helvetica] font-normal text-[#5C4C7D] text-sm hover:underline"
+                data-testid="link-forgot-password"
+              >
+                Forgot Password?
+              </button>
             </div>
 
             <Button
               type="submit"
+              disabled={loginMutation.isPending}
               className="w-full h-12 bg-[#5C4C7D] hover:bg-[#4C3C6D] text-white rounded-lg font-['Inter',Helvetica] font-medium text-base mt-6"
+              data-testid="button-login"
             >
-              Login
+              {loginMutation.isPending ? "Logging in..." : "Login"}
             </Button>
           </form>
 
@@ -106,6 +161,7 @@ export default function Login() {
             <button
               onClick={() => setLocation("/register/step1")}
               className="font-['Inter',Helvetica] font-normal text-[#5C4C7D] text-sm hover:underline"
+              data-testid="link-register"
             >
               Don't have an account? Register
             </button>

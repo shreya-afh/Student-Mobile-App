@@ -265,6 +265,49 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Login endpoint
+  app.post("/api/login", async (req, res) => {
+    try {
+      const { afhId, password } = z.object({
+        afhId: z.string(),
+        password: z.string(),
+      }).parse(req.body);
+
+      const user = await storage.getUser(afhId);
+      
+      if (!user) {
+        return res.status(401).json({ 
+          success: false, 
+          message: "Invalid AFH ID or password" 
+        });
+      }
+
+      // Verify password
+      const passwordMatch = await bcrypt.compare(password, user.password);
+      
+      if (!passwordMatch) {
+        return res.status(401).json({ 
+          success: false, 
+          message: "Invalid AFH ID or password" 
+        });
+      }
+
+      // Don't send password in response
+      const { password: _, ...userWithoutPassword } = user;
+
+      res.json({ 
+        success: true, 
+        user: userWithoutPassword 
+      });
+    } catch (error) {
+      console.error("Login error:", error);
+      res.status(500).json({ 
+        success: false, 
+        message: "Failed to login" 
+      });
+    }
+  });
+
   // Get user profile by ID
   app.get("/api/user/:id", async (req, res) => {
     try {
