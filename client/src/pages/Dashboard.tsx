@@ -218,25 +218,6 @@ export default function Dashboard() {
             </CardContent>
           </Card>
         </div>
-
-        {/* Job Alert */}
-        <Card className="border-[#5C4C7D] bg-[#eff1ff]">
-          <CardContent className="p-4">
-            <h3 className="font-['Inter',Helvetica] font-semibold text-[#1d2838] text-base mb-1">
-              New Job Opportunities!
-            </h3>
-            <p className="font-['Inter',Helvetica] font-normal text-[#495565] text-sm mb-3">
-              5 new positions available for Digital Marketing professionals. Apply now!
-            </p>
-            <Button
-              onClick={() => setLocation("/job-opportunities")}
-              variant="link"
-              className="p-0 h-auto font-['Inter',Helvetica] font-medium text-[#5C4C7D] text-sm hover:text-[#4C3C6D]"
-            >
-              View Jobs →
-            </Button>
-          </CardContent>
-        </Card>
       </div>
     </div>
   );
