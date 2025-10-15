@@ -1,7 +1,7 @@
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
 
-// Get API base URL based on platform
-export async function getApiBaseUrl(): Promise<string> {
+// Detect platform and set API base URL immediately
+function detectPlatform(): string {
   try {
     // Check if Capacitor is available globally (it is in native apps)
     if (typeof window !== 'undefined' && (window as any).Capacitor) {
@@ -23,18 +23,27 @@ export async function getApiBaseUrl(): Promise<string> {
   return "";
 }
 
-// Initialize API_BASE_URL
-let API_BASE_URL = "";
-let apiBaseUrlPromise: Promise<string> | null = null;
+// Initialize API_BASE_URL immediately
+let API_BASE_URL = detectPlatform();
+
+// Listen for Capacitor ready event in case it loads after this module
+if (typeof window !== 'undefined') {
+  document.addEventListener('deviceready', () => {
+    const newUrl = detectPlatform();
+    if (newUrl !== API_BASE_URL) {
+      API_BASE_URL = newUrl;
+      console.log('🔄 Platform re-detected after Capacitor ready:', newUrl);
+    }
+  }, { once: true });
+}
+
+// Export for compatibility
+export async function getApiBaseUrl(): Promise<string> {
+  return API_BASE_URL;
+}
 
 async function ensureApiBaseUrl(): Promise<string> {
-  if (!apiBaseUrlPromise) {
-    apiBaseUrlPromise = getApiBaseUrl().then(url => {
-      API_BASE_URL = url;
-      return url;
-    });
-  }
-  return apiBaseUrlPromise;
+  return API_BASE_URL;
 }
 
 async function throwIfResNotOk(res: Response) {

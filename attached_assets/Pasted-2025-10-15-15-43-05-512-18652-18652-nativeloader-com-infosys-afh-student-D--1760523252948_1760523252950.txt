@@ -1,0 +1,100 @@
+2025-10-15 15:43:05.512 18652-18652 nativeloader            com.infosys.afh.student              D  Load libframework-connectivity-tiramisu-jni.so using APEX ns com_android_tethering for caller /apex/com.android.tethering/javalib/framework-connectivity-t.jar: ok
+---------------------------- PROCESS STARTED (18652) for package com.infosys.afh.student ----------------------------
+2025-10-15 15:43:06.364 18652-18652 nativeloader            com.infosys.afh.student              D  Configuring clns-9 for other apk /data/app/~~QrUTrcXmxBCuZfouDj5KiA==/com.infosys.afh.student-34ZjEr9FkGusIXUSEjCO4A==/base.apk. target_sdk_version=35, uses_libraries=, library_path=/data/app/~~QrUTrcXmxBCuZfouDj5KiA==/com.infosys.afh.student-34ZjEr9FkGusIXUSEjCO4A==/lib/arm64, permitted_path=/data:/mnt/expand:/data/user/0/com.infosys.afh.student
+2025-10-15 15:43:06.387 18652-18652 CompatChangeReporter    com.infosys.afh.student              D  Compat change id reported: 202956589; UID 10214; state: ENABLED
+2025-10-15 15:43:06.422 18652-18652 sys.afh.student         com.infosys.afh.student              I  AssetManager2(0xb400007caec5e2f8) locale list changing from [] to [en-US]
+2025-10-15 15:43:06.464 18652-18652 GraphicsEnvironment     com.infosys.afh.student              V  Currently set values for:
+2025-10-15 15:43:06.464 18652-18652 GraphicsEnvironment     com.infosys.afh.student              V    angle_gl_driver_selection_pkgs=[]
+2025-10-15 15:43:06.464 18652-18652 GraphicsEnvironment     com.infosys.afh.student              V    angle_gl_driver_selection_values=[]
+2025-10-15 15:43:06.464 18652-18652 GraphicsEnvironment     com.infosys.afh.student              V  com.infosys.afh.student is not listed in per-application setting
+2025-10-15 15:43:06.470 18652-18652 GraphicsEnvironment     com.infosys.afh.student              V  ANGLE allowlist from config: com.dreamgames.royalmatch com.dts.freefiremax com.dxx.firenow com.gramgames.mergedragons com.ludo.king com.mojang.minecraftpe com.my.defense com.nintendo.zaka com.os.airforce com.playrix.fishdomdd.gplay io.teslatech.callbreak jp.konami.prospia net.peakgames.toonblast
+2025-10-15 15:43:06.470 18652-18652 GraphicsEnvironment     com.infosys.afh.student              V  com.infosys.afh.student is not listed in ANGLE allowlist or settings, returning default
+2025-10-15 15:43:06.471 18652-18652 GraphicsEnvironment     com.infosys.afh.student              V  Neither updatable production driver nor prerelease driver is supported.
+2025-10-15 15:43:06.546 18652-18652 CompatChangeReporter    com.infosys.afh.student              D  Compat change id reported: 279646685; UID 10214; state: ENABLED
+2025-10-15 15:43:06.614 18652-18652 sys.afh.student         com.infosys.afh.student              I  AssetManager2(0xb400007caec62df8) locale list changing from [] to [en-US]
+2025-10-15 15:43:06.657 18652-18652 AppCompatDelegate       com.infosys.afh.student              D  Checking for metadata for AppLocalesMetadataHolderService : Service not found
+2025-10-15 15:43:06.658 18652-18691 DisplayManager          com.infosys.afh.student              I  Choreographer implicitly registered for the refresh rate.
+2025-10-15 15:43:06.669 18652-18652 sys.afh.student         com.infosys.afh.student              I  AssetManager2(0xb400007caec69838) locale list changing from [] to [en-US]
+2025-10-15 15:43:06.709 18652-18652 ashmem                  com.infosys.afh.student              E  Pinning is deprecated since Android Q. Please use trim or other methods.
+2025-10-15 15:43:06.860 18652-18652 CompatChangeReporter    com.infosys.afh.student              D  Compat change id reported: 309578419; UID 10214; state: ENABLED
+2025-10-15 15:43:06.865 18652-18652 DesktopModeFlags        com.infosys.afh.student              D  Toggle override initialized to: OVERRIDE_UNSET
+2025-10-15 15:43:06.880 18652-18691 EGL_emulation           com.infosys.afh.student              I  Opening libGLESv1_CM_emulation.so
+2025-10-15 15:43:06.881 18652-18691 EGL_emulation           com.infosys.afh.student              I  Opening libGLESv2_emulation.so
+2025-10-15 15:43:06.912 18652-18652 sys.afh.student         com.infosys.afh.student              I  hiddenapi: Accessing hidden method Landroid/view/ViewGroup;->makeOptionalFitsSystemWindows()V (runtime_flags=0, domain=platform, api=unsupported) from Landroidx/appcompat/widget/ViewUtils; (domain=app) using reflection: allowed
+2025-10-15 15:43:06.925 18652-18691 HWUI                    com.infosys.afh.student              W  Failed to choose config with EGL_SWAP_BEHAVIOR_PRESERVED, retrying without...
+2025-10-15 15:43:06.926 18652-18691 HWUI                    com.infosys.afh.student              W  Failed to initialize 101010-2 format, error = EGL_SUCCESS
+2025-10-15 15:43:06.950 18652-18652 sys.afh.student         com.infosys.afh.student              I  AssetManager2(0xb400007caec65698) locale list changing from [] to [en-US]
+2025-10-15 15:43:06.951 18652-18652 WebViewFactory          com.infosys.afh.student              I  Loading com.google.android.webview version 140.0.7339.208 (code 733920833)
+2025-10-15 15:43:06.954 18652-18652 sys.afh.student         com.infosys.afh.student              I  AssetManager2(0xb400007caec66c78) locale list changing from [] to [en-US]
+2025-10-15 15:43:06.961 18652-18652 sys.afh.student         com.infosys.afh.student              I  AssetManager2(0xb400007caec6c3f8) locale list changing from [] to [en-US]
+2025-10-15 15:43:06.965 18652-18652 sys.afh.student         com.infosys.afh.student              I  AssetManager2(0xb400007caec6b458) locale list changing from [] to [en-US]
+2025-10-15 15:43:06.966 18652-18652 sys.afh.student         com.infosys.afh.student              I  AssetManager2(0xb400007caec67f38) locale list changing from [] to [en-US]
+2025-10-15 15:43:06.968 18652-18652 ResourcesManager        com.infosys.afh.student              V  The following library key has been added: ResourcesKey{ mHash=5a9e6208 mResDir=null mSplitDirs=[] mOverlayDirs=[] mLibDirs=[/data/app/~~C552cSwNnaNpoB6xbtTKAA==/com.google.android.webview-nQD708Ig03JEBDQJ7YlVhg==/base.apk,/data/app/~~wWJ7JO-8aSF4QTxp9p4jYQ==/com.google.android.trichromelibrary_733920833-BNCpUq5ZtY1AvPlwHSUrPg==/base.apk,/system_ext/framework/androidx.window.extensions.jar] mDisplayId=0 mOverrideConfig=v36 mCompatInfo={420dpi always-compat} mLoaders=[]}
+2025-10-15 15:43:06.981 18652-18652 sys.afh.student         com.infosys.afh.student              W  Failed to find entry 'classes.dex': Entry not found
+2025-10-15 15:43:06.990 18652-18652 nativeloader            com.infosys.afh.student              D  Configuring clns-10 for other apk /data/app/~~wWJ7JO-8aSF4QTxp9p4jYQ==/com.google.android.trichromelibrary_733920833-BNCpUq5ZtY1AvPlwHSUrPg==/base.apk. target_sdk_version=36, uses_libraries=ALL, library_path=/data/app/~~C552cSwNnaNpoB6xbtTKAA==/com.google.android.webview-nQD708Ig03JEBDQJ7YlVhg==/lib/arm64:/data/app/~~C552cSwNnaNpoB6xbtTKAA==/com.google.android.webview-nQD708Ig03JEBDQJ7YlVhg==/base.apk!/lib/arm64-v8a:/data/app/~~wWJ7JO-8aSF4QTxp9p4jYQ==/com.google.android.trichromelibrary_733920833-BNCpUq5ZtY1AvPlwHSUrPg==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand
+2025-10-15 15:43:07.018 18652-18652 ApplicationLoaders      com.infosys.afh.student              D  Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+2025-10-15 15:43:07.036 18652-18652 sys.afh.student         com.infosys.afh.student              W  Loading /data/app/~~C552cSwNnaNpoB6xbtTKAA==/com.google.android.webview-nQD708Ig03JEBDQJ7YlVhg==/oat/arm64/base.odex non-executable as it requires an image which we failed to load
+2025-10-15 15:43:07.043 18652-18652 nativeloader            com.infosys.afh.student              D  Configuring clns-11 for other apk /data/app/~~C552cSwNnaNpoB6xbtTKAA==/com.google.android.webview-nQD708Ig03JEBDQJ7YlVhg==/base.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~C552cSwNnaNpoB6xbtTKAA==/com.google.android.webview-nQD708Ig03JEBDQJ7YlVhg==/lib/arm64:/data/app/~~C552cSwNnaNpoB6xbtTKAA==/com.google.android.webview-nQD708Ig03JEBDQJ7YlVhg==/base.apk!/lib/arm64-v8a:/data/app/~~wWJ7JO-8aSF4QTxp9p4jYQ==/com.google.android.trichromelibrary_733920833-BNCpUq5ZtY1AvPlwHSUrPg==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand
+2025-10-15 15:43:07.219 18652-18652 sys.afh.student         com.infosys.afh.student              I  AssetManager2(0xb400007caec66318) locale list changing from [] to [en-US]
+2025-10-15 15:43:07.244 18652-18652 cr_WVCFactoryProvider   com.infosys.afh.student              I  version=140.0.7339.208 (733920833) minSdkVersion=29 multiprocess=true packageId=2 splits=<none>
+2025-10-15 15:43:07.285 18652-18652 nativeloader            com.infosys.afh.student              D  Load /data/app/~~wWJ7JO-8aSF4QTxp9p4jYQ==/com.google.android.trichromelibrary_733920833-BNCpUq5ZtY1AvPlwHSUrPg==/base.apk!/lib/arm64-v8a/libmonochrome_64.so using class loader ns clns-11 (caller=/data/app/~~C552cSwNnaNpoB6xbtTKAA==/com.google.android.webview-nQD708Ig03JEBDQJ7YlVhg==/base.apk): ok
+2025-10-15 15:43:07.313 18652-18652 nativeloader            com.infosys.afh.student              D  Load /system/lib64/libwebviewchromium_plat_support.so using class loader ns clns-11 (caller=/data/app/~~C552cSwNnaNpoB6xbtTKAA==/com.google.android.webview-nQD708Ig03JEBDQJ7YlVhg==/base.apk): ok
+2025-10-15 15:43:07.343 18652-18697 chromium                com.infosys.afh.student              E  [1015/154307.336382:ERROR:android_webview/browser/variations/variations_seed_loader.cc:39] Seed missing signature.
+2025-10-15 15:43:07.353 18652-18697 chromium                com.infosys.afh.student              I  [1015/154307.348447:INFO:android_webview/browser/variations/variations_seed_loader.cc:67] Failed to open file for reading.: No such file or directory (2)
+2025-10-15 15:43:07.438 18652-18652 cr_LibraryLoader        com.infosys.afh.student              I  Successfully loaded native library
+2025-10-15 15:43:07.456 18652-18652 cr_CachingUmaRecorder   com.infosys.afh.student              I  Flushed 14 samples from 14 histograms, 0 samples were dropped.
+2025-10-15 15:43:07.472 18652-18652 cr_CombinedPProvider    com.infosys.afh.student              I  #registerProvider() provider:WV.zj@aaf925f isPolicyCacheEnabled:false policyProvidersSize:0
+2025-10-15 15:43:07.475 18652-18652 cr_PolicyProvider       com.infosys.afh.student              I  #setManagerAndSource() 0
+2025-10-15 15:43:07.513 18652-18652 sys.afh.student         com.infosys.afh.student              I  AssetManager2(0xb400007caec66638) locale list changing from [] to [en-US]
+2025-10-15 15:43:07.529 18652-18652 sys.afh.student         com.infosys.afh.student              I  AssetManager2(0xb400007caec63758) locale list changing from [] to [en-US]
+2025-10-15 15:43:07.710 18652-18652 cr_CombinedPProvider    com.infosys.afh.student              I  #linkNativeInternal() 1
+2025-10-15 15:43:07.718 18652-18652 cr_AppResProvider       com.infosys.afh.student              I  #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+2025-10-15 15:43:07.718 18652-18652 cr_PolicyProvider       com.infosys.afh.student              I  #notifySettingsAvailable() 0
+2025-10-15 15:43:07.718 18652-18652 cr_CombinedPProvider    com.infosys.afh.student              I  #onSettingsAvailable() 0
+2025-10-15 15:43:07.718 18652-18652 cr_CombinedPProvider    com.infosys.afh.student              I  #flushPolicies()
+2025-10-15 15:43:07.881 18652-18716 chromium                com.infosys.afh.student              W  [WARNING:net/dns/dns_config_service_android.cc:69] Failed to read DnsConfig.
+2025-10-15 15:43:07.988 18652-18652 chromium                com.infosys.afh.student              W  [WARNING:android_webview/browser/network_service/net_helpers.cc:143] HTTP Cache size is: 20971520
+2025-10-15 15:43:08.174 18652-18652 CompatChangeReporter    com.infosys.afh.student              D  Compat change id reported: 352594277; UID 10214; state: ENABLED
+2025-10-15 15:43:08.225 18652-18652 Capacitor               com.infosys.afh.student              D  Starting BridgeActivity
+2025-10-15 15:43:08.276 18652-18652 Capacitor               com.infosys.afh.student              D  Registering plugin instance: CapacitorCookies
+2025-10-15 15:43:08.290 18652-18652 Capacitor               com.infosys.afh.student              D  Registering plugin instance: WebView
+2025-10-15 15:43:08.297 18652-18652 Capacitor               com.infosys.afh.student              D  Registering plugin instance: CapacitorHttp
+2025-10-15 15:43:08.299 18652-18652 Capacitor               com.infosys.afh.student              D  Registering plugin instance: App
+2025-10-15 15:43:08.301 18652-18652 Capacitor               com.infosys.afh.student              D  Registering plugin instance: Camera
+2025-10-15 15:43:08.355 18652-18652 Capacitor               com.infosys.afh.student              W  Unable to read file at path public/plugins
+2025-10-15 15:43:08.377 18652-18652 Capacitor               com.infosys.afh.student              D  Loading app at https://localhost
+2025-10-15 15:43:08.431 18652-18721 cr_media                com.infosys.afh.student              W  BLUETOOTH_CONNECT permission is missing.
+2025-10-15 15:43:08.441 18652-18721 cr_media                com.infosys.afh.student              W  getBluetoothAdapter() requires BLUETOOTH permission
+2025-10-15 15:43:08.441 18652-18721 cr_media                com.infosys.afh.student              W  registerBluetoothIntentsIfNeeded: Requires BLUETOOTH permission
+2025-10-15 15:43:08.479 18652-18736 libc                    com.infosys.afh.student              W  Access denied finding property "vendor.mesa.log"
+2025-10-15 15:43:08.480 18652-18736 libc                    com.infosys.afh.student              W  Access denied finding property "vendor.mesa.log.file"
+2025-10-15 15:43:08.480 18652-18736 MESA                    com.infosys.afh.student              E  Failed to open rendernode: No such file or directory
+2025-10-15 15:43:08.541 18652-18716 Capacitor               com.infosys.afh.student              D  Handling local request: https://localhost/
+2025-10-15 15:43:08.570 18652-18652 Capacitor               com.infosys.afh.student              D  App started
+2025-10-15 15:43:08.572 18652-18736 libc                    com.infosys.afh.student              W  Access denied finding property "vendor.mesa.vk.trace.per.submit"
+2025-10-15 15:43:08.572 18652-18736 libc                    com.infosys.afh.student              W  Access denied finding property "vendor.mesa.gallium.print.optio"
+2025-10-15 15:43:08.572 18652-18736 libc                    com.infosys.afh.student              W  Access denied finding property "vendor.mesa.vk.trace.frame"
+2025-10-15 15:43:08.577 18652-18652 WindowOnBackDispatcher  com.infosys.afh.student              W  OnBackInvokedCallback is not enabled for the application.
+                                                                                                    Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+2025-10-15 15:43:08.587 18652-18736 libc                    com.infosys.afh.student              W  Access denied finding property "vendor.mesa.vk.wsi.headless.swa"
+2025-10-15 15:43:08.609 18652-18652 Capacitor/AppPlugin     com.infosys.afh.student              D  Firing change: true
+2025-10-15 15:43:08.609 18652-18652 Capacitor/AppPlugin     com.infosys.afh.student              V  Notifying listeners for event appStateChange
+2025-10-15 15:43:08.609 18652-18652 Capacitor/AppPlugin     com.infosys.afh.student              D  No listeners found for event appStateChange
+2025-10-15 15:43:08.610 18652-18652 Capacitor               com.infosys.afh.student              D  App resumed
+2025-10-15 15:43:08.750 18652-18652 CompatChangeReporter    com.infosys.afh.student              D  Compat change id reported: 349153669; UID 10214; state: ENABLED
+2025-10-15 15:43:08.796 18652-18652 HWUI                    com.infosys.afh.student              W  Unknown dataspace 0
+2025-10-15 15:43:09.096 18652-18751 CameraManagerGlobal     com.infosys.afh.student              I  Connecting to camera service
+2025-10-15 15:43:09.174 18652-18652 Choreographer           com.infosys.afh.student              I  Skipped 41 frames!  The application may be doing too much work on its main thread.
+2025-10-15 15:43:09.390 18652-18673 sys.afh.student         com.infosys.afh.student              I  Compiler allocated 5111KB to compile void android.view.ViewRootImpl.performTraversals()
+2025-10-15 15:43:09.507 18652-18716 Capacitor               com.infosys.afh.student              D  Handling local request: https://localhost/assets/index-xo7Y6M-a.css
+2025-10-15 15:43:09.519 18652-18715 Capacitor               com.infosys.afh.student              D  Handling local request: https://localhost/assets/index-BKNLLMpl.js
+2025-10-15 15:43:09.855 18652-18684 HWUI                    com.infosys.afh.student              I  Davey! duration=1319ms; Flags=1, FrameTimelineVsyncId=251680, IntendedVsync=90719014250704, Vsync=90719697584010, InputEventId=0, HandleInputStart=90719704542945, AnimationStart=90719704565653, PerformTraversalsStart=90719717382862, DrawStart=90720132224487, FrameDeadline=90719030917370, FrameStartTime=90719698985528, FrameInterval=16666666, WorkloadTarget=16666666, SyncQueued=90720170330070, SyncStart=90720177534987, IssueDrawCommandsStart=90720180968029, SwapBuffers=90720273475945, FrameCompleted=90720341238779, DequeueBufferDuration=5000, QueueBufferDuration=607041, GpuCompleted=90720341123070, SwapBuffersCompleted=90720341238779, DisplayPresentTime=0, CommandSubmissionCompleted=90720273475945, 
+2025-10-15 15:43:09.959 18652-18652 Choreographer           com.infosys.afh.student              I  Skipped 45 frames!  The application may be doing too much work on its main thread.
+2025-10-15 15:43:10.084 18652-18683 HWUI                    com.infosys.afh.student              I  Davey! duration=870ms; Flags=0, FrameTimelineVsyncId=251718, IntendedVsync=90719730917342, Vsync=90720480917312, InputEventId=0, HandleInputStart=90720490434112, AnimationStart=90720490436945, PerformTraversalsStart=90720490766904, DrawStart=90720502498362, FrameDeadline=90720364250650, FrameStartTime=90720484591570, FrameInterval=16666666, WorkloadTarget=16666666, SyncQueued=90720515943487, SyncStart=90720518657737, IssueDrawCommandsStart=90720534054529, SwapBuffers=90720536475737, FrameCompleted=90720603677112, DequeueBufferDuration=63444625, QueueBufferDuration=818084, GpuCompleted=90720539917320, SwapBuffersCompleted=90720603677112, DisplayPresentTime=0, CommandSubmissionCompleted=90720536475737, 
+2025-10-15 15:43:10.269 18652-18652 InsetsController        com.infosys.afh.student              D  hide(ime(), fromIme=false)
+2025-10-15 15:43:10.269 18652-18652 ImeTracker              com.infosys.afh.student              I  com.infosys.afh.student:b51fea37: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+2025-10-15 15:43:12.159 18652-18773 ProfileInstaller        com.infosys.afh.student              D  Installing profile for com.infosys.afh.student
+2025-10-15 15:43:35.994 18652-18674 sys.afh.student         com.infosys.afh.student              I  Background concurrent mark compact GC freed 5242KB AllocSpace bytes, 32(1244KB) LOS objects, 49% free, 3847KB/7694KB, paused 241us,7.145ms total 230.501ms
+2025-10-15 15:43:50.404 18652-18716 Capacitor               com.infosys.afh.student              D  Handling local request: https://localhost/assets/infosys-foundation-logo-blue_1760417156143-DphF9aDe.png
+2025-10-15 15:43:50.404 18652-18717 Capacitor               com.infosys.afh.student              D  Handling local request: https://localhost/assets/image_1760420610980-CKtJIgMY.png
+2025-10-15 15:43:50.432 18652-18715 Capacitor               com.infosys.afh.student              D  Handling local request: https://localhost/favicon.ico
