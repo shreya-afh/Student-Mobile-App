@@ -81,3 +81,41 @@ export const insertAttendanceRecordSchema = createInsertSchema(attendanceRecords
 
 export type InsertAttendanceRecord = z.infer<typeof insertAttendanceRecordSchema>;
 export type AttendanceRecord = typeof attendanceRecords.$inferSelect;
+
+export const offerLetters = pgTable("offer_letters", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  
+  // Offer Type: "received" (from company) or "uploaded" (by student)
+  type: text("type").notNull(),
+  
+  // Offer Details
+  company: text("company").notNull(),
+  position: text("position").notNull(),
+  location: text("location"),
+  salary: text("salary"),
+  
+  // Status: "pending", "accepted", "rejected"
+  status: text("status").notNull().default("pending"),
+  
+  // File Information
+  fileName: text("file_name").notNull(),
+  fileUrl: text("file_url").notNull(),
+  fileType: text("file_type"),
+  
+  // Additional Details
+  receivedDate: text("received_date"),
+  deadlineDate: text("deadline_date"),
+  joiningDate: text("joining_date"),
+  description: text("description"),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const insertOfferLetterSchema = createInsertSchema(offerLetters).omit({
+  id: true,
+  createdAt: true,
+});
+
+export type InsertOfferLetter = z.infer<typeof insertOfferLetterSchema>;
+export type OfferLetter = typeof offerLetters.$inferSelect;

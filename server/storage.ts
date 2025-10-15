@@ -1,10 +1,13 @@
 import { 
   users, 
   attendanceRecords,
+  offerLetters,
   type User, 
   type InsertUser,
   type AttendanceRecord,
-  type InsertAttendanceRecord
+  type InsertAttendanceRecord,
+  type OfferLetter,
+  type InsertOfferLetter
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc } from "drizzle-orm";
@@ -25,6 +28,10 @@ export interface IStorage {
   createAttendanceRecord(record: InsertAttendanceRecord): Promise<AttendanceRecord>;
   getAttendanceRecords(userId: string): Promise<AttendanceRecord[]>;
   getAttendanceStats(userId: string): Promise<{ total: number; percentage: number }>;
+  createOfferLetter(offer: InsertOfferLetter): Promise<OfferLetter>;
+  getOfferLetters(userId: string): Promise<OfferLetter[]>;
+  getOfferLetter(id: string): Promise<OfferLetter | undefined>;
+  acceptOfferLetter(id: string): Promise<void>;
 }
 
 // DatabaseStorage uses PostgreSQL for persistent data
@@ -114,6 +121,35 @@ export class DatabaseStorage implements IStorage {
     const totalSessions = 60;
     const percentage = totalSessions > 0 ? Math.round((total / totalSessions) * 100) : 0;
     return { total, percentage };
+  }
+
+  async createOfferLetter(insertOffer: InsertOfferLetter): Promise<OfferLetter> {
+    const [offer] = await db
+      .insert(offerLetters)
+      .values(insertOffer)
+      .returning();
+    return offer;
+  }
+
+  async getOfferLetters(userId: string): Promise<OfferLetter[]> {
+    const offers = await db
+      .select()
+      .from(offerLetters)
+      .where(eq(offerLetters.userId, userId))
+      .orderBy(desc(offerLetters.createdAt));
+    return offers;
+  }
+
+  async getOfferLetter(id: string): Promise<OfferLetter | undefined> {
+    const [offer] = await db.select().from(offerLetters).where(eq(offerLetters.id, id));
+    return offer || undefined;
+  }
+
+  async acceptOfferLetter(id: string): Promise<void> {
+    await db
+      .update(offerLetters)
+      .set({ status: "accepted" })
+      .where(eq(offerLetters.id, id));
   }
 
   private cleanupExpiredOtps(): void {
