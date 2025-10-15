@@ -52,6 +52,7 @@ Preferred communication style: Simple, everyday language.
 ### Data Storage Solutions
 
 **Current Implementation:**
+- PostgreSQL database actively used for attendance records
 - In-memory Map-based storage for users
 - UUID-based primary keys using crypto.randomUUID()
 
@@ -63,6 +64,7 @@ Preferred communication style: Simple, everyday language.
 
 **Schema Structure:**
 - Users table with id, username, and password fields
+- Attendance records table with comprehensive session tracking (userId, sessionId, courseId, mode, location, feedback, rating)
 - Extensible schema pattern using Drizzle's table definitions
 - Type-safe insert operations via Zod schemas
 
@@ -120,5 +122,27 @@ Preferred communication style: Simple, everyday language.
 - Dashboard with quick actions (/dashboard)
 - Course management (/course-enrollment)
 - Attendance system with multi-step flow (/attendance, /attendance/mode, /attendance/feedback)
+- Attendance history tracking (/attendance-history)
 - Achievements and opportunities (/certificates, /job-offers, /job-opportunities)
 - User profile (/profile)
+
+## Recent Changes (October 15, 2025)
+
+### Attendance Recording and History System
+- **Database Integration**: Implemented PostgreSQL storage for attendance records with complete session tracking
+- **Attendance Schema**: Created comprehensive schema with userId, sessionId, courseId, sessionName, courseName, sessionDate, mode (online/offline), location data (lat/long/address), rating (1-5), and feedback text
+- **API Endpoints**: 
+  - POST /api/attendance - Save attendance records to database
+  - GET /api/attendance/:userId - Retrieve all attendance records for a user
+  - GET /api/attendance/stats/:userId - Get attendance statistics (prepared for future use)
+- **Attendance History Page**: New page displaying all attended sessions with:
+  - Session name and course name
+  - Date and mode (online/offline) indicators
+  - Rating display (star icon with numeric rating)
+  - Feedback text
+  - Proper error handling with retry capability
+  - Loading states with user-friendly messages
+  - Empty state when no records exist
+- **Dashboard Integration**: Made Current Course card clickable to navigate to attendance history
+- **Error Handling**: Comprehensive error handling with dedicated error UI and retry functionality
+- **Android Compatibility**: All attendance data persisted in PostgreSQL, fully accessible across web and mobile app
