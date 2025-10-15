@@ -150,76 +150,157 @@ export default function JobOpportunities() {
 
         {/* Job Listings */}
         <div className="space-y-4">
-          {jobs.map((job, index) => (
-            <Card key={index} className="border-gray-200 hover:shadow-md transition-all">
-              <CardContent className="p-4">
-                <div className="flex items-start justify-between mb-2">
-                  <div className="flex-1">
-                    <h3 className="font-['Inter',Helvetica] font-semibold text-[#1d2838] text-base mb-1">
-                      {job.title}
-                    </h3>
-                    <p className="font-['Inter',Helvetica] font-medium text-[#495565] text-sm">
-                      {job.company}
+          {activeTab === "available" ? (
+            jobs.filter(job => !appliedJobs.includes(job.title)).map((job, index) => (
+              <Card key={index} className="border-gray-200 hover:shadow-md transition-all">
+                <CardContent className="p-4">
+                  <div className="flex items-start justify-between mb-2">
+                    <div className="flex-1">
+                      <h3 className="font-['Inter',Helvetica] font-semibold text-[#1d2838] text-base mb-1">
+                        {job.title}
+                      </h3>
+                      <p className="font-['Inter',Helvetica] font-medium text-[#495565] text-sm">
+                        {job.company}
+                      </p>
+                    </div>
+                    <div className="flex flex-col items-end gap-1">
+                      <Badge className={`
+                        ${job.type === "Full-time" ? "bg-[#eff1ff] text-[#5C4C7D]" : ""}
+                        ${job.type === "Internship" ? "bg-[#fef3c7] text-[#92400e]" : ""}
+                        ${job.type === "Part-time" ? "bg-[#f0fdf4] text-[#166534]" : ""}
+                        border-transparent
+                      `}>
+                        {job.type}
+                      </Badge>
+                      <Badge className="bg-[#5C4C7D] text-white border-transparent hover:bg-[#5C4C7D]">
+                        {job.match} match
+                      </Badge>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap gap-3 mb-3 text-[#495565]">
+                    <div className="flex items-center gap-1">
+                      <MapPinIcon className="w-4 h-4" />
+                      <span className="font-['Inter',Helvetica] font-normal text-sm">
+                        {job.location}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <IndianRupeeIcon className="w-4 h-4" />
+                      <span className="font-['Inter',Helvetica] font-normal text-sm">
+                        {job.salary}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <CalendarIcon className="w-4 h-4" />
+                      <span className="font-['Inter',Helvetica] font-normal text-sm">
+                        {job.postedDays}
+                      </span>
+                    </div>
+                  </div>
+
+                  <p className="font-['Inter',Helvetica] font-normal text-[#495565] text-sm mb-3">
+                    {job.description}
+                  </p>
+
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    {job.skills.map((skill, i) => (
+                      <Badge key={i} variant="outline" className="border-gray-200 text-[#495565]">
+                        {skill}
+                      </Badge>
+                    ))}
+                  </div>
+
+                  <Button 
+                    onClick={() => handleApply(job.title)}
+                    className="w-full h-10 bg-[#5C4C7D] hover:bg-[#4C3C6D] text-white"
+                    data-testid={`button-apply-${index}`}
+                  >
+                    Apply Now
+                  </Button>
+                </CardContent>
+              </Card>
+            ))
+          ) : (
+            jobs.filter(job => appliedJobs.includes(job.title)).length > 0 ? (
+              jobs.filter(job => appliedJobs.includes(job.title)).map((job, index) => (
+                <Card key={index} className="border-gray-200 hover:shadow-md transition-all">
+                  <CardContent className="p-4">
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="flex-1">
+                        <h3 className="font-['Inter',Helvetica] font-semibold text-[#1d2838] text-base mb-1">
+                          {job.title}
+                        </h3>
+                        <p className="font-['Inter',Helvetica] font-medium text-[#495565] text-sm">
+                          {job.company}
+                        </p>
+                      </div>
+                      <div className="flex flex-col items-end gap-1">
+                        <Badge className={`
+                          ${job.type === "Full-time" ? "bg-[#eff1ff] text-[#5C4C7D]" : ""}
+                          ${job.type === "Internship" ? "bg-[#fef3c7] text-[#92400e]" : ""}
+                          ${job.type === "Part-time" ? "bg-[#f0fdf4] text-[#166534]" : ""}
+                          border-transparent
+                        `}>
+                          {job.type}
+                        </Badge>
+                        <Badge className="bg-[#00a63e] text-white border-transparent hover:bg-[#00a63e]">
+                          Applied ✓
+                        </Badge>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-wrap gap-3 mb-3 text-[#495565]">
+                      <div className="flex items-center gap-1">
+                        <MapPinIcon className="w-4 h-4" />
+                        <span className="font-['Inter',Helvetica] font-normal text-sm">
+                          {job.location}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <IndianRupeeIcon className="w-4 h-4" />
+                        <span className="font-['Inter',Helvetica] font-normal text-sm">
+                          {job.salary}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <CalendarIcon className="w-4 h-4" />
+                        <span className="font-['Inter',Helvetica] font-normal text-sm">
+                          {job.postedDays}
+                        </span>
+                      </div>
+                    </div>
+
+                    <p className="font-['Inter',Helvetica] font-normal text-[#495565] text-sm mb-3">
+                      {job.description}
                     </p>
-                  </div>
-                  <div className="flex flex-col items-end gap-1">
-                    <Badge className={`
-                      ${job.type === "Full-time" ? "bg-[#eff1ff] text-[#5C4C7D]" : ""}
-                      ${job.type === "Internship" ? "bg-[#fef3c7] text-[#92400e]" : ""}
-                      ${job.type === "Part-time" ? "bg-[#f0fdf4] text-[#166534]" : ""}
-                      border-transparent
-                    `}>
-                      {job.type}
-                    </Badge>
-                    <Badge className="bg-[#5C4C7D] text-white border-transparent hover:bg-[#5C4C7D]">
-                      {job.match} match
-                    </Badge>
-                  </div>
-                </div>
 
-                <div className="flex flex-wrap gap-3 mb-3 text-[#495565]">
-                  <div className="flex items-center gap-1">
-                    <MapPinIcon className="w-4 h-4" />
-                    <span className="font-['Inter',Helvetica] font-normal text-sm">
-                      {job.location}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <IndianRupeeIcon className="w-4 h-4" />
-                    <span className="font-['Inter',Helvetica] font-normal text-sm">
-                      {job.salary}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <CalendarIcon className="w-4 h-4" />
-                    <span className="font-['Inter',Helvetica] font-normal text-sm">
-                      {job.postedDays}
-                    </span>
-                  </div>
-                </div>
+                    <div className="flex flex-wrap gap-2 mb-3">
+                      {job.skills.map((skill, i) => (
+                        <Badge key={i} variant="outline" className="border-gray-200 text-[#495565]">
+                          {skill}
+                        </Badge>
+                      ))}
+                    </div>
 
-                <p className="font-['Inter',Helvetica] font-normal text-[#495565] text-sm mb-3">
-                  {job.description}
-                </p>
-
-                <div className="flex flex-wrap gap-2 mb-3">
-                  {job.skills.map((skill, i) => (
-                    <Badge key={i} variant="outline" className="border-gray-200 text-[#495565]">
-                      {skill}
-                    </Badge>
-                  ))}
-                </div>
-
-                <Button 
-                  onClick={() => handleApply(job.title)}
-                  disabled={appliedJobs.includes(job.title)}
-                  className="w-full h-10 bg-[#5C4C7D] hover:bg-[#4C3C6D] text-white disabled:opacity-50"
-                >
-                  {appliedJobs.includes(job.title) ? "Applied ✓" : "Apply Now"}
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
+                    <div className="bg-[#f0fdf4] border border-[#00a63e] rounded-lg p-3">
+                      <p className="font-['Inter',Helvetica] font-medium text-[#00a63e] text-sm text-center">
+                        Application Submitted Successfully
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))
+            ) : (
+              <Card className="border-gray-200">
+                <CardContent className="p-8 text-center">
+                  <p className="font-['Inter',Helvetica] font-normal text-[#697282] text-sm">
+                    You haven't applied to any jobs yet. Switch to Available Jobs to start applying!
+                  </p>
+                </CardContent>
+              </Card>
+            )
+          )}
         </div>
       </div>
     </div>
