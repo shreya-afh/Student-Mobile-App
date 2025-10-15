@@ -141,8 +141,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
 
-      // OTP verified successfully, delete it
-      await storage.deleteOtp(mobileNumber);
+      // OTP verified successfully - keep it for password reset verification
+      // OTP will be deleted after successful password reset
 
       res.json({ success: true, message: "OTP verified successfully" });
     } catch (error) {
@@ -251,6 +251,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Append to Google Sheet with AFH ID
       await appendToSheet(GOOGLE_SHEET_ID, sheetRow);
 
+      // Delete OTP after successful registration
+      await storage.deleteOtp(registrationData.step3.studentContact);
+
       res.json({ 
         success: true, 
         message: "Registration submitted successfully",
@@ -311,10 +314,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Reset password endpoint
   app.post("/api/reset-password", async (req, res) => {
     try {
-      const { mobileNumber, newPassword } = z.object({
+      const { mobileNumber, otp, newPassword } = z.object({
         mobileNumber: z.string(),
+        otp: z.string(),
         newPassword: z.string().min(6),
       }).parse(req.body);
+
+      // Verify OTP before allowing password reset
+      const savedOtp = await storage.getOtp(mobileNumber);
+      
+      if (!savedOtp || savedOtp !== otp) {
+        return res.status(401).json({ 
+          success: false, 
+          message: "Invalid or expired OTP" 
+        });
+      }
 
       // Find user by mobile number
       const user = await storage.getUserByPhone(mobileNumber);
@@ -331,6 +345,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Update user password
       await storage.updateUserPassword(user.id, hashedPassword);
+
+      // Delete OTP after successful password reset
+      await storage.deleteOtp(mobileNumber);
 
       res.json({ 
         success: true, 

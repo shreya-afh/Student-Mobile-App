@@ -55,6 +55,7 @@ export default function ForgotPassword() {
     },
     onSuccess: (data) => {
       if (data.success) {
+        // Keep OTP in state for password reset verification
         setStep("password");
         toast({
           title: "OTP Verified",
@@ -75,6 +76,7 @@ export default function ForgotPassword() {
     mutationFn: async () => {
       const response = await apiRequest("POST", "/api/reset-password", { 
         mobileNumber: phoneNumber,
+        otp: otp.join(""),
         newPassword 
       });
       return response.json();
