@@ -1,27 +1,23 @@
 import { db } from "../db";
-import { users } from "@shared/schema";
 import { sql } from "drizzle-orm";
 
 /**
  * Generates a unique AFH student ID in the format AFH-XXXXXX
  * where XXXXXX is a 6-digit number padded with zeros
+ * Uses a PostgreSQL sequence to ensure thread-safe unique ID generation
  */
 export async function generateAFHId(): Promise<string> {
-  // Get the highest existing AFH ID number from the database
-  const result = await db.execute(sql`
-    SELECT id FROM users 
-    WHERE id LIKE 'AFH-%' 
-    ORDER BY id DESC 
-    LIMIT 1
+  // Create sequence if it doesn't exist (idempotent operation)
+  await db.execute(sql`
+    CREATE SEQUENCE IF NOT EXISTS afh_id_seq START WITH 1
   `);
 
-  let nextNumber = 1;
+  // Get the next value from the sequence (thread-safe)
+  const result = await db.execute(sql`
+    SELECT nextval('afh_id_seq') as next_id
+  `);
 
-  if (result.rows.length > 0) {
-    const lastId = result.rows[0].id as string;
-    const lastNumber = parseInt(lastId.replace('AFH-', ''), 10);
-    nextNumber = lastNumber + 1;
-  }
+  const nextNumber = Number(result.rows[0].next_id);
 
   // Format the number with leading zeros to make it 6 digits
   const paddedNumber = nextNumber.toString().padStart(6, '0');
