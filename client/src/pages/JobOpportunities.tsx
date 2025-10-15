@@ -109,7 +109,7 @@ export default function JobOpportunities() {
                 : "text-[#495565]"
             }`}
           >
-            Available Jobs (3)
+            Available Jobs ({jobs.filter(job => !appliedJobs.includes(job.title)).length})
           </button>
           <button
             onClick={() => setActiveTab("applied")}
@@ -119,17 +119,7 @@ export default function JobOpportunities() {
                 : "text-[#495565]"
             }`}
           >
-            Applied (1)
-          </button>
-          <button
-            onClick={() => setActiveTab("recent")}
-            className={`flex-1 py-2 px-3 rounded-md font-['Inter',Helvetica] font-medium text-sm transition-colors ${
-              activeTab === "recent"
-                ? "bg-white text-[#5C4C7D] shadow-sm"
-                : "text-[#495565]"
-            }`}
-          >
-            Recent Placements (2)
+            Applied ({appliedJobs.length})
           </button>
           </div>
         </div>
