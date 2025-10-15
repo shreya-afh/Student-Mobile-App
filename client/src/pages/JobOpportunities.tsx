@@ -26,7 +26,7 @@ export default function JobOpportunities() {
     });
   };
 
-  const jobs = [
+  const allJobs = [
     {
       title: "Digital Marketing Executive",
       company: "TechCorp Solutions",
@@ -34,7 +34,6 @@ export default function JobOpportunities() {
       salary: "₹3-4 LPA",
       postedDays: "2 days ago",
       type: "Full-time",
-      match: "92%",
       skills: ["SEO", "Social Media", "Content Creation", "+1 more"],
       description: "We are looking for a Digital Marketing Executive to join our growing team...",
     },
@@ -45,7 +44,6 @@ export default function JobOpportunities() {
       salary: "₹15,000/month",
       postedDays: "1 week ago",
       type: "Internship",
-      match: "85%",
       skills: ["Social Media", "Content Creation", "Communication"],
       description: "Great opportunity for freshers to gain experience in social media marketing...",
     },
@@ -56,11 +54,21 @@ export default function JobOpportunities() {
       salary: "₹2-3 LPA",
       postedDays: "3 days ago",
       type: "Part-time",
-      match: "78%",
       skills: ["Content Writing", "Design", "Social Media"],
       description: "Looking for a creative content creator to develop engaging content...",
     },
   ];
+
+  // Filter jobs based on search query
+  const jobs = allJobs.filter(job => {
+    if (!searchQuery) return true;
+    const query = searchQuery.toLowerCase();
+    return (
+      job.title.toLowerCase().includes(query) ||
+      job.company.toLowerCase().includes(query) ||
+      job.skills.some(skill => skill.toLowerCase().includes(query))
+    );
+  });
 
   return (
     <div className="h-screen bg-[#faf9fb] flex flex-col overflow-hidden">
@@ -126,9 +134,9 @@ export default function JobOpportunities() {
       </header>
 
       <div className="flex-1 overflow-y-auto p-4">
-        {/* Search and Filters */}
+        {/* Search */}
         <div className="mb-4">
-          <div className="relative mb-3">
+          <div className="relative">
             <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[#697282]" />
             <Input
               placeholder="Search jobs or companies"
@@ -136,15 +144,6 @@ export default function JobOpportunities() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
-          </div>
-
-          <div className="flex gap-2">
-            <Button variant="outline" className="flex-1 h-10 border-gray-200 text-[#495565]">
-              All Locations
-            </Button>
-            <Button variant="outline" className="flex-1 h-10 border-gray-200 text-[#495565]">
-              All Types
-            </Button>
           </div>
         </div>
 
@@ -163,19 +162,14 @@ export default function JobOpportunities() {
                         {job.company}
                       </p>
                     </div>
-                    <div className="flex flex-col items-end gap-1">
-                      <Badge className={`
-                        ${job.type === "Full-time" ? "bg-[#eff1ff] text-[#5C4C7D]" : ""}
-                        ${job.type === "Internship" ? "bg-[#fef3c7] text-[#92400e]" : ""}
-                        ${job.type === "Part-time" ? "bg-[#f0fdf4] text-[#166534]" : ""}
-                        border-transparent
-                      `}>
-                        {job.type}
-                      </Badge>
-                      <Badge className="bg-[#5C4C7D] text-white border-transparent hover:bg-[#5C4C7D]">
-                        {job.match} match
-                      </Badge>
-                    </div>
+                    <Badge className={`
+                      ${job.type === "Full-time" ? "bg-[#eff1ff] text-[#5C4C7D]" : ""}
+                      ${job.type === "Internship" ? "bg-[#fef3c7] text-[#92400e]" : ""}
+                      ${job.type === "Part-time" ? "bg-[#f0fdf4] text-[#166534]" : ""}
+                      border-transparent
+                    `}>
+                      {job.type}
+                    </Badge>
                   </div>
 
                   <div className="flex flex-wrap gap-3 mb-3 text-[#495565]">
