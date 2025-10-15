@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useLocation } from "wouter";
-import { ChevronLeftIcon, CameraIcon } from "lucide-react";
+import { ChevronLeftIcon, CameraIcon, EyeIcon, EyeOffIcon } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useRegistration } from "@/contexts/RegistrationContext";
 import { useToast } from "@/hooks/use-toast";
@@ -15,7 +15,11 @@ export default function RegisterStep4() {
   const [, setLocation] = useLocation();
   const { registrationData, updateStep4 } = useRegistration();
   const [formData, setFormData] = useState(registrationData.step4);
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [aadhaarError, setAadhaarError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const { toast } = useToast();
   useAndroidBackButton("/register/step3");
 
@@ -46,6 +50,16 @@ export default function RegisterStep4() {
 
     if (!validateAadhaar(formData.aadhaar)) {
       setAadhaarError("Enter a valid 12-digit Aadhaar number");
+      return;
+    }
+
+    if (!formData.password || formData.password.length < 6) {
+      setPasswordError("Password must be at least 6 characters");
+      return;
+    }
+
+    if (formData.password !== confirmPassword) {
+      setPasswordError("Passwords do not match");
       return;
     }
 
@@ -222,6 +236,70 @@ export default function RegisterStep4() {
                   </p>
                 )}
               </button>
+            </div>
+
+            <div>
+              <Label htmlFor="password" className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm">
+                Create Password *
+              </Label>
+              <div className="relative mt-1">
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter password (min. 6 characters)"
+                  value={formData.password}
+                  onChange={(e) => {
+                    setFormData({ ...formData, password: e.target.value });
+                    setPasswordError("");
+                  }}
+                  className={passwordError ? 'border-red-500 pr-10' : 'pr-10'}
+                  required
+                  data-testid="input-password"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#697282] hover:text-[#495565]"
+                >
+                  {showPassword ? <EyeOffIcon className="w-5 h-5" /> : <EyeIcon className="w-5 h-5" />}
+                </button>
+              </div>
+              <p className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs mt-1">
+                You'll use this password to login
+              </p>
+            </div>
+
+            <div>
+              <Label htmlFor="confirmPassword" className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm">
+                Confirm Password *
+              </Label>
+              <div className="relative mt-1">
+                <Input
+                  id="confirmPassword"
+                  type={showConfirmPassword ? "text" : "password"}
+                  placeholder="Re-enter password"
+                  value={confirmPassword}
+                  onChange={(e) => {
+                    setConfirmPassword(e.target.value);
+                    setPasswordError("");
+                  }}
+                  className={passwordError ? 'border-red-500 pr-10' : 'pr-10'}
+                  required
+                  data-testid="input-confirm-password"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#697282] hover:text-[#495565]"
+                >
+                  {showConfirmPassword ? <EyeOffIcon className="w-5 h-5" /> : <EyeIcon className="w-5 h-5" />}
+                </button>
+              </div>
+              {passwordError && (
+                <p className="font-['Inter',Helvetica] font-normal text-red-500 text-xs mt-1">
+                  {passwordError}
+                </p>
+              )}
             </div>
 
             <Button

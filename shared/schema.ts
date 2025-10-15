@@ -36,6 +36,9 @@ export const users = pgTable("users", {
   isGovtEmployee: text("is_govt_employee").notNull(),
   selfieUrl: text("selfie_url"),
   
+  // Authentication
+  password: text("password").notNull(),
+  
   createdAt: timestamp("created_at").defaultNow(),
 });
 

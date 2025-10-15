@@ -4,6 +4,7 @@ import { storage } from "./storage";
 import multer from "multer";
 import { uploadToDrive, appendToSheet } from "./google-api";
 import { z } from "zod";
+import bcrypt from "bcrypt";
 
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -186,9 +187,39 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const enrollmentDate = new Date();
       const enrollmentFormatted = `${enrollmentDate.getDate().toString().padStart(2, '0')}/${(enrollmentDate.getMonth() + 1).toString().padStart(2, '0')}/${enrollmentDate.getFullYear()}`;
 
-      // Prepare data for Google Sheets - exact column order as specified
+      // Hash password securely
+      const hashedPassword = await bcrypt.hash(registrationData.step4.password, 10);
+
+      // Save user to database first to get the AFH ID
+      const user = await storage.createUser({
+        fullName: registrationData.step1.fullName,
+        gender: registrationData.step1.gender,
+        guardianName: registrationData.step1.guardianName,
+        guardianOccupation: registrationData.step1.guardianOccupation,
+        dateOfBirth: JSON.stringify(registrationData.step1.dateOfBirth),
+        collegeName: registrationData.step2.collegeName,
+        course: registrationData.step2.course,
+        startYear: registrationData.step2.startYear,
+        endYear: registrationData.step2.endYear,
+        city: registrationData.step2.city,
+        district: registrationData.step2.district,
+        state: registrationData.step2.state,
+        pincode: registrationData.step2.pincode,
+        studentContact: registrationData.step3.studentContact,
+        whatsappNumber: registrationData.step3.whatsappNumber,
+        guardianContact: registrationData.step3.guardianContact,
+        email: registrationData.step3.email,
+        familyIncome: registrationData.step3.familyIncome,
+        aadhaar: registrationData.step4.aadhaar,
+        isPWD: registrationData.step4.isPWD,
+        isGovtEmployee: registrationData.step4.isGovtEmployee,
+        selfieUrl: photoUrl || null,
+        password: hashedPassword,
+      });
+
+      // Prepare data for Google Sheets with AFH ID as first column
       const sheetRow = [
-        "", // Application Id (empty)
+        user.id, // AFH Student ID (first column)
         registrationData.step4.aadhaar, // Aadhaar No
         enrollmentFormatted, // Enrollment Date
         registrationData.step1.fullName, // Name
@@ -217,34 +248,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         registrationData.step4.isGovtEmployee, // Is a family member govt. employee?
       ];
 
-      // Append to Google Sheet
+      // Append to Google Sheet with AFH ID
       await appendToSheet(GOOGLE_SHEET_ID, sheetRow);
-
-      // Save user to database
-      const user = await storage.createUser({
-        fullName: registrationData.step1.fullName,
-        gender: registrationData.step1.gender,
-        guardianName: registrationData.step1.guardianName,
-        guardianOccupation: registrationData.step1.guardianOccupation,
-        dateOfBirth: JSON.stringify(registrationData.step1.dateOfBirth),
-        collegeName: registrationData.step2.collegeName,
-        course: registrationData.step2.course,
-        startYear: registrationData.step2.startYear,
-        endYear: registrationData.step2.endYear,
-        city: registrationData.step2.city,
-        district: registrationData.step2.district,
-        state: registrationData.step2.state,
-        pincode: registrationData.step2.pincode,
-        studentContact: registrationData.step3.studentContact,
-        whatsappNumber: registrationData.step3.whatsappNumber,
-        guardianContact: registrationData.step3.guardianContact,
-        email: registrationData.step3.email,
-        familyIncome: registrationData.step3.familyIncome,
-        aadhaar: registrationData.step4.aadhaar,
-        isPWD: registrationData.step4.isPWD,
-        isGovtEmployee: registrationData.step4.isGovtEmployee,
-        selfieUrl: photoUrl || null,
-      });
 
       res.json({ 
         success: true, 

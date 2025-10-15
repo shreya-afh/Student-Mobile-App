@@ -2,8 +2,8 @@ import { db } from "../db";
 import { sql } from "drizzle-orm";
 
 /**
- * Generates a unique AFH student ID in the format AFH-XXXXXX
- * where XXXXXX is a 6-digit number padded with zeros
+ * Generates a unique AFH student ID in the format AFH-XXXXXXX
+ * where XXXXXXX is a 7-digit number padded with zeros
  * Uses a PostgreSQL sequence to ensure thread-safe unique ID generation
  */
 export async function generateAFHId(): Promise<string> {
@@ -19,7 +19,7 @@ export async function generateAFHId(): Promise<string> {
 
   const nextNumber = Number(result.rows[0].next_id);
 
-  // Format the number with leading zeros to make it 6 digits
-  const paddedNumber = nextNumber.toString().padStart(6, '0');
+  // Format the number with leading zeros to make it 7 digits
+  const paddedNumber = nextNumber.toString().padStart(7, '0');
   return `AFH-${paddedNumber}`;
 }

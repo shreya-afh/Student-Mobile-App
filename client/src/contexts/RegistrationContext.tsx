@@ -30,6 +30,7 @@ interface RegistrationData {
     isPWD: string;
     isGovtEmployee: string;
     selfie: File | null;
+    password: string;
   };
 }
 
@@ -72,6 +73,7 @@ const initialRegistrationData: RegistrationData = {
     isPWD: "",
     isGovtEmployee: "",
     selfie: null,
+    password: "",
   },
 };
 
