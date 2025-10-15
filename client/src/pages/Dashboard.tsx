@@ -150,9 +150,6 @@ export default function Dashboard() {
               </div>
 
               <div className="mt-3 pt-3 border-t border-[#0000001a]">
-                <p className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm mb-1">
-                  Next session: Tomorrow, 10:00 AM
-                </p>
                 <p className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs">
                   Attendance: <span className="text-[#5C4C7D] font-medium">92%</span>
                 </p>
@@ -215,7 +212,7 @@ export default function Dashboard() {
           <Card className="border-gray-200">
             <CardContent className="p-3 text-center">
               <div className="font-['Inter',Helvetica] font-bold text-[#5C4C7D] text-xl">92%</div>
-              <div className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs mt-1">
+              <div className="font-['Inter',Helvetica] font-normal text-[#697282] text-sm mt-1">
                 Attendance
               </div>
             </CardContent>
