@@ -1,0 +1,26 @@
+shreyamishra@Shreyas-MacBook-Air Student-Mobile-App % npm run build       
+
+> rest-express@1.0.0 build
+> vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist
+
+vite v5.4.20 building for production...
+transforming (1) index.htmlBrowserslist: browsers data (caniuse-lite) is 12 months old. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+✓ 43 modules transformed.
+x Build failed in 772ms
+error during build:
+[vite]: Rollup failed to resolve import "@capacitor/geolocation" from "/Users/shreyamishra/StudioProjects/Student-Mobile-App/client/src/pages/attendance/Step2.tsx".
+This is most likely unintended because it can break your application at runtime.
+If you do want to externalize this module explicitly add it to
+`build.rollupOptions.external`
+    at viteWarn (file:///Users/shreyamishra/StudioProjects/Student-Mobile-App/node_modules/vite/dist/node/chunks/dep-D_zLpgQd.js:65854:17)
+    at onwarn (file:///Users/shreyamishra/StudioProjects/Student-Mobile-App/node_modules/@vitejs/plugin-react/dist/index.js:90:7)
+    at onRollupWarning (file:///Users/shreyamishra/StudioProjects/Student-Mobile-App/node_modules/vite/dist/node/chunks/dep-D_zLpgQd.js:65884:5)
+    at onwarn (file:///Users/shreyamishra/StudioProjects/Student-Mobile-App/node_modules/vite/dist/node/chunks/dep-D_zLpgQd.js:65549:7)
+    at file:///Users/shreyamishra/StudioProjects/Student-Mobile-App/node_modules/rollup/dist/es/shared/node-entry.js:19452:13
+    at Object.logger [as onLog] (file:///Users/shreyamishra/StudioProjects/Student-Mobile-App/node_modules/rollup/dist/es/shared/node-entry.js:21178:9)
+    at ModuleLoader.handleInvalidResolvedId (file:///Users/shreyamishra/StudioProjects/Student-Mobile-App/node_modules/rollup/dist/es/shared/node-entry.js:20067:26)
+    at ModuleLoader.resolveDynamicImport (file:///Users/shreyamishra/StudioProjects/Student-Mobile-App/node_modules/rollup/dist/es/shared/node-entry.js:20125:58)
+    at async file:///Users/shreyamishra/StudioProjects/Student-Mobile-App/node_modules/rollup/dist/es/shared/node-entry.js:20013:32
+shreyamishra@Shreyas-MacBook-Air Student-Mobile-App % 
