@@ -144,7 +144,12 @@ export function PopupCylinderPicker({ items, value, onChange, label, disabled = 
                 className="h-full overflow-y-auto scrollbar-hide" 
                 ref={scrollRef} 
                 onScroll={handleScroll}
-                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                style={{ 
+                  scrollbarWidth: 'none', 
+                  msOverflowStyle: 'none',
+                  WebkitOverflowScrolling: 'touch',
+                  overscrollBehavior: 'contain'
+                }}
               >
                 <div className="py-[80px]">
                   {infiniteItems.map((item, idx) => (
