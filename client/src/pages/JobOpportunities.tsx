@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useLocation } from "wouter";
 import { ChevronLeftIcon, SearchIcon, MapPinIcon, CalendarIcon, IndianRupeeIcon } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useAndroidBackButton } from "@/hooks/useAndroidBackButton";
 import infosysLogo from "@assets/infosys-foundation-logo-blue_1760417156143.png";
@@ -16,14 +16,48 @@ export default function JobOpportunities() {
   const [activeTab, setActiveTab] = useState("available");
   const [searchQuery, setSearchQuery] = useState("");
   const [appliedJobs, setAppliedJobs] = useState<string[]>([]);
+  const [recentlyApplied, setRecentlyApplied] = useState<Set<string>>(new Set());
+  const [fadingOut, setFadingOut] = useState<Set<string>>(new Set());
+  const timersRef = useRef<Map<string, NodeJS.Timeout[]>>(new Map());
   useAndroidBackButton("/dashboard");
+
+  useEffect(() => {
+    return () => {
+      timersRef.current.forEach(timers => timers.forEach(clearTimeout));
+      timersRef.current.clear();
+    };
+  }, []);
 
   const handleApply = (jobTitle: string) => {
     setAppliedJobs(prev => prev.includes(jobTitle) ? prev : [...prev, jobTitle]);
+    setRecentlyApplied(prev => new Set(prev).add(jobTitle));
+    
     toast({
       title: "Application Submitted",
       description: `Your application for ${jobTitle} has been submitted successfully!`,
     });
+
+    const fadeTimer = setTimeout(() => {
+      setFadingOut(prev => new Set(prev).add(jobTitle));
+      
+      const removeTimer = setTimeout(() => {
+        setRecentlyApplied(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(jobTitle);
+          return newSet;
+        });
+        setFadingOut(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(jobTitle);
+          return newSet;
+        });
+        timersRef.current.delete(jobTitle);
+      }, 300);
+      
+      timersRef.current.set(jobTitle, [fadeTimer, removeTimer]);
+    }, 2700);
+    
+    timersRef.current.set(jobTitle, [fadeTimer]);
   };
 
   const allJobs = [
@@ -287,11 +321,17 @@ export default function JobOpportunities() {
                     ))}
                   </div>
 
-                  <div className="bg-[#f0fdf4] border border-[#00a63e] rounded-lg p-3">
-                    <p className="font-['Inter',Helvetica] font-medium text-[#00a63e] text-sm text-center">
-                      Application Submitted Successfully
-                    </p>
-                  </div>
+                  {recentlyApplied.has(job.title) && (
+                    <div className={`bg-[#f0fdf4] border border-[#00a63e] rounded-lg p-3 transition-all duration-300 ${
+                      fadingOut.has(job.title) 
+                        ? 'opacity-0 translate-y-2' 
+                        : 'opacity-100 translate-y-0 animate-in fade-in slide-in-from-bottom-2'
+                    }`}>
+                      <p className="font-['Inter',Helvetica] font-medium text-[#00a63e] text-sm text-center">
+                        Application Submitted Successfully
+                      </p>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             ))
