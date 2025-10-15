@@ -148,7 +148,8 @@ export function PopupCylinderPicker({ items, value, onChange, label, disabled = 
                   scrollbarWidth: 'none', 
                   msOverflowStyle: 'none',
                   WebkitOverflowScrolling: 'touch',
-                  overscrollBehavior: 'contain'
+                  overscrollBehavior: 'contain',
+                  touchAction: 'pan-y'
                 }}
               >
                 <div className="py-[80px]">

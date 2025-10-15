@@ -159,7 +159,7 @@ export default function Dashboard() {
         </div>
       </header>
 
-      <div className="flex-1 overflow-y-auto p-4 pb-20 bg-[#faf9fb]" style={{ WebkitOverflowScrolling: 'touch', overscrollBehavior: 'contain' }}>
+      <div className="flex-1 overflow-y-auto p-4 pb-20 bg-[#faf9fb]" style={{ WebkitOverflowScrolling: 'touch', overscrollBehavior: 'contain', touchAction: 'pan-y' }}>
         {/* Quick Actions */}
         <h2 className="font-['Inter',Helvetica] font-bold text-[#1d2838] text-lg mb-4">
           Quick Actions

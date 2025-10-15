@@ -170,7 +170,7 @@ export default function JobOpportunities() {
         </div>
       </header>
 
-      <div className="flex-1 overflow-y-auto p-4" style={{ WebkitOverflowScrolling: 'touch', overscrollBehavior: 'contain' }}>
+      <div className="flex-1 overflow-y-auto p-4" style={{ WebkitOverflowScrolling: 'touch', overscrollBehavior: 'contain', touchAction: 'pan-y' }}>
         {/* Search */}
         <div className="mb-4">
           <div className="relative">
