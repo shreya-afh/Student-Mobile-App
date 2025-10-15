@@ -184,3 +184,24 @@ Preferred communication style: Simple, everyday language.
 - **Dashboard Integration**: Made Current Course card clickable to navigate to attendance history
 - **Error Handling**: Comprehensive error handling with dedicated error UI and retry functionality
 - **Android Compatibility**: All attendance data persisted in PostgreSQL, fully accessible across web and mobile app
+
+### Offer Letters Management System
+- **Database Schema**: Created comprehensive offer_letters table with support for both received and uploaded offers
+  - Fields: id, userId, type (received/uploaded), company, position, location, salary, status, fileName, fileUrl, fileType, receivedDate, deadlineDate, joiningDate, description
+  - Status tracking: pending, accepted, rejected
+  - File metadata storage for various document formats (PDF, DOC, DOCX)
+- **API Endpoints**:
+  - POST /api/offer-letters/upload - Upload offer letters to Google Drive with metadata
+  - GET /api/offer-letters/:userId - Fetch all offer letters for a user
+  - POST /api/offer-letters/:id/accept - Accept an offer letter and update status
+- **Frontend Features**:
+  - Upload dialog with company name and position fields
+  - File upload with format validation (PDF, DOC, DOCX)
+  - Separation of received vs uploaded offers with distinct UI sections
+  - Hyperlink-based document viewing (opens in new tab)
+  - Accept button for pending received offers
+  - Status badges (accepted, pending, uploaded)
+  - Empty state for users with no offers
+  - Loading states and error handling
+- **File Storage**: Offer letters uploaded to Google Drive with organized naming convention
+- **Data Flow**: Complete integration with authentication context for user-specific offer management
