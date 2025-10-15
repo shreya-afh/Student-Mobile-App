@@ -159,7 +159,7 @@ export default function Dashboard() {
         </div>
       </header>
 
-      <div className="flex-1 overflow-y-auto p-4 pb-20 bg-[#faf9fb]">
+      <div className="flex-1 overflow-y-auto p-4 pb-20 bg-white">
         {/* Quick Actions */}
         <h2 className="font-['Inter',Helvetica] font-bold text-[#1d2838] text-lg mb-4">
           Quick Actions
