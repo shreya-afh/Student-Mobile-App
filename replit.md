@@ -128,16 +128,45 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes (October 15, 2025)
 
-### AFH Student ID System
-- **ID Format**: Implemented AFH-XXXXXX format for all student user IDs (6-digit zero-padded numbers)
+### AFH Student ID System & Password Authentication
+- **ID Format**: Implemented AFH-XXXXXXX format for all student user IDs (7-digit zero-padded numbers, e.g., AFH-0000001)
 - **Thread-Safe Generation**: Uses PostgreSQL sequence (afh_id_seq) for atomic, race-condition-free ID generation
 - **Primary Key**: AFH IDs serve as primary keys for all student data across the system
-- **Format Examples**: AFH-000001, AFH-000002, AFH-695951
+- **Password Security**: 
+  - Added password field to registration Step 4 with confirmation validation
+  - Bcrypt password hashing (10 salt rounds) implemented in backend
+  - Password stored securely in database (never sent in API responses)
+  - Minimum 6-character password requirement enforced
+- **Post-Registration Flow**: 
+  - AFH ID displayed to user after successful registration with alert notification
+  - User prompted to note down AFH ID for future login
+  - Automatic redirect to dashboard after acknowledgment
 - **Implementation**: 
-  - Removed database-level UUID defaults from user schema
   - Created generateAFHId() utility function using PostgreSQL nextval() for thread-safe ID assignment
   - Updated storage layer to generate AFH IDs before user creation
   - All user references and foreign keys work with AFH-format IDs
+
+### Login & Password Reset System
+- **Login Authentication**:
+  - Updated login to use AFH Student ID instead of phone number
+  - Password-based authentication with bcrypt verification
+  - POST /api/login endpoint with AFH ID and password validation
+  - Auto-uppercase input for AFH ID field
+  - Show/hide password toggle for better UX
+- **Forgot Password Flow**:
+  - Created 3-step forgot password process:
+    1. Enter registered mobile number → Send OTP
+    2. Verify OTP (5-digit code)
+    3. Set new password with confirmation
+  - POST /api/reset-password endpoint for password updates
+  - OTP verification reused from registration flow
+  - getUserByPhone() and updateUserPassword() storage methods added
+  - Password strength validation (min 6 characters)
+- **Security Enhancements**:
+  - Password never exposed in API responses
+  - Bcrypt password comparison for login
+  - Secure password hashing before database storage
+  - Session-based user authentication maintained
 
 ### Attendance Recording and History System
 - **Database Integration**: Implemented PostgreSQL storage for attendance records with complete session tracking

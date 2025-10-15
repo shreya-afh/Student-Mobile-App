@@ -10,6 +10,7 @@ import { useEffect } from "react";
 
 import Landing from "@/pages/Landing";
 import Login from "@/pages/Login";
+import ForgotPassword from "@/pages/ForgotPassword";
 import RegisterStep1 from "@/pages/register/Step1";
 import RegisterStep2 from "@/pages/register/Step2";
 import RegisterStep3 from "@/pages/register/Step3";
@@ -65,6 +66,7 @@ function Router() {
           <Login />
         </PublicRoute>
       </Route>
+      <Route path="/forgot-password" component={ForgotPassword} />
       <Route path="/register/step1" component={RegisterStep1} />
       <Route path="/register/step2" component={RegisterStep2} />
       <Route path="/register/step3" component={RegisterStep3} />

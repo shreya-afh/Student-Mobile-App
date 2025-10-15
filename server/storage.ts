@@ -16,7 +16,9 @@ import { generateAFHId } from "./utils/id-generator";
 export interface IStorage {
   getUser(id: string): Promise<User | undefined>;
   getUserByContact(contact: string): Promise<User | undefined>;
+  getUserByPhone(phone: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
+  updateUserPassword(id: string, hashedPassword: string): Promise<void>;
   saveOtp(mobileNumber: string, otp: string): Promise<void>;
   getOtp(mobileNumber: string): Promise<string | undefined>;
   deleteOtp(mobileNumber: string): Promise<void>;
@@ -43,6 +45,11 @@ export class DatabaseStorage implements IStorage {
     return user || undefined;
   }
 
+  async getUserByPhone(phone: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.studentContact, phone));
+    return user || undefined;
+  }
+
   async createUser(insertUser: InsertUser): Promise<User> {
     const id = await generateAFHId();
     const [user] = await db
@@ -50,6 +57,13 @@ export class DatabaseStorage implements IStorage {
       .values({ ...insertUser, id })
       .returning();
     return user;
+  }
+
+  async updateUserPassword(id: string, hashedPassword: string): Promise<void> {
+    await db
+      .update(users)
+      .set({ password: hashedPassword })
+      .where(eq(users.id, id));
   }
 
   async saveOtp(mobileNumber: string, otp: string): Promise<void> {

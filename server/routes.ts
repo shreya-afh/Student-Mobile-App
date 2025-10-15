@@ -308,6 +308,43 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Reset password endpoint
+  app.post("/api/reset-password", async (req, res) => {
+    try {
+      const { mobileNumber, newPassword } = z.object({
+        mobileNumber: z.string(),
+        newPassword: z.string().min(6),
+      }).parse(req.body);
+
+      // Find user by mobile number
+      const user = await storage.getUserByPhone(mobileNumber);
+      
+      if (!user) {
+        return res.status(404).json({ 
+          success: false, 
+          message: "User not found" 
+        });
+      }
+
+      // Hash the new password
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+      // Update user password
+      await storage.updateUserPassword(user.id, hashedPassword);
+
+      res.json({ 
+        success: true, 
+        message: "Password reset successful" 
+      });
+    } catch (error) {
+      console.error("Reset password error:", error);
+      res.status(500).json({ 
+        success: false, 
+        message: "Failed to reset password" 
+      });
+    }
+  });
+
   // Get user profile by ID
   app.get("/api/user/:id", async (req, res) => {
     try {
