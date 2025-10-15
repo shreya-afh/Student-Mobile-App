@@ -8,7 +8,6 @@ import infosysLogo from "@assets/infosys-foundation-logo-blue_1760417156143.png"
 import aspireForHerLogo from "@assets/image_1760420610980.png";
 import { validateAttendanceQR, type AttendanceQRData } from "@shared/attendance-schema";
 import { useToast } from "@/hooks/use-toast";
-import { Geolocation } from '@capacitor/geolocation';
 
 function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
   const R = 6371e3;
@@ -109,6 +108,8 @@ export default function AttendanceStep2() {
     setLocationError(null);
 
     try {
+      const { Geolocation } = await import('@capacitor/geolocation');
+      
       const permission = await Geolocation.checkPermissions();
       
       if (permission.location !== 'granted') {

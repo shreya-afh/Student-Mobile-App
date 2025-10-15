@@ -1,19 +1,23 @@
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
-import { Capacitor } from "@capacitor/core";
 
 // Get API base URL based on platform
-export function getApiBaseUrl(): string {
-  if (Capacitor.isNativePlatform()) {
-    // Running in native Android/iOS app
-    // For Android Emulator: use 10.0.2.2
-    // For Real Device: use your Mac's IP (e.g., 192.168.29.88)
-    return "http://10.0.2.2:5000";
+export async function getApiBaseUrl(): Promise<string> {
+  try {
+    const { Capacitor } = await import("@capacitor/core");
+    if (Capacitor.isNativePlatform()) {
+      // Running in native Android/iOS app
+      // For Android Emulator: use 10.0.2.2
+      // For Real Device: use your Mac's IP (e.g., 192.168.29.88)
+      return "http://10.0.2.2:5000";
+    }
+  } catch (error) {
+    console.log('Capacitor not available, using web mode');
   }
   // Running in web browser - use relative URLs
   return "";
 }
 
-const API_BASE_URL = getApiBaseUrl();
+let API_BASE_URL = "";
 
 async function throwIfResNotOk(res: Response) {
   if (!res.ok) {

@@ -1,17 +1,29 @@
 import { useEffect } from 'react';
-import { App } from '@capacitor/app';
 import { useLocation } from 'wouter';
 
 export function useAndroidBackButton(backPath: string) {
   const [, setLocation] = useLocation();
 
   useEffect(() => {
-    const handler = App.addListener('backButton', () => {
-      setLocation(backPath);
-    });
+    let handler: any;
+    
+    const setupListener = async () => {
+      try {
+        const { App } = await import('@capacitor/app');
+        handler = await App.addListener('backButton', () => {
+          setLocation(backPath);
+        });
+      } catch (error) {
+        console.log('Capacitor App plugin not available:', error);
+      }
+    };
+
+    setupListener();
 
     return () => {
-      handler.then(h => h.remove());
+      if (handler) {
+        handler.remove();
+      }
     };
   }, [backPath, setLocation]);
 }
