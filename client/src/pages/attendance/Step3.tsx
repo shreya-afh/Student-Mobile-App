@@ -73,13 +73,8 @@ export default function AttendanceStep3() {
       rating: number;
       feedback?: string;
     }) => {
-      return apiRequest("/api/attendance", {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await apiRequest("POST", "/api/attendance", data);
+      return response.json();
     },
     onSuccess: () => {
       toast({

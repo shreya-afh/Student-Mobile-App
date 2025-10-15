@@ -146,6 +146,14 @@ export const InformationSection = (): JSX.Element => {
           <div className="flex flex-col gap-4">
             <div className="flex flex-col">
               <div className="[font-family:'Inter',Helvetica] font-medium text-neutral-950 text-[14.4px] tracking-[-0.18px] leading-[20.6px]">
+                {profileData?.id || "Not provided"}
+              </div>
+              <div className="[font-family:'Inter',Helvetica] font-normal text-[#697282] text-xs tracking-[0] leading-4">
+                Registration ID
+              </div>
+            </div>
+            <div className="flex flex-col">
+              <div className="[font-family:'Inter',Helvetica] font-medium text-neutral-950 text-[14.4px] tracking-[-0.18px] leading-[20.6px]">
                 {profileData?.fullName || "Not provided"}
               </div>
               <div className="[font-family:'Inter',Helvetica] font-normal text-[#697282] text-xs tracking-[0] leading-4">
