@@ -8,10 +8,13 @@ async function getApiBaseUrl(): Promise<string> {
       // Running in native Android/iOS app
       // For Android Emulator: use 10.0.2.2
       // For Real Device: use your Mac's IP (e.g., 192.168.29.88)
-      return "http://10.0.2.2:5000";
+      const url = "http://10.0.2.2:5000";
+      console.log('🤖 Android/iOS app detected - API URL:', url);
+      return url;
     }
+    console.log('🌐 Web browser detected - using relative URLs');
   } catch (error) {
-    console.log('Capacitor not available, using web mode');
+    console.log('❌ Capacitor not available, using web mode');
   }
   // Running in web browser - use relative URLs
   return "";
