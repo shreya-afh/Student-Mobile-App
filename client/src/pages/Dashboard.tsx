@@ -107,7 +107,11 @@ export default function Dashboard() {
           </div>
 
           {/* Current Course Card */}
-          <Card className="border-gray-200 shadow-sm">
+          <Card 
+            className="border-gray-200 shadow-sm cursor-pointer hover:shadow-md transition-all" 
+            onClick={() => setLocation("/attendance-history")}
+            data-testid="card-current-course"
+          >
             <CardContent className="p-4">
               <div className="flex items-start justify-between mb-2">
                 <div>

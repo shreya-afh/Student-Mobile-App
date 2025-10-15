@@ -8,7 +8,7 @@ import infosysLogo from "@assets/infosys-foundation-logo-blue_1760417156143.png"
 import aspireForHerLogo from "@assets/image_1760420610980.png";
 import { useToast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
-import { apiRequest } from "@lib/queryClient";
+import { apiRequest } from "@/lib/queryClient";
 import { validateAttendanceQR, type AttendanceQRData } from "@shared/attendance-schema";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -18,7 +18,7 @@ export default function AttendanceStep3() {
   const [suggestions, setSuggestions] = useState("");
   const [qrData, setQrData] = useState<AttendanceQRData | null>(null);
   const { toast } = useToast();
-  const { userId } = useAuth();
+  const { user } = useAuth();
   useAndroidBackButton("/attendance/mode");
 
   useEffect(() => {
@@ -106,7 +106,7 @@ export default function AttendanceStep3() {
   });
 
   const handleSubmit = () => {
-    if (!userId) {
+    if (!user?.id) {
       toast({
         title: "Error",
         description: "User not logged in",
@@ -121,7 +121,7 @@ export default function AttendanceStep3() {
     }
 
     saveAttendanceMutation.mutate({
-      userId,
+      userId: user.id,
       sessionId: qrData.sessionId,
       courseId: qrData.courseId,
       sessionName: qrData.session,

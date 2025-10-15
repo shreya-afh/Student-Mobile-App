@@ -20,6 +20,7 @@ import CourseEnrollment from "@/pages/CourseEnrollment";
 import AttendanceStep1 from "@/pages/attendance/Step1";
 import AttendanceStep2 from "@/pages/attendance/Step2";
 import AttendanceStep3 from "@/pages/attendance/Step3";
+import AttendanceHistory from "@/pages/AttendanceHistory";
 import Certificates from "@/pages/Certificates";
 import JobOffers from "@/pages/JobOffers";
 import JobOpportunities from "@/pages/JobOpportunities";
@@ -92,6 +93,11 @@ function Router() {
       <Route path="/attendance/feedback">
         <ProtectedRoute>
           <AttendanceStep3 />
+        </ProtectedRoute>
+      </Route>
+      <Route path="/attendance-history">
+        <ProtectedRoute>
+          <AttendanceHistory />
         </ProtectedRoute>
       </Route>
       <Route path="/certificates">
