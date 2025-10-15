@@ -2,19 +2,138 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useLocation } from "wouter";
 import { ChevronLeftIcon, StarIcon } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAndroidBackButton } from "@/hooks/useAndroidBackButton";
 import infosysLogo from "@assets/infosys-foundation-logo-blue_1760417156143.png";
 import aspireForHerLogo from "@assets/image_1760420610980.png";
+import { useToast } from "@/hooks/use-toast";
+import { useMutation } from "@tanstack/react-query";
+import { apiRequest } from "@lib/queryClient";
+import { validateAttendanceQR, type AttendanceQRData } from "@shared/attendance-schema";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function AttendanceStep3() {
   const [, setLocation] = useLocation();
   const [rating, setRating] = useState(0);
   const [suggestions, setSuggestions] = useState("");
+  const [qrData, setQrData] = useState<AttendanceQRData | null>(null);
+  const { toast } = useToast();
+  const { userId } = useAuth();
   useAndroidBackButton("/attendance/mode");
 
+  useEffect(() => {
+    try {
+      const storedData = localStorage.getItem("attendance_qr_data");
+      if (!storedData) {
+        toast({
+          title: "No Attendance Data",
+          description: "Please scan a QR code first",
+          variant: "destructive",
+        });
+        setLocation("/attendance");
+        return;
+      }
+
+      const parsedData = JSON.parse(storedData);
+      const validationResult = validateAttendanceQR(parsedData);
+      
+      if (!validationResult.success) {
+        toast({
+          title: "Invalid Attendance Data",
+          description: validationResult.error,
+          variant: "destructive",
+        });
+        setLocation("/attendance");
+        return;
+      }
+      
+      setQrData(validationResult.data);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to load attendance data",
+        variant: "destructive",
+      });
+      setLocation("/attendance");
+    }
+  }, [setLocation, toast]);
+
+  const saveAttendanceMutation = useMutation({
+    mutationFn: async (data: {
+      userId: string;
+      sessionId: string;
+      courseId: string;
+      sessionName: string;
+      courseName: string;
+      sessionDate: string;
+      mode: string;
+      locationLat?: string;
+      locationLong?: string;
+      locationAddress?: string;
+      rating: number;
+      feedback?: string;
+    }) => {
+      return apiRequest("/api/attendance", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    },
+    onSuccess: () => {
+      toast({
+        title: "Success",
+        description: "Attendance recorded successfully",
+      });
+      
+      try {
+        localStorage.removeItem("attendance_qr_data");
+      } catch (e) {
+        console.error("Failed to clear attendance data:", e);
+      }
+      
+      setLocation("/dashboard");
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: "Failed to save attendance. Please try again.",
+        variant: "destructive",
+      });
+      console.error("Save attendance error:", error);
+    },
+  });
+
   const handleSubmit = () => {
-    setLocation("/dashboard");
+    if (!userId) {
+      toast({
+        title: "Error",
+        description: "User not logged in",
+        variant: "destructive",
+      });
+      setLocation("/login");
+      return;
+    }
+
+    if (!qrData || rating === 0) {
+      return;
+    }
+
+    saveAttendanceMutation.mutate({
+      userId,
+      sessionId: qrData.sessionId,
+      courseId: qrData.courseId,
+      sessionName: qrData.session,
+      courseName: qrData.course,
+      sessionDate: qrData.date,
+      mode: qrData.mode,
+      locationLat: qrData.location?.latitude?.toString(),
+      locationLong: qrData.location?.longitude?.toString(),
+      locationAddress: qrData.location?.address,
+      rating,
+      feedback: suggestions || undefined,
+    });
   };
 
   return (
@@ -45,6 +164,7 @@ export default function AttendanceStep3() {
                 size="icon"
                 onClick={() => setLocation("/attendance/mode")}
                 className="h-10 w-10 p-0 hover:bg-gray-100 relative z-10 -ml-2"
+                data-testid="button-back"
               >
                 <ChevronLeftIcon className="w-6 h-6 text-[#495565]" />
               </Button>
@@ -68,7 +188,7 @@ export default function AttendanceStep3() {
               Submit feedback to proceed
             </h2>
             <p className="font-['Inter',Helvetica] font-normal text-[#495565] text-sm">
-              Offline session selected
+              {qrData?.mode === "online" ? "Online session" : "Offline session"}
             </p>
           </div>
 
@@ -94,6 +214,7 @@ export default function AttendanceStep3() {
                     type="button"
                     onClick={() => setRating(star)}
                     className="transition-transform hover:scale-110"
+                    data-testid={`button-star-${star}`}
                   >
                     <StarIcon
                       className={`w-10 h-10 ${
@@ -121,15 +242,17 @@ export default function AttendanceStep3() {
               value={suggestions}
               onChange={(e) => setSuggestions(e.target.value)}
               className="min-h-[100px]"
+              data-testid="textarea-suggestions"
             />
           </div>
 
           <Button
             onClick={handleSubmit}
-            disabled={rating === 0}
+            disabled={rating === 0 || saveAttendanceMutation.isPending}
             className="w-full h-12 bg-[#5C4C7D] hover:bg-[#4C3C6D] text-white rounded-lg font-['Inter',Helvetica] font-medium text-base disabled:opacity-50"
+            data-testid="button-submit-feedback"
           >
-            Submit Feedback & Confirm Attendance
+            {saveAttendanceMutation.isPending ? "Submitting..." : "Submit Feedback & Confirm Attendance"}
           </Button>
         </div>
       </div>
