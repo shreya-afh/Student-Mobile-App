@@ -54,9 +54,9 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="h-screen bg-white flex flex-col overflow-hidden">
+    <div className="h-screen bg-[#faf9fb] flex flex-col overflow-hidden">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 flex-shrink-0">
+      <header className="bg-white flex-shrink-0">
         {/* Logo Bar */}
         <div className="bg-[#f8f9fa] border-b border-gray-200 py-2 px-4">
           <div className="flex items-center justify-center gap-3">
@@ -159,7 +159,7 @@ export default function Dashboard() {
         </div>
       </header>
 
-      <div className="flex-1 overflow-y-auto p-4 pb-20 bg-white">
+      <div className="flex-1 overflow-y-auto p-4 pb-20 bg-[#faf9fb]">
         {/* Quick Actions */}
         <h2 className="font-['Inter',Helvetica] font-bold text-[#1d2838] text-lg mb-4">
           Quick Actions
