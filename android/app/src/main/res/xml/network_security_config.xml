@@ -9,6 +9,14 @@
         <domain includeSubdomains="true">192.168.29.88</domain>
     </domain-config>
     
+    <!-- Allow Replit dev domain -->
+    <domain-config cleartextTrafficPermitted="false">
+        <domain includeSubdomains="true">replit.dev</domain>
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </domain-config>
+    
     <!-- Base configuration for all other domains (HTTPS only) -->
     <base-config cleartextTrafficPermitted="false">
         <trust-anchors>
