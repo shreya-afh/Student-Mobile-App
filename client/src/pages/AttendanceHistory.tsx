@@ -49,7 +49,7 @@ export default function AttendanceHistory() {
         </div>
       </header>
 
-      <div className="flex-1 overflow-y-auto p-4">
+      <div className="flex-1 overflow-y-auto p-4" style={{ WebkitOverflowScrolling: 'touch', overscrollBehavior: 'contain' }}>
         <div className="max-w-2xl mx-auto">
           {isLoading ? (
             <div className="text-center py-8">

@@ -223,7 +223,7 @@ export default function JobOffers() {
         </div>
       </header>
 
-      <div className="flex-1 overflow-y-auto p-4">
+      <div className="flex-1 overflow-y-auto p-4" style={{ WebkitOverflowScrolling: 'touch', overscrollBehavior: 'contain' }}>
         {/* Upload Section */}
         <Card className="bg-[#eff1ff] border-gray-200 hover:shadow-md transition-all mb-6">
           <CardContent className="p-4">

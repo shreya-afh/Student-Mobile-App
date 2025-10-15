@@ -64,7 +64,7 @@ export default function CourseEnrollment() {
         </div>
       </header>
 
-      <div className="flex-1 overflow-y-auto p-4">
+      <div className="flex-1 overflow-y-auto p-4" style={{ WebkitOverflowScrolling: 'touch', overscrollBehavior: 'contain' }}>
         <div className="max-w-md mx-auto">
           <h2 className="font-['Inter',Helvetica] font-bold text-[#1d2838] text-xl mb-2">
             Find Course

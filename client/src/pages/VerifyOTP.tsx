@@ -228,7 +228,7 @@ export default function VerifyOTP() {
         </div>
       </header>
 
-      <div className="flex-1 flex flex-col items-center justify-center p-4 overflow-y-auto">
+      <div className="flex-1 flex flex-col items-center justify-center p-4 overflow-y-auto" style={{ WebkitOverflowScrolling: 'touch', overscrollBehavior: 'contain' }}>
         <div className="max-w-md w-full text-center">
           <h1 className="font-['Inter',Helvetica] font-bold text-[#1d2838] text-2xl mb-2">
             Verify Your Phone

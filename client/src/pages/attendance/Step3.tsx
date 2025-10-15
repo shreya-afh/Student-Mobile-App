@@ -176,7 +176,7 @@ export default function AttendanceStep3() {
         </div>
       </header>
 
-      <div className="flex-1 overflow-y-auto p-4">
+      <div className="flex-1 overflow-y-auto p-4" style={{ WebkitOverflowScrolling: 'touch', overscrollBehavior: 'contain' }}>
         <div className="max-w-md mx-auto">
           <div className="text-center mb-6">
             <h2 className="font-['Inter',Helvetica] font-bold text-[#1d2838] text-xl mb-2">
