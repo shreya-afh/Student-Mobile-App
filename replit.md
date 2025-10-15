@@ -205,3 +205,12 @@ Preferred communication style: Simple, everyday language.
   - Loading states and error handling
 - **File Storage**: Offer letters uploaded to Google Drive with organized naming convention
 - **Data Flow**: Complete integration with authentication context for user-specific offer management
+
+### Android Mobile Scrolling Fix
+- **Touch Scrolling Enhancement**: Added mobile-specific scrolling properties to all scrollable containers
+  - Applied `-webkit-overflow-scrolling: touch` for smooth native scrolling on iOS/Android WebView
+  - Added `overscroll-behavior: contain` to prevent scroll chaining issues
+- **Fixed Components**:
+  - All 4 registration pages (Step1, Step2, Step3, Step4) - main content areas now scrollable
+  - PopupCylinderPicker dialog - state/district selection lists now scrollable
+- **Android Compatibility**: All scrolling containers properly configured for Android WebView touch events

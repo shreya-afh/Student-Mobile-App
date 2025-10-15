@@ -142,7 +142,7 @@ export default function RegisterStep4() {
         </div>
       </header>
 
-      <div className="flex-1 overflow-y-auto p-4">
+      <div className="flex-1 overflow-y-auto p-4" style={{ WebkitOverflowScrolling: 'touch', overscrollBehavior: 'contain' }}>
         <div className="max-w-md mx-auto">
           <h1 className="font-['Inter',Helvetica] font-bold text-[#1d2838] text-xl mb-6">
             Verification Details
