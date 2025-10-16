@@ -8,10 +8,13 @@ function detectPlatform(): string {
       const Capacitor = (window as any).Capacitor;
       if (Capacitor.isNativePlatform && Capacitor.isNativePlatform()) {
         // Running in native Android/iOS app
-        // Use Replit's published production URL for better performance
-        const replitUrl = "https://ifafh-skilling.replit.app";
-        console.log('🤖 Android/iOS app detected - API URL:', replitUrl);
-        return replitUrl;
+        // Try to use the current Replit dev URL (works when testing from Replit)
+        const replitDevUrl = window.location.origin.includes('replit') 
+          ? window.location.origin 
+          : "https://ifafh-skilling.replit.app";
+        console.log('🤖 Android/iOS app detected - API URL:', replitDevUrl);
+        console.log('📍 Current origin:', window.location.origin);
+        return replitDevUrl;
       }
     }
     console.log('🌐 Web browser detected - using relative URLs');
@@ -48,6 +51,12 @@ async function ensureApiBaseUrl(): Promise<string> {
 async function throwIfResNotOk(res: Response) {
   if (!res.ok) {
     const text = (await res.text()) || res.statusText;
+    console.error('❌ API Error:', {
+      status: res.status,
+      statusText: res.statusText,
+      url: res.url,
+      responseText: text
+    });
     throw new Error(`${res.status}: ${text}`);
   }
 }
@@ -59,15 +68,23 @@ export async function apiRequest(
 ): Promise<Response> {
   const baseUrl = await ensureApiBaseUrl();
   const fullUrl = baseUrl + url;
-  const res = await fetch(fullUrl, {
-    method,
-    headers: data ? { "Content-Type": "application/json" } : {},
-    body: data ? JSON.stringify(data) : undefined,
-    credentials: "include",
-  });
+  console.log(`📡 API Request: ${method} ${fullUrl}`);
+  
+  try {
+    const res = await fetch(fullUrl, {
+      method,
+      headers: data ? { "Content-Type": "application/json" } : {},
+      body: data ? JSON.stringify(data) : undefined,
+      credentials: "include",
+    });
 
-  await throwIfResNotOk(res);
-  return res;
+    await throwIfResNotOk(res);
+    console.log(`✅ API Success: ${method} ${fullUrl}`);
+    return res;
+  } catch (error) {
+    console.error(`❌ API Failed: ${method} ${fullUrl}`, error);
+    throw error;
+  }
 }
 
 type UnauthorizedBehavior = "returnNull" | "throw";

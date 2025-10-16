@@ -1,6 +1,26 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Android WebView Scrolling Fix */
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: none;
+  touch-action: pan-y;
+  position: fixed;
+}
+
+#root {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
 @layer components {
   .all-\[unset\] {
     all: unset;
