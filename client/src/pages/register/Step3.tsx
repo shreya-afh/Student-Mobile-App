@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Select,
   SelectContent,
@@ -21,6 +22,7 @@ export default function RegisterStep3() {
   const { registrationData, updateStep3 } = useRegistration();
   const [formData, setFormData] = useState(registrationData.step3);
   const [errors, setErrors] = useState({ studentContact: "", guardianContact: "", whatsappNumber: "" });
+  const [sameAsContact, setSameAsContact] = useState(false);
   useAndroidBackButton("/register/step2");
 
   useEffect(() => {
@@ -56,6 +58,11 @@ export default function RegisterStep3() {
     const numericValue = value.replace(/\D/g, '').slice(0, 10);
     setFormData({ ...formData, studentContact: numericValue });
     setErrors(computeContactErrors(numericValue, formData.guardianContact));
+    
+    // If "same as contact" is checked, update WhatsApp number too
+    if (sameAsContact) {
+      setFormData({ ...formData, studentContact: numericValue, whatsappNumber: numericValue });
+    }
   };
 
   const handleGuardianContactChange = (value: string) => {
@@ -97,7 +104,12 @@ export default function RegisterStep3() {
       return;
     }
 
-    if (formData.whatsappNumber && !validatePhoneNumber(formData.whatsappNumber)) {
+    if (!formData.whatsappNumber) {
+      setErrors({ ...errors, whatsappNumber: "WhatsApp number is required" });
+      return;
+    }
+
+    if (!validatePhoneNumber(formData.whatsappNumber)) {
       setErrors({ ...errors, whatsappNumber: "Enter a valid 10-digit mobile number" });
       return;
     }
@@ -185,8 +197,27 @@ export default function RegisterStep3() {
 
             <div>
               <Label htmlFor="whatsappNumber" className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm">
-                WhatsApp Number (Optional)
+                WhatsApp Number *
               </Label>
+              <div className="flex items-center gap-2 mt-2 mb-1">
+                <Checkbox 
+                  id="sameAsContact" 
+                  checked={sameAsContact}
+                  onCheckedChange={(checked) => {
+                    setSameAsContact(checked as boolean);
+                    if (checked) {
+                      setFormData({ ...formData, whatsappNumber: formData.studentContact });
+                      setErrors({ ...errors, whatsappNumber: "" });
+                    }
+                  }}
+                />
+                <label
+                  htmlFor="sameAsContact"
+                  className="font-['Inter',Helvetica] font-normal text-[#495565] text-sm cursor-pointer"
+                >
+                  Same as contact number
+                </label>
+              </div>
               <Input
                 id="whatsappNumber"
                 type="tel"
@@ -195,6 +226,8 @@ export default function RegisterStep3() {
                 onChange={(e) => handleWhatsappNumberChange(e.target.value)}
                 className={`mt-1 ${errors.whatsappNumber ? 'border-red-500' : ''}`}
                 maxLength={10}
+                disabled={sameAsContact}
+                required
                 data-testid="input-whatsapp"
               />
               {errors.whatsappNumber && (
@@ -250,10 +283,12 @@ export default function RegisterStep3() {
                   <SelectValue placeholder="Select income range" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="below-2lakh">Below ₹2 Lakh</SelectItem>
-                  <SelectItem value="2-5lakh">₹2-5 Lakh</SelectItem>
-                  <SelectItem value="5-10lakh">₹5-10 Lakh</SelectItem>
-                  <SelectItem value="above-10lakh">Above ₹10 Lakh</SelectItem>
+                  <SelectItem value="below-1lakh">Below ₹1 Lakh</SelectItem>
+                  <SelectItem value="1-2lakh">₹1-2 Lakhs</SelectItem>
+                  <SelectItem value="2-3lakh">₹2-3 Lakhs</SelectItem>
+                  <SelectItem value="3-4lakh">₹3-4 Lakhs</SelectItem>
+                  <SelectItem value="4-5lakh">₹4-5 Lakhs</SelectItem>
+                  <SelectItem value="above-5lakh">Above ₹5 Lakhs</SelectItem>
                 </SelectContent>
               </Select>
             </div>

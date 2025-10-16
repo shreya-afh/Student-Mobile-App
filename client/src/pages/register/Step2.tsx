@@ -19,7 +19,7 @@ export default function RegisterStep2() {
   const [selectedDistrict, setSelectedDistrict] = useState(registrationData.step2.district);
   const [showCityInput, setShowCityInput] = useState(false);
   const [otherCityValue, setOtherCityValue] = useState("");
-  const [errors, setErrors] = useState({ state: "", district: "", city: "" });
+  const [errors, setErrors] = useState({ state: "", district: "", city: "", startYear: "", endYear: "", pincode: "" });
   useAndroidBackButton("/register/step1");
 
   useEffect(() => {
@@ -78,8 +78,39 @@ export default function RegisterStep2() {
   const handleContinue = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const newErrors = { state: "", district: "", city: "" };
+    const newErrors = { state: "", district: "", city: "", startYear: "", endYear: "", pincode: "" };
     let hasError = false;
+
+    // Validate start year (must be in the past)
+    const currentYear = new Date().getFullYear();
+    const startYear = parseInt(formData.startYear);
+    const endYear = parseInt(formData.endYear);
+
+    if (!formData.startYear || isNaN(startYear)) {
+      newErrors.startYear = "Please enter a valid start year";
+      hasError = true;
+    } else if (startYear > currentYear) {
+      newErrors.startYear = "Start year must be in the past";
+      hasError = true;
+    }
+
+    // Validate end year (must be >= start year)
+    if (!formData.endYear || isNaN(endYear)) {
+      newErrors.endYear = "Please enter a valid end year";
+      hasError = true;
+    } else if (endYear < startYear) {
+      newErrors.endYear = "End year must be greater than or equal to start year";
+      hasError = true;
+    }
+
+    // Validate pincode (must be 6 digits)
+    if (!formData.pincode) {
+      newErrors.pincode = "Please enter pincode";
+      hasError = true;
+    } else if (!/^\d{6}$/.test(formData.pincode)) {
+      newErrors.pincode = "Pincode must be exactly 6 digits";
+      hasError = true;
+    }
 
     if (!formData.state) {
       newErrors.state = "Please select a state";
@@ -290,12 +321,23 @@ export default function RegisterStep2() {
                 </Label>
                 <Input
                   id="startYear"
+                  type="number"
                   placeholder="2023"
                   value={formData.startYear}
-                  onChange={(e) => setFormData({ ...formData, startYear: e.target.value })}
-                  className="mt-1"
+                  onChange={(e) => {
+                    const value = e.target.value.replace(/\D/g, '').slice(0, 4);
+                    setFormData({ ...formData, startYear: value });
+                    setErrors({ ...errors, startYear: "", endYear: "" });
+                  }}
+                  className={`mt-1 ${errors.startYear ? 'border-red-500' : ''}`}
+                  maxLength={4}
                   required
                 />
+                {errors.startYear && (
+                  <p className="font-['Inter',Helvetica] font-normal text-red-500 text-xs mt-1">
+                    {errors.startYear}
+                  </p>
+                )}
               </div>
               <div>
                 <Label htmlFor="endYear" className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm">
@@ -303,12 +345,23 @@ export default function RegisterStep2() {
                 </Label>
                 <Input
                   id="endYear"
+                  type="number"
                   placeholder="2027"
                   value={formData.endYear}
-                  onChange={(e) => setFormData({ ...formData, endYear: e.target.value })}
-                  className="mt-1"
+                  onChange={(e) => {
+                    const value = e.target.value.replace(/\D/g, '').slice(0, 4);
+                    setFormData({ ...formData, endYear: value });
+                    setErrors({ ...errors, endYear: "" });
+                  }}
+                  className={`mt-1 ${errors.endYear ? 'border-red-500' : ''}`}
+                  maxLength={4}
                   required
                 />
+                {errors.endYear && (
+                  <p className="font-['Inter',Helvetica] font-normal text-red-500 text-xs mt-1">
+                    {errors.endYear}
+                  </p>
+                )}
               </div>
             </div>
 
@@ -408,14 +461,24 @@ export default function RegisterStep2() {
               </Label>
               <Input
                 id="pincode"
-                placeholder="Enter pincode"
+                type="tel"
+                placeholder="Enter 6-digit pincode"
                 value={formData.pincode}
-                onChange={(e) => setFormData({ ...formData, pincode: e.target.value })}
-                className="mt-1"
+                onChange={(e) => {
+                  const value = e.target.value.replace(/\D/g, '').slice(0, 6);
+                  setFormData({ ...formData, pincode: value });
+                  setErrors({ ...errors, pincode: "" });
+                }}
+                className={`mt-1 ${errors.pincode ? 'border-red-500' : ''}`}
                 maxLength={6}
                 required
                 data-testid="input-pincode"
               />
+              {errors.pincode && (
+                <p className="font-['Inter',Helvetica] font-normal text-red-500 text-xs mt-1">
+                  {errors.pincode}
+                </p>
+              )}
             </div>
 
             <Button
