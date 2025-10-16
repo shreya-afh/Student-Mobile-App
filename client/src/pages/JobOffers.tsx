@@ -10,7 +10,7 @@ import infosysLogo from "@assets/infosys-foundation-logo-blue_1760417156143.png"
 import aspireForHerLogo from "@assets/image_1760420610980.png";
 import { useAuth } from "@/contexts/AuthContext";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { apiRequest, queryClient } from "@/lib/queryClient";
+import { apiRequest, queryClient, getApiBaseUrl } from "@/lib/queryClient";
 import type { OfferLetter } from "@shared/schema";
 import {
   Dialog,
@@ -65,7 +65,8 @@ export default function JobOffers() {
         position: data.position,
       }));
       
-      const response = await fetch("/api/offer-letters/upload", {
+      const baseUrl = await getApiBaseUrl();
+      const response = await fetch(baseUrl + "/api/offer-letters/upload", {
         method: "POST",
         body: formData,
         credentials: "include",
