@@ -8,7 +8,7 @@ import infosysLogo from "@assets/infosys-foundation-logo-blue_1760417156143.png"
 import aspireForHerLogo from "@assets/image_1760420610980.png";
 import { useToast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
+import { apiRequest, queryClient } from "@/lib/queryClient";
 import { validateAttendanceQR, type AttendanceQRData } from "@shared/attendance-schema";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -86,6 +86,11 @@ export default function AttendanceStep3() {
         localStorage.removeItem("attendance_qr_data");
       } catch (e) {
         console.error("Failed to clear attendance data:", e);
+      }
+      
+      // Invalidate attendance cache so history page shows the new record
+      if (user?.id) {
+        queryClient.invalidateQueries({ queryKey: [`/api/attendance/${user.id}`] });
       }
       
       setLocation("/dashboard");
