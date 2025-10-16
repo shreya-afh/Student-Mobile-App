@@ -192,14 +192,96 @@ export default function RegisterStep2() {
               <Label htmlFor="course" className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm">
                 Course *
               </Label>
-              <Input
-                id="course"
-                placeholder="Enter course name"
+              <Select
                 value={formData.course}
-                onChange={(e) => setFormData({ ...formData, course: e.target.value })}
-                className="mt-1"
-                required
-              />
+                onValueChange={(value) => setFormData({ ...formData, course: value })}
+              >
+                <SelectTrigger className="mt-1" data-testid="select-course">
+                  <SelectValue placeholder="Select your course" />
+                </SelectTrigger>
+                <SelectContent className="max-h-[300px]">
+                  <div className="px-2 py-1.5 text-xs font-semibold text-[#6d10b0] bg-[#f3e8ff] sticky top-0">Undergraduate (UG) Courses</div>
+                  <SelectItem value="BBA">BBA</SelectItem>
+                  <SelectItem value="BCom">BCom</SelectItem>
+                  <SelectItem value="BCom (Hons)">BCom (Hons)</SelectItem>
+                  <SelectItem value="BMS">BMS</SelectItem>
+                  <SelectItem value="BBM">BBM</SelectItem>
+                  <SelectItem value="BFIA">BFIA</SelectItem>
+                  <SelectItem value="BSc (General)">BSc (General)</SelectItem>
+                  <SelectItem value="BSc (Hons) – Physics">BSc (Hons) – Physics</SelectItem>
+                  <SelectItem value="BSc (Hons) – Chemistry">BSc (Hons) – Chemistry</SelectItem>
+                  <SelectItem value="BSc (Hons) – Biology">BSc (Hons) – Biology</SelectItem>
+                  <SelectItem value="BSc (Hons) – Mathematics">BSc (Hons) – Mathematics</SelectItem>
+                  <SelectItem value="BSc (Hons) – Computer Science">BSc (Hons) – Computer Science</SelectItem>
+                  <SelectItem value="BSc (Hons) – Biotechnology">BSc (Hons) – Biotechnology</SelectItem>
+                  <SelectItem value="BSc (Hons) – Environmental Science">BSc (Hons) – Environmental Science</SelectItem>
+                  <SelectItem value="BTech / BE">BTech / BE</SelectItem>
+                  <SelectItem value="BCA">BCA</SelectItem>
+                  <SelectItem value="BSc Nursing">BSc Nursing</SelectItem>
+                  <SelectItem value="BA">BA</SelectItem>
+                  <SelectItem value="BA (Hons) – English">BA (Hons) – English</SelectItem>
+                  <SelectItem value="BA (Hons) – History">BA (Hons) – History</SelectItem>
+                  <SelectItem value="BA (Hons) – Political Science">BA (Hons) – Political Science</SelectItem>
+                  <SelectItem value="BA (Hons) – Sociology">BA (Hons) – Sociology</SelectItem>
+                  <SelectItem value="BA (Hons) – Psychology">BA (Hons) – Psychology</SelectItem>
+                  <SelectItem value="BFA">BFA</SelectItem>
+                  <SelectItem value="BDes">BDes</SelectItem>
+                  <SelectItem value="LLB (3-yr)">LLB (3-yr)</SelectItem>
+                  <SelectItem value="BA LLB (5-yr integrated)">BA LLB (5-yr integrated)</SelectItem>
+                  <SelectItem value="BBA LLB (5-yr integrated)">BBA LLB (5-yr integrated)</SelectItem>
+                  <SelectItem value="MBBS">MBBS</SelectItem>
+                  <SelectItem value="BDS">BDS</SelectItem>
+                  <SelectItem value="BAMS">BAMS</SelectItem>
+                  <SelectItem value="BHMS">BHMS</SelectItem>
+                  <SelectItem value="BPT">BPT</SelectItem>
+                  <SelectItem value="BPharm">BPharm</SelectItem>
+                  <SelectItem value="BEd">BEd</SelectItem>
+                  <SelectItem value="BA BEd (Integrated)">BA BEd (Integrated)</SelectItem>
+                  <SelectItem value="BSc BEd (Integrated)">BSc BEd (Integrated)</SelectItem>
+                  <SelectItem value="BHM (Hotel Management)">BHM (Hotel Management)</SelectItem>
+                  <SelectItem value="BFTech (Fashion Technology)">BFTech (Fashion Technology)</SelectItem>
+                  <SelectItem value="BSc Animation">BSc Animation</SelectItem>
+                  <SelectItem value="BJMC (Mass Communication & Journalism)">BJMC (Mass Communication & Journalism)</SelectItem>
+                  <SelectItem value="BSc Aviation">BSc Aviation</SelectItem>
+                  <SelectItem value="BSc Agriculture">BSc Agriculture</SelectItem>
+                  <SelectItem value="BSc Horticulture">BSc Horticulture</SelectItem>
+                  <SelectItem value="BSc Forestry">BSc Forestry</SelectItem>
+                  <SelectItem value="BVSc">BVSc</SelectItem>
+                  
+                  <div className="px-2 py-1.5 text-xs font-semibold text-[#6d10b0] bg-[#f3e8ff] sticky top-0 mt-1">Postgraduate (PG) Courses</div>
+                  <SelectItem value="MBA">MBA</SelectItem>
+                  <SelectItem value="MCom">MCom</SelectItem>
+                  <SelectItem value="PGDM">PGDM</SelectItem>
+                  <SelectItem value="MSc (Physics)">MSc (Physics)</SelectItem>
+                  <SelectItem value="MSc (Chemistry)">MSc (Chemistry)</SelectItem>
+                  <SelectItem value="MSc (Biology)">MSc (Biology)</SelectItem>
+                  <SelectItem value="MSc (Mathematics)">MSc (Mathematics)</SelectItem>
+                  <SelectItem value="MSc (Computer Science)">MSc (Computer Science)</SelectItem>
+                  <SelectItem value="MSc (Biotechnology)">MSc (Biotechnology)</SelectItem>
+                  <SelectItem value="MSc (Environmental Science)">MSc (Environmental Science)</SelectItem>
+                  <SelectItem value="MTech / ME">MTech / ME</SelectItem>
+                  <SelectItem value="MCA">MCA</SelectItem>
+                  <SelectItem value="MPhil">MPhil</SelectItem>
+                  <SelectItem value="MA (English)">MA (English)</SelectItem>
+                  <SelectItem value="MA (History)">MA (History)</SelectItem>
+                  <SelectItem value="MA (Political Science)">MA (Political Science)</SelectItem>
+                  <SelectItem value="MA (Sociology)">MA (Sociology)</SelectItem>
+                  <SelectItem value="MA (Psychology)">MA (Psychology)</SelectItem>
+                  <SelectItem value="MFA">MFA</SelectItem>
+                  <SelectItem value="MDes">MDes</SelectItem>
+                  <SelectItem value="LLM">LLM</SelectItem>
+                  <SelectItem value="MD">MD</SelectItem>
+                  <SelectItem value="MS">MS</SelectItem>
+                  <SelectItem value="MDS">MDS</SelectItem>
+                  <SelectItem value="MPharm">MPharm</SelectItem>
+                  <SelectItem value="MPT">MPT</SelectItem>
+                  <SelectItem value="MPH">MPH</SelectItem>
+                  <SelectItem value="MEd">MEd</SelectItem>
+                  <SelectItem value="MJMC">MJMC</SelectItem>
+                  <SelectItem value="MHM (Hotel Management)">MHM (Hotel Management)</SelectItem>
+                  <SelectItem value="MVSc">MVSc</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="grid grid-cols-2 gap-3">
