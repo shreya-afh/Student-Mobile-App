@@ -133,7 +133,7 @@ export default function RegisterStep1() {
                     className={`flex-1 h-10 rounded-lg border font-['Inter',Helvetica] font-normal text-sm transition-colors ${
                       formData.gender === gender
                         ? "border-[#5C4C7D] bg-[#5C4C7D]/5 text-[#5C4C7D]"
-                        : "border-[#0000001a] text-[#495565]"
+                        : "border-input bg-background text-[#495565]"
                     }`}
                   >
                     {gender}
