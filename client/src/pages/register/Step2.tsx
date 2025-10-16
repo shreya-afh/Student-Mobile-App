@@ -200,7 +200,7 @@ export default function RegisterStep2() {
                   <SelectValue placeholder="Select your course" />
                 </SelectTrigger>
                 <SelectContent className="max-h-[300px]">
-                  <div className="px-2 py-1.5 text-xs font-semibold text-[#6d10b0] bg-[#f3e8ff] sticky top-0">Undergraduate (UG) Courses</div>
+                  <div className="px-2 py-1.5 text-xs font-semibold text-[#6d10b0] bg-[#f3e8ff] pointer-events-none">Undergraduate (UG) Courses</div>
                   <SelectItem value="BBA">BBA</SelectItem>
                   <SelectItem value="BCom">BCom</SelectItem>
                   <SelectItem value="BCom (Hons)">BCom (Hons)</SelectItem>
@@ -248,7 +248,7 @@ export default function RegisterStep2() {
                   <SelectItem value="BSc Forestry">BSc Forestry</SelectItem>
                   <SelectItem value="BVSc">BVSc</SelectItem>
                   
-                  <div className="px-2 py-1.5 text-xs font-semibold text-[#6d10b0] bg-[#f3e8ff] sticky top-0 mt-1">Postgraduate (PG) Courses</div>
+                  <div className="px-2 py-1.5 text-xs font-semibold text-[#6d10b0] bg-[#f3e8ff] pointer-events-none mt-1">Postgraduate (PG) Courses</div>
                   <SelectItem value="MBA">MBA</SelectItem>
                   <SelectItem value="MCom">MCom</SelectItem>
                   <SelectItem value="PGDM">PGDM</SelectItem>
