@@ -14,6 +14,7 @@ import { ChevronLeftIcon } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useRegistration } from "@/contexts/RegistrationContext";
 import { useAndroidBackButton } from "@/hooks/useAndroidBackButton";
+import { getApiBaseUrl } from "@/lib/queryClient";
 import infosysLogo from "@assets/infosys-foundation-logo-blue_1760417156143.png";
 import aspireForHerLogo from "@assets/image_1760420610980.png";
 
@@ -116,7 +117,8 @@ export default function RegisterStep3() {
 
     // Check if student contact number already exists
     try {
-      const response = await fetch("/api/check-phone", {
+      const baseUrl = await getApiBaseUrl();
+      const response = await fetch(baseUrl + "/api/check-phone", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ phoneNumber: formData.studentContact }),
