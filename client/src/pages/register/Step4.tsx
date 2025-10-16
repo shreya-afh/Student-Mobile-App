@@ -17,6 +17,7 @@ export default function RegisterStep4() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [aadhaarError, setAadhaarError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [selfieError, setSelfieError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const { toast } = useToast();
@@ -49,6 +50,16 @@ export default function RegisterStep4() {
 
     if (!validateAadhaar(formData.aadhaar)) {
       setAadhaarError("Enter a valid 12-digit Aadhaar number");
+      return;
+    }
+
+    if (!formData.selfie) {
+      setSelfieError("Please capture your selfie to continue");
+      toast({
+        title: "Selfie Required",
+        description: "Please capture your selfie before proceeding",
+        variant: "destructive",
+      });
       return;
     }
 
@@ -86,14 +97,10 @@ export default function RegisterStep4() {
       setFormData({ ...formData, selfie: file });
     } catch (error) {
       console.error('Camera error:', error);
-      // Create a dummy file so registration can proceed (for testing on emulator)
-      const dummyFile = new File(['dummy'], 'selfie.jpg', { type: 'image/jpeg' });
-      setFormData({ ...formData, selfie: dummyFile });
-      
       toast({
-        title: "Camera Not Available",
-        description: "Using placeholder image for testing. Camera works on real devices.",
-        variant: "default",
+        title: "Camera Error",
+        description: "Failed to capture selfie. Please try again.",
+        variant: "destructive",
       });
     }
   };
@@ -225,10 +232,15 @@ export default function RegisterStep4() {
               </Label>
               <button
                 type="button"
-                onClick={handleCaptureSelfie}
-                className="w-full border-2 border-dashed border-[#0000001a] rounded-lg p-8 text-center hover:bg-[#5C4C7D]/5 transition-colors"
+                onClick={() => {
+                  handleCaptureSelfie();
+                  setSelfieError("");
+                }}
+                className={`w-full border-2 border-dashed rounded-lg p-8 text-center hover:bg-[#5C4C7D]/5 transition-colors ${
+                  selfieError ? 'border-red-500' : 'border-[#0000001a]'
+                }`}
               >
-                <CameraIcon className="w-12 h-12 mx-auto text-[#697282] mb-2" />
+                <CameraIcon className={`w-12 h-12 mx-auto mb-2 ${selfieError ? 'text-red-500' : 'text-[#697282]'}`} />
                 <p className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm">
                   Tap to capture selfie
                 </p>
@@ -241,6 +253,11 @@ export default function RegisterStep4() {
                   </p>
                 )}
               </button>
+              {selfieError && (
+                <p className="font-['Inter',Helvetica] font-normal text-red-500 text-xs mt-1">
+                  {selfieError}
+                </p>
+              )}
             </div>
 
             <div>
