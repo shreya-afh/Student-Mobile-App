@@ -82,7 +82,7 @@ export default function RegisterStep3() {
     }
   };
 
-  const handleContinue = (e: React.FormEvent) => {
+  const handleContinue = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!validatePhoneNumber(formData.studentContact)) {
@@ -112,6 +112,29 @@ export default function RegisterStep3() {
     if (!validatePhoneNumber(formData.whatsappNumber)) {
       setErrors({ ...errors, whatsappNumber: "Enter a valid 10-digit mobile number" });
       return;
+    }
+
+    // Check if student contact number already exists
+    try {
+      const response = await fetch("/api/check-phone", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phoneNumber: formData.studentContact }),
+        credentials: "include",
+      });
+
+      const data = await response.json();
+
+      if (data.exists) {
+        setErrors({ 
+          ...errors, 
+          studentContact: "This contact number is already registered. Please use a different number."
+        });
+        return;
+      }
+    } catch (error) {
+      console.error("Error checking phone number:", error);
+      // Continue even if check fails - don't block the user
     }
 
     updateStep3(formData);

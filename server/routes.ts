@@ -150,6 +150,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Check if phone number already exists
+  app.post("/api/check-phone", async (req, res) => {
+    try {
+      const { phoneNumber } = z
+        .object({ phoneNumber: z.string() })
+        .parse(req.body);
+
+      const existingUser = await storage.getUserByPhone(phoneNumber);
+
+      res.json({
+        success: true,
+        exists: !!existingUser,
+      });
+    } catch (error) {
+      res.status(400).json({
+        success: false,
+        message: "Failed to check phone number",
+      });
+    }
+  });
+
   // Registration API endpoint
   app.post(
     "/api/register",
