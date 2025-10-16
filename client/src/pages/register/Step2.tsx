@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useLocation } from "wouter";
 import { ChevronLeftIcon } from "lucide-react";
 import { useState, useEffect } from "react";
@@ -163,14 +164,28 @@ export default function RegisterStep2() {
               <Label htmlFor="collegeName" className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm">
                 College Name *
               </Label>
-              <Input
-                id="collegeName"
-                placeholder="Enter college name"
+              <Select
                 value={formData.collegeName}
-                onChange={(e) => setFormData({ ...formData, collegeName: e.target.value })}
-                className="mt-1"
-                required
-              />
+                onValueChange={(value) => setFormData({ ...formData, collegeName: value })}
+              >
+                <SelectTrigger className="mt-1" data-testid="select-college">
+                  <SelectValue placeholder="Select your college" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Annasaheb Dange College of Engineering & Technology, Ashta" data-testid="college-adcet">
+                    Annasaheb Dange College of Engineering & Technology, Ashta
+                  </SelectItem>
+                  <SelectItem value="Ashokrao Mane Group of Institutions" data-testid="college-amgi">
+                    Ashokrao Mane Group of Institutions
+                  </SelectItem>
+                  <SelectItem value="Don Bosco Institute of Technology" data-testid="college-dbit">
+                    Don Bosco Institute of Technology
+                  </SelectItem>
+                  <SelectItem value="SKN SINHGAD COLLEGE OF ENGINEERING" data-testid="college-skn">
+                    SKN SINHGAD COLLEGE OF ENGINEERING
+                  </SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             <div>
