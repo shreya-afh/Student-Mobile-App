@@ -8,10 +8,24 @@ app.use(express.urlencoded({ extended: false }));
 
 // CORS middleware for Android/iOS apps
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
+  const origin = req.headers.origin;
+  
+  // List of allowed origins for Capacitor apps and web
+  const allowedOrigins = [
+    'https://localhost',           // Capacitor Android/iOS
+    'capacitor://localhost',       // Capacitor alternative
+    'http://localhost',            // Local dev
+    'http://localhost:5000',       // Local dev with port
+  ];
+  
+  // Check if origin is allowed or if there's no origin (same-origin requests)
+  if (!origin || allowedOrigins.includes(origin) || origin.includes('replit')) {
+    res.header('Access-Control-Allow-Origin', origin || '*');
+    res.header('Access-Control-Allow-Credentials', 'true');
+  }
+  
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.header('Access-Control-Allow-Credentials', 'true');
   
   // Handle preflight requests
   if (req.method === 'OPTIONS') {

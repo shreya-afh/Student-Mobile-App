@@ -1,0 +1,17 @@
+--------- beginning of system
+2025-10-16 11:58:00.682  1590-1590  SystemServiceManager    system_server                        W  Service com.android.server.content.ContentService$Lifecycle took 148 ms in onBootPhase
+2025-10-16 11:58:01.465  1590-1590  SystemServiceManager    system_server                        W  Service com.android.server.InputMethodManagerService$Lifecycle took 782 ms in onBootPhase
+2025-10-16 11:58:01.910  1590-1590  SystemServiceManager    system_server                        W  Service com.android.server.trust.TrustManagerService took 113 ms in onBootPhase
+2025-10-16 11:58:06.274  1590-1611  SystemServiceManager    system_server                        W  Service com.android.server.display.DisplayFeatureService took 119 ms in onBootPhase
+--------- beginning of main
+2025-10-16 12:08:50.218   870-16188 mm-camera               mm-qcamera-daemon                    E  <SENSOR><ERROR> ovt_ov12a10_i_autofocus_calibration: 503: [xiaomi af otp] marco: 871, infinity: 180
+2025-10-16 12:08:50.218   870-16188 mm-camera               mm-qcamera-daemon                    E  <SENSOR><ERROR> ovt_ov12a10_i_autofocus_calibration: 519: [xiaomi af otp] adjusted code_per_step: 221, qvalue: 128
+2025-10-16 12:08:57.104 15541-15541 CAM_CameraManager       com.android.camera                   D  setOneShotPreviewCallback: null
+2025-10-16 12:09:05.168 15541-15541 CAM_CameraManager       com.android.camera                   D  setOneShotPreviewCallback: null
+2025-10-16 12:09:20.034 13845-13845 Capacitor/Console       com.infosys.afh.student              I  File: https://localhost/assets/index-BkdoCntB.js - Line 254 - Msg: [OTP DEBUG] Sending OTP to: 8881267549
+2025-10-16 12:09:20.036 13845-13845 Capacitor/Console       com.infosys.afh.student              I  File: https://localhost/assets/index-BkdoCntB.js - Line 254 - Msg: [OTP DEBUG] API Base URL: https://ifafh-skilling.replit.app
+2025-10-16 12:09:20.038 13845-13845 Capacitor/Console       com.infosys.afh.student              I  File: https://localhost/assets/index-BkdoCntB.js - Line 49 - Msg: 📡 API Request: POST https://ifafh-skilling.replit.app/api/send-otp
+2025-10-16 12:09:20.645 13845-13845 Capacitor/Console       com.infosys.afh.student              E  File: https://localhost/verify-otp - Line 0 - Msg: Access to fetch at 'https://ifafh-skilling.replit.app/api/send-otp' from origin 'https://localhost' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: The value of the 'Access-Control-Allow-Origin' header in the response must not be the wildcard '*' when the request's credentials mode is 'include'.
+2025-10-16 12:09:20.647 13845-13845 Capacitor/Console       com.infosys.afh.student              E  File: https://localhost/assets/index-BkdoCntB.js - Line 49 - Msg: ❌ API Failed: POST https://ifafh-skilling.replit.app/api/send-otp TypeError: Failed to fetch
+2025-10-16 12:09:20.649 13845-13845 Capacitor/Console       com.infosys.afh.student              E  File: https://localhost/assets/index-BkdoCntB.js - Line 254 - Msg: [OTP ERROR] TypeError: Failed to fetch
+2025-10-16 12:09:20.651 13845-13845 Capacitor/Console       com.infosys.afh.student              E  File: https://localhost/assets/index-BkdoCntB.js - Line 254 - Msg: [OTP ERROR] Full error: {}
