@@ -366,7 +366,7 @@ export default function JobOffers() {
                                 onClick={() => handleRejectClick(offer.id)}
                                 disabled={rejectMutation.isPending}
                                 variant="outline"
-                                className="h-8 px-4 border-red-500 text-red-500 hover:bg-red-50 hover:text-red-600 text-sm disabled:opacity-50"
+                                className="h-7 px-2 border-red-500 text-red-500 hover:bg-red-50 hover:text-red-600 text-xs disabled:opacity-50"
                                 data-testid={`button-reject-${offer.id}`}
                               >
                                 Reject
@@ -374,7 +374,7 @@ export default function JobOffers() {
                               <Button
                                 onClick={() => handleAccept(offer.id)}
                                 disabled={acceptMutation.isPending}
-                                className="h-8 px-4 bg-[#5C4C7D] hover:bg-[#4C3C6D] text-white text-sm disabled:opacity-50"
+                                className="h-7 px-2 bg-[#5C4C7D] hover:bg-[#4C3C6D] text-white text-xs disabled:opacity-50"
                                 data-testid={`button-accept-${offer.id}`}
                               >
                                 Accept
