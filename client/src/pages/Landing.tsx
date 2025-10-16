@@ -10,7 +10,7 @@ export default function Landing() {
     <div className="min-h-screen bg-[#faf9fb]">
       {/* Header with Logos */}
       <div className="w-full">
-        <div className="max-w-6xl mx-auto px-4 pt-12 pb-2">
+        <div className="max-w-6xl mx-auto px-4 pt-12">
           <div className="flex items-center justify-center gap-3">
             <img 
               src={infosysLogo} 
@@ -30,7 +30,7 @@ export default function Landing() {
       </div>
 
       {/* Hero Section */}
-      <div className="max-w-2xl mx-auto px-4 pt-4 pb-8 flex flex-col items-center justify-center min-h-[calc(100vh-180px)]">
+      <div className="max-w-2xl mx-auto px-4 pt-2 pb-8 flex flex-col items-center justify-center min-h-[calc(100vh-180px)]">
         <div className="text-center w-full">
           <h1 className="text-3xl md:text-4xl font-bold text-[#1d2838] mb-8 leading-tight">
             Career Transformation Program
