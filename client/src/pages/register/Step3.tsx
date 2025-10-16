@@ -123,6 +123,15 @@ export default function RegisterStep3() {
         credentials: "include",
       });
 
+      if (!response.ok) {
+        console.error("Phone check failed with status:", response.status);
+        setErrors({ 
+          ...errors, 
+          studentContact: "Unable to verify phone number. Please try again."
+        });
+        return;
+      }
+
       const data = await response.json();
 
       if (data.exists) {
@@ -134,7 +143,11 @@ export default function RegisterStep3() {
       }
     } catch (error) {
       console.error("Error checking phone number:", error);
-      // Continue even if check fails - don't block the user
+      setErrors({ 
+        ...errors, 
+        studentContact: "Unable to verify phone number. Please try again."
+      });
+      return;
     }
 
     updateStep3(formData);
