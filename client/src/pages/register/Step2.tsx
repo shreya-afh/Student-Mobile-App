@@ -7,7 +7,6 @@ import { ChevronLeftIcon } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useRegistration } from "@/contexts/RegistrationContext";
 import { useAndroidBackButton } from "@/hooks/useAndroidBackButton";
-import { PopupCylinderPicker } from "@/components/PopupCylinderPicker";
 import { indianStates, getDistrictsForState, getCitiesForDistrict } from "@shared/locationData";
 import infosysLogo from "@assets/infosys-foundation-logo-blue_1760417156143.png";
 import aspireForHerLogo from "@assets/image_1760420610980.png";
@@ -314,12 +313,21 @@ export default function RegisterStep2() {
             </div>
 
             <div>
-              <PopupCylinderPicker
-                items={indianStates}
-                value={selectedState}
-                onChange={handleStateChange}
-                label="State *"
-              />
+              <Label htmlFor="state" className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm">
+                State *
+              </Label>
+              <Select value={selectedState} onValueChange={handleStateChange}>
+                <SelectTrigger className="mt-1">
+                  <SelectValue placeholder="Select state" />
+                </SelectTrigger>
+                <SelectContent>
+                  {indianStates.map((state) => (
+                    <SelectItem key={typeof state === 'string' ? state : state.value} value={typeof state === 'string' ? state : state.value}>
+                      {typeof state === 'string' ? state : state.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
               {errors.state && (
                 <p className="font-['Inter',Helvetica] font-normal text-red-500 text-xs mt-1">
                   {errors.state}
@@ -328,13 +336,21 @@ export default function RegisterStep2() {
             </div>
 
             <div>
-              <PopupCylinderPicker
-                items={getDistrictsForState(selectedState)}
-                value={selectedDistrict}
-                onChange={handleDistrictChange}
-                label="District *"
-                disabled={!selectedState}
-              />
+              <Label htmlFor="district" className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm">
+                District *
+              </Label>
+              <Select value={selectedDistrict} onValueChange={handleDistrictChange} disabled={!selectedState}>
+                <SelectTrigger className="mt-1">
+                  <SelectValue placeholder={!selectedState ? "Select state first" : "Select district"} />
+                </SelectTrigger>
+                <SelectContent>
+                  {getDistrictsForState(selectedState).map((district) => (
+                    <SelectItem key={typeof district === 'string' ? district : district.value} value={typeof district === 'string' ? district : district.value}>
+                      {typeof district === 'string' ? district : district.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
               {errors.district ? (
                 <p className="font-['Inter',Helvetica] font-normal text-red-500 text-xs mt-1">
                   {errors.district}
@@ -347,13 +363,21 @@ export default function RegisterStep2() {
             </div>
 
             <div>
-              <PopupCylinderPicker
-                items={getCitiesForDistrict(selectedState, selectedDistrict)}
-                value={showCityInput ? "other" : formData.city}
-                onChange={handleCityChange}
-                label="City *"
-                disabled={!selectedDistrict}
-              />
+              <Label htmlFor="city" className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm">
+                City *
+              </Label>
+              <Select value={showCityInput ? "other" : formData.city} onValueChange={handleCityChange} disabled={!selectedDistrict}>
+                <SelectTrigger className="mt-1">
+                  <SelectValue placeholder={!selectedDistrict ? "Select district first" : "Select city"} />
+                </SelectTrigger>
+                <SelectContent>
+                  {getCitiesForDistrict(selectedState, selectedDistrict).map((city) => (
+                    <SelectItem key={typeof city === 'string' ? city : city.value} value={typeof city === 'string' ? city : city.value}>
+                      {typeof city === 'string' ? city : city.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
               {errors.city ? (
                 <p className="font-['Inter',Helvetica] font-normal text-red-500 text-xs mt-1">
                   {errors.city}

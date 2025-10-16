@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useLocation } from "wouter";
 import { ChevronLeftIcon } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useRegistration } from "@/contexts/RegistrationContext";
-import { PopupCylinderPicker } from "@/components/PopupCylinderPicker";
 import { useAndroidBackButton } from "@/hooks/useAndroidBackButton";
 import infosysLogo from "@assets/infosys-foundation-logo-blue_1760417156143.png";
 import aspireForHerLogo from "@assets/image_1760420610980.png";
@@ -175,37 +175,62 @@ export default function RegisterStep1() {
                 Date of Birth *
               </Label>
               <div className="grid grid-cols-3 gap-3">
-                <PopupCylinderPicker
-                  items={Array.from({ length: daysInSelectedMonth }, (_, i) => String(i + 1).padStart(2, '0'))}
-                  value={formData.dateOfBirth.day}
-                  onChange={(day) => setFormData({ ...formData, dateOfBirth: { ...formData.dateOfBirth, day } })}
-                  label="Day"
-                />
-                <PopupCylinderPicker
-                  items={[
-                    { value: '01', label: 'Jan' },
-                    { value: '02', label: 'Feb' },
-                    { value: '03', label: 'Mar' },
-                    { value: '04', label: 'Apr' },
-                    { value: '05', label: 'May' },
-                    { value: '06', label: 'Jun' },
-                    { value: '07', label: 'Jul' },
-                    { value: '08', label: 'Aug' },
-                    { value: '09', label: 'Sep' },
-                    { value: '10', label: 'Oct' },
-                    { value: '11', label: 'Nov' },
-                    { value: '12', label: 'Dec' },
-                  ]}
-                  value={formData.dateOfBirth.month}
-                  onChange={(month) => setFormData({ ...formData, dateOfBirth: { ...formData.dateOfBirth, month } })}
-                  label="Month"
-                />
-                <PopupCylinderPicker
-                  items={Array.from({ length: 100 }, (_, i) => String(new Date().getFullYear() - i))}
-                  value={formData.dateOfBirth.year}
-                  onChange={(year) => setFormData({ ...formData, dateOfBirth: { ...formData.dateOfBirth, year } })}
-                  label="Year"
-                />
+                <div>
+                  <Select 
+                    value={formData.dateOfBirth.day} 
+                    onValueChange={(day) => setFormData({ ...formData, dateOfBirth: { ...formData.dateOfBirth, day } })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Day" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Array.from({ length: daysInSelectedMonth }, (_, i) => String(i + 1).padStart(2, '0')).map((day) => (
+                        <SelectItem key={day} value={day}>{day}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <Select 
+                    value={formData.dateOfBirth.month} 
+                    onValueChange={(month) => setFormData({ ...formData, dateOfBirth: { ...formData.dateOfBirth, month } })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Month" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="01">Jan</SelectItem>
+                      <SelectItem value="02">Feb</SelectItem>
+                      <SelectItem value="03">Mar</SelectItem>
+                      <SelectItem value="04">Apr</SelectItem>
+                      <SelectItem value="05">May</SelectItem>
+                      <SelectItem value="06">Jun</SelectItem>
+                      <SelectItem value="07">Jul</SelectItem>
+                      <SelectItem value="08">Aug</SelectItem>
+                      <SelectItem value="09">Sep</SelectItem>
+                      <SelectItem value="10">Oct</SelectItem>
+                      <SelectItem value="11">Nov</SelectItem>
+                      <SelectItem value="12">Dec</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <Select 
+                    value={formData.dateOfBirth.year} 
+                    onValueChange={(year) => setFormData({ ...formData, dateOfBirth: { ...formData.dateOfBirth, year } })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Year" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Array.from({ length: 100 }, (_, i) => String(new Date().getFullYear() - i)).map((year) => (
+                        <SelectItem key={year} value={year}>{year}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
             </div>
 
