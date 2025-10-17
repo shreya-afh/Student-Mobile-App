@@ -55,11 +55,14 @@ export default function JobOffers() {
   const [placementState, setPlacementState] = useState("");
   const [placementDistrict, setPlacementDistrict] = useState("");
   const [placementCity, setPlacementCity] = useState("");
+  const [showCityInput, setShowCityInput] = useState(false);
+  const [otherCityValue, setOtherCityValue] = useState("");
   const [joiningDay, setJoiningDay] = useState("");
   const [joiningMonth, setJoiningMonth] = useState("");
   const [joiningYear, setJoiningYear] = useState("");
   const [salary, setSalary] = useState("");
   const [joiningStatus, setJoiningStatus] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<Record<string, boolean>>({});
   
   // Calculate days in selected month for joining date
   const daysInJoiningMonth = useMemo(() => {
@@ -142,11 +145,14 @@ export default function JobOffers() {
       setPlacementState("");
       setPlacementDistrict("");
       setPlacementCity("");
+      setShowCityInput(false);
+      setOtherCityValue("");
       setJoiningDay("");
       setJoiningMonth("");
       setJoiningYear("");
       setSalary("");
       setJoiningStatus("");
+      setFieldErrors({});
     },
     onError: () => {
       toast({
@@ -209,6 +215,11 @@ export default function JobOffers() {
     const file = e.target.files?.[0];
     if (file) {
       setUploadFile(file);
+      setFieldErrors(prev => {
+        const newErrors = {...prev};
+        delete newErrors.file;
+        return newErrors;
+      });
     }
   };
 
@@ -216,20 +227,128 @@ export default function JobOffers() {
     setPlacementState(value);
     setPlacementDistrict("");
     setPlacementCity("");
+    setShowCityInput(false);
+    setOtherCityValue("");
+    setFieldErrors(prev => {
+      const newErrors = {...prev};
+      delete newErrors.placementState;
+      delete newErrors.placementDistrict;
+      delete newErrors.placementCity;
+      return newErrors;
+    });
   };
 
   const handleDistrictChange = (value: string) => {
     setPlacementDistrict(value);
     setPlacementCity("");
+    setShowCityInput(false);
+    setOtherCityValue("");
+    setFieldErrors(prev => {
+      const newErrors = {...prev};
+      delete newErrors.placementDistrict;
+      delete newErrors.placementCity;
+      return newErrors;
+    });
+  };
+
+  const handleCityChange = (value: string) => {
+    if (value === "other") {
+      setShowCityInput(true);
+      setPlacementCity(otherCityValue);
+    } else {
+      setShowCityInput(false);
+      setOtherCityValue("");
+      setPlacementCity(value);
+    }
+    setFieldErrors(prev => {
+      const newErrors = {...prev};
+      delete newErrors.placementCity;
+      return newErrors;
+    });
+  };
+
+  const handleOtherCityChange = (value: string) => {
+    setOtherCityValue(value);
+    setPlacementCity(value);
+    setFieldErrors(prev => {
+      const newErrors = {...prev};
+      delete newErrors.placementCity;
+      return newErrors;
+    });
   };
 
   const handleSubmitUpload = () => {
-    if (!uploadFile || !company || !position || !jobType || !placementLocationType || 
-        !placementState || !placementDistrict || !placementCity || !joiningDay || !joiningMonth || !joiningYear || 
-        !salary || !joiningStatus) {
+    const errors: Record<string, boolean> = {};
+    let firstErrorField = "";
+
+    // Validate all fields
+    if (!company) {
+      errors.company = true;
+      if (!firstErrorField) firstErrorField = "company";
+    }
+    if (!position) {
+      errors.position = true;
+      if (!firstErrorField) firstErrorField = "position";
+    }
+    if (!jobType) {
+      errors.jobType = true;
+      if (!firstErrorField) firstErrorField = "jobType";
+    }
+    if (!placementLocationType) {
+      errors.placementLocationType = true;
+      if (!firstErrorField) firstErrorField = "placementLocationType";
+    }
+    if (!placementState) {
+      errors.placementState = true;
+      if (!firstErrorField) firstErrorField = "placementState";
+    }
+    if (!placementDistrict) {
+      errors.placementDistrict = true;
+      if (!firstErrorField) firstErrorField = "placementDistrict";
+    }
+    if (!placementCity || (showCityInput && !placementCity.trim())) {
+      errors.placementCity = true;
+      if (!firstErrorField) firstErrorField = "placementCity";
+    }
+    if (!joiningDay) {
+      errors.joiningDay = true;
+      if (!firstErrorField) firstErrorField = "joiningDay";
+    }
+    if (!joiningMonth) {
+      errors.joiningMonth = true;
+      if (!firstErrorField) firstErrorField = "joiningMonth";
+    }
+    if (!joiningYear) {
+      errors.joiningYear = true;
+      if (!firstErrorField) firstErrorField = "joiningYear";
+    }
+    if (!salary) {
+      errors.salary = true;
+      if (!firstErrorField) firstErrorField = "salary";
+    }
+    if (!joiningStatus) {
+      errors.joiningStatus = true;
+      if (!firstErrorField) firstErrorField = "joiningStatus";
+    }
+    if (!uploadFile) {
+      errors.file = true;
+      if (!firstErrorField) firstErrorField = "file";
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
+      
+      // Scroll to first error field
+      setTimeout(() => {
+        const firstErrorElement = document.getElementById(firstErrorField);
+        if (firstErrorElement) {
+          firstErrorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 100);
+
       toast({
         title: "Missing Information",
-        description: "Please fill in all required fields and select a file",
+        description: "Please fill in all required fields highlighted in red",
         variant: "destructive",
       });
       return;
@@ -239,7 +358,7 @@ export default function JobOffers() {
     const formattedJoiningDate = `${joiningDay}-${joiningMonth}-${joiningYear}`;
     
     uploadMutation.mutate({ 
-      file: uploadFile, 
+      file: uploadFile!, // Already validated above
       company, 
       position,
       jobType,
@@ -554,9 +673,16 @@ export default function JobOffers() {
               <Label htmlFor="company">Employer Name *</Label>
               <Input
                 id="company"
-                className="text-base"
+                className={`h-10 ${fieldErrors.company ? 'border-red-500' : ''}`}
                 value={company}
-                onChange={(e) => setCompany(e.target.value)}
+                onChange={(e) => {
+                  setCompany(e.target.value);
+                  setFieldErrors(prev => {
+                    const newErrors = {...prev};
+                    delete newErrors.company;
+                    return newErrors;
+                  });
+                }}
                 placeholder="e.g., Infosys"
               />
             </div>
@@ -566,9 +692,16 @@ export default function JobOffers() {
               <Label htmlFor="position">Job Title *</Label>
               <Input
                 id="position"
-                className="text-base"
+                className={`h-10 ${fieldErrors.position ? 'border-red-500' : ''}`}
                 value={position}
-                onChange={(e) => setPosition(e.target.value)}
+                onChange={(e) => {
+                  setPosition(e.target.value);
+                  setFieldErrors(prev => {
+                    const newErrors = {...prev};
+                    delete newErrors.position;
+                    return newErrors;
+                  });
+                }}
                 placeholder="e.g., Software Engineer"
               />
             </div>
@@ -576,8 +709,15 @@ export default function JobOffers() {
             {/* Job Type */}
             <div className="grid gap-2">
               <Label htmlFor="jobType">Job Type *</Label>
-              <Select value={jobType} onValueChange={setJobType}>
-                <SelectTrigger className="text-base">
+              <Select value={jobType} onValueChange={(value) => {
+                setJobType(value);
+                setFieldErrors(prev => {
+                  const newErrors = {...prev};
+                  delete newErrors.jobType;
+                  return newErrors;
+                });
+              }}>
+                <SelectTrigger id="jobType" className={`h-10 ${fieldErrors.jobType ? 'border-red-500' : ''}`}>
                   <SelectValue placeholder="Select job type" />
                 </SelectTrigger>
                 <SelectContent>
@@ -594,8 +734,15 @@ export default function JobOffers() {
             {/* Placement Location Type */}
             <div className="grid gap-2">
               <Label htmlFor="placementLocationType">Placement Location Type *</Label>
-              <Select value={placementLocationType} onValueChange={setPlacementLocationType}>
-                <SelectTrigger className="text-base">
+              <Select value={placementLocationType} onValueChange={(value) => {
+                setPlacementLocationType(value);
+                setFieldErrors(prev => {
+                  const newErrors = {...prev};
+                  delete newErrors.placementLocationType;
+                  return newErrors;
+                });
+              }}>
+                <SelectTrigger id="placementLocationType" className={`h-10 ${fieldErrors.placementLocationType ? 'border-red-500' : ''}`}>
                   <SelectValue placeholder="Select location type" />
                 </SelectTrigger>
                 <SelectContent>
@@ -610,7 +757,7 @@ export default function JobOffers() {
             <div className="grid gap-2">
               <Label htmlFor="placementState">Placement State *</Label>
               <Select value={placementState} onValueChange={handleStateChange}>
-                <SelectTrigger className="text-base">
+                <SelectTrigger id="placementState" className={`h-10 ${fieldErrors.placementState ? 'border-red-500' : ''}`}>
                   <SelectValue placeholder="Select state" />
                 </SelectTrigger>
                 <SelectContent>
@@ -627,7 +774,7 @@ export default function JobOffers() {
             <div className="grid gap-2">
               <Label htmlFor="placementDistrict">Placement District *</Label>
               <Select value={placementDistrict} onValueChange={handleDistrictChange} disabled={!placementState}>
-                <SelectTrigger className="text-base">
+                <SelectTrigger id="placementDistrict" className={`h-10 ${fieldErrors.placementDistrict ? 'border-red-500' : ''}`}>
                   <SelectValue placeholder={!placementState ? "Select state first" : "Select district"} />
                 </SelectTrigger>
                 <SelectContent>
@@ -643,8 +790,8 @@ export default function JobOffers() {
             {/* Placement City */}
             <div className="grid gap-2">
               <Label htmlFor="placementCity">Placement City Location *</Label>
-              <Select value={placementCity} onValueChange={setPlacementCity} disabled={!placementDistrict}>
-                <SelectTrigger className="text-base">
+              <Select value={showCityInput ? "other" : placementCity} onValueChange={handleCityChange} disabled={!placementDistrict}>
+                <SelectTrigger id="placementCity" className={`h-10 ${fieldErrors.placementCity ? 'border-red-500' : ''}`}>
                   <SelectValue placeholder={!placementDistrict ? "Select district first" : "Select city"} />
                 </SelectTrigger>
                 <SelectContent>
@@ -653,8 +800,18 @@ export default function JobOffers() {
                       {typeof city === 'string' ? city : city.label}
                     </SelectItem>
                   ))}
+                  <SelectItem value="other">Other</SelectItem>
                 </SelectContent>
               </Select>
+              {showCityInput && (
+                <Input
+                  id="otherCity"
+                  className={`h-10 mt-2 ${fieldErrors.placementCity ? 'border-red-500' : ''}`}
+                  value={otherCityValue}
+                  onChange={(e) => handleOtherCityChange(e.target.value)}
+                  placeholder="Enter city name"
+                />
+              )}
             </div>
 
             {/* Joining Date */}
@@ -662,8 +819,15 @@ export default function JobOffers() {
               <Label>Joining Date *</Label>
               <div className="grid grid-cols-3 gap-3">
                 <div>
-                  <Select value={joiningDay} onValueChange={setJoiningDay}>
-                    <SelectTrigger className="text-base">
+                  <Select value={joiningDay} onValueChange={(value) => {
+                    setJoiningDay(value);
+                    setFieldErrors(prev => {
+                      const newErrors = {...prev};
+                      delete newErrors.joiningDay;
+                      return newErrors;
+                    });
+                  }}>
+                    <SelectTrigger id="joiningDay" className={`h-10 ${fieldErrors.joiningDay ? 'border-red-500' : ''}`}>
                       <SelectValue placeholder="Day" />
                     </SelectTrigger>
                     <SelectContent>
@@ -674,8 +838,15 @@ export default function JobOffers() {
                   </Select>
                 </div>
                 <div>
-                  <Select value={joiningMonth} onValueChange={setJoiningMonth}>
-                    <SelectTrigger className="text-base">
+                  <Select value={joiningMonth} onValueChange={(value) => {
+                    setJoiningMonth(value);
+                    setFieldErrors(prev => {
+                      const newErrors = {...prev};
+                      delete newErrors.joiningMonth;
+                      return newErrors;
+                    });
+                  }}>
+                    <SelectTrigger id="joiningMonth" className={`h-10 ${fieldErrors.joiningMonth ? 'border-red-500' : ''}`}>
                       <SelectValue placeholder="Month" />
                     </SelectTrigger>
                     <SelectContent>
@@ -695,8 +866,15 @@ export default function JobOffers() {
                   </Select>
                 </div>
                 <div>
-                  <Select value={joiningYear} onValueChange={setJoiningYear}>
-                    <SelectTrigger className="text-base">
+                  <Select value={joiningYear} onValueChange={(value) => {
+                    setJoiningYear(value);
+                    setFieldErrors(prev => {
+                      const newErrors = {...prev};
+                      delete newErrors.joiningYear;
+                      return newErrors;
+                    });
+                  }}>
+                    <SelectTrigger id="joiningYear" className={`h-10 ${fieldErrors.joiningYear ? 'border-red-500' : ''}`}>
                       <SelectValue placeholder="Year" />
                     </SelectTrigger>
                     <SelectContent>
@@ -714,9 +892,16 @@ export default function JobOffers() {
               <Label htmlFor="salary">Annual Salary Offered in INR (CTC) *</Label>
               <Input
                 id="salary"
-                className="text-base"
+                className={`h-10 ${fieldErrors.salary ? 'border-red-500' : ''}`}
                 value={salary}
-                onChange={(e) => setSalary(e.target.value)}
+                onChange={(e) => {
+                  setSalary(e.target.value);
+                  setFieldErrors(prev => {
+                    const newErrors = {...prev};
+                    delete newErrors.salary;
+                    return newErrors;
+                  });
+                }}
                 placeholder="e.g., 500000"
                 type="number"
               />
@@ -725,8 +910,15 @@ export default function JobOffers() {
             {/* Joining Status */}
             <div className="grid gap-2">
               <Label htmlFor="joiningStatus">Joining Status *</Label>
-              <Select value={joiningStatus} onValueChange={setJoiningStatus}>
-                <SelectTrigger className="text-base">
+              <Select value={joiningStatus} onValueChange={(value) => {
+                setJoiningStatus(value);
+                setFieldErrors(prev => {
+                  const newErrors = {...prev};
+                  delete newErrors.joiningStatus;
+                  return newErrors;
+                });
+              }}>
+                <SelectTrigger id="joiningStatus" className={`h-10 ${fieldErrors.joiningStatus ? 'border-red-500' : ''}`}>
                   <SelectValue placeholder="Select joining status" />
                 </SelectTrigger>
                 <SelectContent>
@@ -743,7 +935,7 @@ export default function JobOffers() {
               <Label htmlFor="file">Offer Letter (PDF) *</Label>
               <Input
                 id="file"
-                className="text-base"
+                className={`h-10 ${fieldErrors.file ? 'border-red-500' : ''}`}
                 type="file"
                 accept=".pdf"
                 onChange={handleFileSelect}
