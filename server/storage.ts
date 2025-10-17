@@ -36,6 +36,7 @@ export interface IStorage {
   acceptOfferLetter(id: string): Promise<void>;
   rejectOfferLetter(id: string): Promise<void>;
   getCourseByCode(courseCode: string): Promise<Course | undefined>;
+  enrollUserInCourse(userId: string, courseId: string): Promise<void>;
 }
 
 // DatabaseStorage uses PostgreSQL for persistent data
@@ -169,6 +170,13 @@ export class DatabaseStorage implements IStorage {
       .from(courses)
       .where(eq(courses.courseCode, courseCode));
     return course || undefined;
+  }
+
+  async enrollUserInCourse(userId: string, courseId: string): Promise<void> {
+    await db
+      .update(users)
+      .set({ courseId })
+      .where(eq(users.id, userId));
   }
 
   private cleanupExpiredOtps(): void {

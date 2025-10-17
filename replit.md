@@ -126,6 +126,25 @@ Preferred communication style: Simple, everyday language.
 - Achievements and opportunities (/certificates, /job-offers, /job-opportunities)
 - User profile (/profile)
 
+## Recent Changes (October 17, 2025)
+
+### Course Enrollment Tracking & User Flow Management
+- **Database Schema**: Added `courseId` column to users table with foreign key reference to courses table
+- **Enrollment Logic**: 
+  - New users after registration → Redirected to course enrollment page
+  - Existing users without course → Redirected to course enrollment on login
+  - Users with enrolled course → Redirected to dashboard
+- **API Endpoints**:
+  - GET /api/courses/search/:courseCode - Search course by code
+  - POST /api/enroll - Enroll user in course (saves courseId to user record)
+- **Frontend Flow**:
+  - Course search by code (case-insensitive, auto-uppercase)
+  - Dynamic course details display from database
+  - Enrollment mutation with loading states
+  - AuthContext updated with courseId for session tracking
+- **Sample Courses**: DM2024B4 (Digital Marketing), WD2024A3 (Web Dev), DA2025C1 (Data Analytics)
+- **User Experience**: Seamless flow ensuring all users are enrolled before accessing dashboard features
+
 ## Recent Changes (October 15, 2025)
 
 ### AFH Student ID System & Password Authentication

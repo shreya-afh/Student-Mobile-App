@@ -6,9 +6,11 @@ import { useLocation } from "wouter";
 import { ChevronLeftIcon, CalendarIcon, ClockIcon, UsersIcon, MonitorIcon } from "lucide-react";
 import { useState } from "react";
 import { useAndroidBackButton } from "@/hooks/useAndroidBackButton";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import type { Course } from "@shared/schema";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
+import { apiRequest } from "@/lib/queryClient";
 import infosysLogo from "@assets/infosys-foundation-logo-blue_1760417156143.png";
 import aspireForHerLogo from "@assets/image_1760420610980.png";
 
@@ -17,11 +19,47 @@ export default function CourseEnrollment() {
   const [courseCode, setCourseCode] = useState("");
   const [searchCode, setSearchCode] = useState("");
   const { toast } = useToast();
+  const { user, login } = useAuth();
   useAndroidBackButton("/dashboard");
 
   const { data: courseData, isLoading, error } = useQuery<{ success: boolean; course: Course }>({
     queryKey: ["/api/courses/search", searchCode],
     enabled: !!searchCode,
+  });
+
+  const enrollMutation = useMutation({
+    mutationFn: async () => {
+      if (!user?.id || !courseData?.course.id) {
+        throw new Error("User ID or Course ID missing");
+      }
+      const response = await apiRequest("POST", "/api/enroll", {
+        userId: user.id,
+        courseId: courseData.course.id,
+      });
+      return response.json();
+    },
+    onSuccess: () => {
+      // Update user in AuthContext with courseId
+      if (user && courseData?.course.id) {
+        login({
+          ...user,
+          courseId: courseData.course.id,
+        });
+      }
+      
+      toast({
+        title: "Enrollment Successful",
+        description: `You have been enrolled in ${courseData?.course.courseName}`,
+      });
+      setLocation("/dashboard");
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Enrollment Failed",
+        description: error.message || "Failed to enroll in course",
+        variant: "destructive",
+      });
+    },
   });
 
   const handleSearch = () => {
@@ -37,11 +75,7 @@ export default function CourseEnrollment() {
   };
 
   const handleEnroll = () => {
-    toast({
-      title: "Enrollment Successful",
-      description: `You have been enrolled in ${courseData?.course.courseName}`,
-    });
-    setLocation("/dashboard");
+    enrollMutation.mutate();
   };
 
   return (
@@ -206,9 +240,11 @@ export default function CourseEnrollment() {
 
                 <Button
                   onClick={handleEnroll}
+                  disabled={enrollMutation.isPending}
                   className="w-full h-12 bg-[#5C4C7D] hover:bg-[#4C3C6D] text-white rounded-lg font-['Inter',Helvetica] font-medium text-base mt-4"
+                  data-testid="button-enroll"
                 >
-                  Enroll Now
+                  {enrollMutation.isPending ? "Enrolling..." : "Enroll Now"}
                 </Button>
               </CardContent>
             </Card>

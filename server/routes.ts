@@ -639,6 +639,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Enroll user in course
+  app.post("/api/enroll", async (req, res) => {
+    try {
+      const { userId, courseId } = req.body;
+
+      if (!userId || !courseId) {
+        return res.status(400).json({
+          success: false,
+          message: "User ID and Course ID are required",
+        });
+      }
+
+      await storage.enrollUserInCourse(userId, courseId);
+
+      res.json({
+        success: true,
+        message: "Enrolled successfully",
+      });
+    } catch (error) {
+      console.error("Enroll error:", error);
+      res.status(500).json({
+        success: false,
+        message: "Failed to enroll in course",
+      });
+    }
+  });
+
   const httpServer = createServer(app);
 
   return httpServer;

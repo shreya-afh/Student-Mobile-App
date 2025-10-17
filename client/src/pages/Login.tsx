@@ -47,8 +47,15 @@ export default function Login() {
           id: data.user.id,
           phone: data.user.studentContact,
           name: data.user.fullName,
+          courseId: data.user.courseId,
         });
-        setLocation("/dashboard");
+        
+        // Redirect based on enrollment status
+        if (!data.user.courseId) {
+          setLocation("/course-enrollment");
+        } else {
+          setLocation("/dashboard");
+        }
       }
     },
     onError: (error: any) => {

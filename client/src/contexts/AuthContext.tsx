@@ -11,6 +11,7 @@ interface User {
   id?: string;
   phone: string;
   name?: string;
+  courseId?: string | null;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
