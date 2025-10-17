@@ -122,7 +122,7 @@ export default function VerifyOTP() {
         name: registrationData.step1.fullName 
       });
       resetRegistration();
-      setLocation("/dashboard");
+      setLocation("/course-enrollment");
     },
     onError: (error: any) => {
       // Parse error message and type from response
