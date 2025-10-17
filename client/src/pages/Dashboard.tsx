@@ -23,7 +23,7 @@ export default function Dashboard() {
 
   // Fetch enrolled course details
   const { data: courseData } = useQuery<{ success: boolean; course: Course }>({
-    queryKey: ["/api/courses", user?.courseId],
+    queryKey: [`/api/courses/${user?.courseId}`],
     enabled: !!user?.courseId,
   });
 
