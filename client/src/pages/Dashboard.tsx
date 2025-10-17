@@ -152,25 +152,23 @@ export default function Dashboard() {
                 <div className="mt-4">
                   <div className="flex justify-between items-center mb-1">
                     <span className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs">
-                      Duration
+                      Progress
                     </span>
                     <span className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm">
-                      {courseData.course.duration}
+                      39/60 hours
                     </span>
                   </div>
-                  <div className="flex justify-between items-center">
-                    <span className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs">
-                      Mode
-                    </span>
-                    <span className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm">
-                      {courseData.course.mode}
-                    </span>
+                  <div className="w-full bg-[#e5e7eb] rounded-full h-2">
+                    <div className="bg-[#5C4C7D] h-2 rounded-full" style={{ width: "65%" }}></div>
                   </div>
+                  <p className="font-['Inter',Helvetica] font-normal text-[#495565] text-xs mt-1">
+                    65% completed
+                  </p>
                 </div>
 
                 <div className="mt-3 pt-3 border-t border-[#0000001a]">
                   <p className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs">
-                    Start Date: <span className="text-[#5C4C7D] font-medium">{courseData.course.startDate}</span>
+                    Attendance: <span className="text-[#5C4C7D] font-medium">92%</span>
                   </p>
                 </div>
               </CardContent>
