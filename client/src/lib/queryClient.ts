@@ -8,8 +8,10 @@ function detectPlatform(): string {
       const Capacitor = (window as any).Capacitor;
       if (Capacitor.isNativePlatform && Capacitor.isNativePlatform()) {
         // Running in native Android/iOS app
-        // Use the actual Replit server URL
-        const replitDevUrl = "https://workspace.shreyamishra39.repl.co";
+        // Try to use the current Replit dev URL (works when testing from Replit)
+        const replitDevUrl = window.location.origin.includes('replit') 
+          ? window.location.origin 
+          : "https://ifafh-skilling.replit.app";
         console.log('🤖 Android/iOS app detected - API URL:', replitDevUrl);
         console.log('📍 Current origin:', window.location.origin);
         return replitDevUrl;
