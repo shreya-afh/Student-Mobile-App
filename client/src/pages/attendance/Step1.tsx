@@ -108,7 +108,7 @@ export default function AttendanceStep1() {
         </div>
       </header>
 
-      <div className="flex-1 overflow-y-auto p-4 flex flex-col justify-center" style={{ WebkitOverflowScrolling: 'touch', overscrollBehavior: 'contain', touchAction: 'pan-y' }}>
+      <div className="flex-1 overflow-y-auto p-4 pb-20 flex flex-col justify-center" style={{ WebkitOverflowScrolling: 'touch', overscrollBehavior: 'contain', touchAction: 'pan-y' }}>
         <div className="max-w-md mx-auto w-full">
           <Card className="border-gray-200 hover:shadow-md transition-all bg-[#eff1ff] mb-6">
             <CardContent className="p-4">

@@ -49,7 +49,7 @@ export const StudentMobileApp = (): JSX.Element => {
           </div>
         </div>
       </header>
-      <div className="flex-1 overflow-y-auto" style={{ WebkitOverflowScrolling: 'touch', overscrollBehavior: 'contain', touchAction: 'pan-y' }}>
+      <div className="flex-1 overflow-y-auto pb-20" style={{ WebkitOverflowScrolling: 'touch', overscrollBehavior: 'contain', touchAction: 'pan-y' }}>
         <InformationSection />
       </div>
     </div>

@@ -8,10 +8,8 @@ interface AppLayoutProps {
 export function AppLayout({ children }: AppLayoutProps) {
   return (
     <div className="relative">
-      {/* Main content with bottom padding to prevent overlap with nav */}
-      <div className="pb-16">
-        {children}
-      </div>
+      {/* Main content - pages manage their own bottom spacing */}
+      {children}
       
       {/* Bottom Navigation */}
       <BottomNav />

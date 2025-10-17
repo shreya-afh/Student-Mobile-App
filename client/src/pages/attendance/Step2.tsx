@@ -229,7 +229,7 @@ export default function AttendanceStep2() {
         </div>
       </header>
 
-      <div className="flex-1 overflow-y-auto p-4" style={{ WebkitOverflowScrolling: 'touch', overscrollBehavior: 'contain', touchAction: 'pan-y' }}>
+      <div className="flex-1 overflow-y-auto p-4 pb-20" style={{ WebkitOverflowScrolling: 'touch', overscrollBehavior: 'contain', touchAction: 'pan-y' }}>
         <div className="max-w-md mx-auto w-full">
           <div className="text-center mb-6">
             <div className="w-16 h-16 bg-[#5C4C7D] rounded-full flex items-center justify-center mx-auto mb-3">
