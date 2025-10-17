@@ -258,7 +258,7 @@ export const InformationSection = (): JSX.Element => {
               AFH Student App v1.0.0
             </p>
             <p className="[font-family:'Inter',Helvetica] font-normal text-[#697282] text-xs text-center tracking-[0] leading-4">
-              © 2024 AFH. All rights reserved.
+              © 2025 AFH. All rights reserved.
             </p>
           </div>
         </CardContent>
