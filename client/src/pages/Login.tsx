@@ -2,8 +2,17 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { useLocation } from "wouter";
-import { ChevronLeftIcon, EyeIcon, EyeOffIcon } from "lucide-react";
+import { ChevronLeftIcon, EyeIcon, EyeOffIcon, XCircleIcon } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useMutation } from "@tanstack/react-query";
@@ -21,6 +30,8 @@ export default function Login() {
     password: "",
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [errorDialogOpen, setErrorDialogOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const loginMutation = useMutation({
     mutationFn: async () => {
@@ -41,11 +52,8 @@ export default function Login() {
       }
     },
     onError: (error: any) => {
-      toast({
-        title: "Login Failed",
-        description: error.message || "Invalid mobile number or password",
-        variant: "destructive",
-      });
+      setErrorMessage(error.message || "Invalid mobile number or password");
+      setErrorDialogOpen(true);
     },
   });
 
@@ -168,6 +176,34 @@ export default function Login() {
           </div>
         </div>
       </div>
+
+      {/* Error Dialog */}
+      <AlertDialog open={errorDialogOpen} onOpenChange={setErrorDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center">
+                <XCircleIcon className="w-6 h-6 text-red-600" />
+              </div>
+              <AlertDialogTitle className="font-['Inter',Helvetica] font-bold text-[#1d2838] text-lg">
+                Login Failed
+              </AlertDialogTitle>
+            </div>
+            <AlertDialogDescription className="font-['Inter',Helvetica] font-normal text-[#495565] text-base">
+              {errorMessage}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogAction
+              onClick={() => setErrorDialogOpen(false)}
+              className="w-full bg-[#5C4C7D] hover:bg-[#4C3C6D] text-white"
+              data-testid="button-error-close"
+            >
+              Try Again
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
