@@ -7,6 +7,7 @@ import NotFound from "@/pages/not-found";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { RegistrationProvider } from "@/contexts/RegistrationContext";
 import { useEffect } from "react";
+import { AppLayout } from "@/components/AppLayout";
 
 import Landing from "@/pages/Landing";
 import Login from "@/pages/Login";
@@ -37,7 +38,7 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
     }
   }, [isAuthenticated, setLocation]);
 
-  return isAuthenticated ? <>{children}</> : null;
+  return isAuthenticated ? <AppLayout>{children}</AppLayout> : null;
 }
 
 function PublicRoute({ children }: { children: React.ReactNode }) {
