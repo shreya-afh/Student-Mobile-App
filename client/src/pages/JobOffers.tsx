@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { useLocation } from "wouter";
 import { ChevronLeftIcon, UploadIcon, CalendarIcon, MapPinIcon, IndianRupeeIcon, ExternalLinkIcon } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useAndroidBackButton } from "@/hooks/useAndroidBackButton";
 import infosysLogo from "@assets/infosys-foundation-logo-blue_1760417156143.png";
 import aspireForHerLogo from "@assets/image_1760420610980.png";
@@ -12,6 +12,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { apiRequest, queryClient, getApiBaseUrl } from "@/lib/queryClient";
 import type { OfferLetter } from "@shared/schema";
+import { indianStates, getDistrictsForState, getCitiesForDistrict } from "@shared/locationData";
 import {
   Dialog,
   DialogContent,
@@ -54,9 +55,19 @@ export default function JobOffers() {
   const [placementState, setPlacementState] = useState("");
   const [placementDistrict, setPlacementDistrict] = useState("");
   const [placementCity, setPlacementCity] = useState("");
-  const [joiningDate, setJoiningDate] = useState("");
+  const [joiningDay, setJoiningDay] = useState("");
+  const [joiningMonth, setJoiningMonth] = useState("");
+  const [joiningYear, setJoiningYear] = useState("");
   const [salary, setSalary] = useState("");
   const [joiningStatus, setJoiningStatus] = useState("");
+  
+  // Calculate days in selected month for joining date
+  const daysInJoiningMonth = useMemo(() => {
+    if (!joiningMonth || !joiningYear) return 31;
+    const year = parseInt(joiningYear);
+    const month = parseInt(joiningMonth);
+    return new Date(year, month, 0).getDate();
+  }, [joiningMonth, joiningYear]);
   
   const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
   const [offerToReject, setOfferToReject] = useState<string | null>(null);
@@ -131,7 +142,9 @@ export default function JobOffers() {
       setPlacementState("");
       setPlacementDistrict("");
       setPlacementCity("");
-      setJoiningDate("");
+      setJoiningDay("");
+      setJoiningMonth("");
+      setJoiningYear("");
       setSalary("");
       setJoiningStatus("");
     },
@@ -199,9 +212,20 @@ export default function JobOffers() {
     }
   };
 
+  const handleStateChange = (value: string) => {
+    setPlacementState(value);
+    setPlacementDistrict("");
+    setPlacementCity("");
+  };
+
+  const handleDistrictChange = (value: string) => {
+    setPlacementDistrict(value);
+    setPlacementCity("");
+  };
+
   const handleSubmitUpload = () => {
     if (!uploadFile || !company || !position || !jobType || !placementLocationType || 
-        !placementState || !placementDistrict || !placementCity || !joiningDate || 
+        !placementState || !placementDistrict || !placementCity || !joiningDay || !joiningMonth || !joiningYear || 
         !salary || !joiningStatus) {
       toast({
         title: "Missing Information",
@@ -210,6 +234,9 @@ export default function JobOffers() {
       });
       return;
     }
+    
+    // Format joining date as DD-MM-YYYY
+    const formattedJoiningDate = `${joiningDay}-${joiningMonth}-${joiningYear}`;
     
     uploadMutation.mutate({ 
       file: uploadFile, 
@@ -220,7 +247,7 @@ export default function JobOffers() {
       placementState,
       placementDistrict,
       placementCity,
-      joiningDate,
+      joiningDate: formattedJoiningDate,
       salary,
       joiningStatus
     });
