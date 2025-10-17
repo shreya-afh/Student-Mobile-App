@@ -607,45 +607,104 @@ export default function JobOffers() {
             {/* Placement State */}
             <div className="grid gap-2">
               <Label htmlFor="placementState">Placement State *</Label>
-              <Input
-                id="placementState"
-                value={placementState}
-                onChange={(e) => setPlacementState(e.target.value)}
-                placeholder="e.g., Karnataka"
-              />
+              <Select value={placementState} onValueChange={handleStateChange}>
+                <SelectTrigger className="text-base">
+                  <SelectValue placeholder="Select state" />
+                </SelectTrigger>
+                <SelectContent>
+                  {indianStates.map((state) => (
+                    <SelectItem key={typeof state === 'string' ? state : state.value} value={typeof state === 'string' ? state : state.value}>
+                      {typeof state === 'string' ? state : state.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
             {/* Placement District */}
             <div className="grid gap-2">
               <Label htmlFor="placementDistrict">Placement District *</Label>
-              <Input
-                id="placementDistrict"
-                value={placementDistrict}
-                onChange={(e) => setPlacementDistrict(e.target.value)}
-                placeholder="e.g., Bangalore Urban"
-              />
+              <Select value={placementDistrict} onValueChange={handleDistrictChange} disabled={!placementState}>
+                <SelectTrigger className="text-base">
+                  <SelectValue placeholder={!placementState ? "Select state first" : "Select district"} />
+                </SelectTrigger>
+                <SelectContent>
+                  {getDistrictsForState(placementState).map((district) => (
+                    <SelectItem key={typeof district === 'string' ? district : district.value} value={typeof district === 'string' ? district : district.value}>
+                      {typeof district === 'string' ? district : district.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
             {/* Placement City */}
             <div className="grid gap-2">
               <Label htmlFor="placementCity">Placement City Location *</Label>
-              <Input
-                id="placementCity"
-                value={placementCity}
-                onChange={(e) => setPlacementCity(e.target.value)}
-                placeholder="e.g., Bangalore"
-              />
+              <Select value={placementCity} onValueChange={setPlacementCity} disabled={!placementDistrict}>
+                <SelectTrigger className="text-base">
+                  <SelectValue placeholder={!placementDistrict ? "Select district first" : "Select city"} />
+                </SelectTrigger>
+                <SelectContent>
+                  {getCitiesForDistrict(placementState, placementDistrict).map((city) => (
+                    <SelectItem key={typeof city === 'string' ? city : city.value} value={typeof city === 'string' ? city : city.value}>
+                      {typeof city === 'string' ? city : city.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
             {/* Joining Date */}
             <div className="grid gap-2">
-              <Label htmlFor="joiningDate">Joining Date (DD-MM-YYYY) *</Label>
-              <Input
-                id="joiningDate"
-                value={joiningDate}
-                onChange={(e) => setJoiningDate(e.target.value)}
-                placeholder="e.g., 15-03-2025"
-              />
+              <Label>Joining Date *</Label>
+              <div className="grid grid-cols-3 gap-3">
+                <div>
+                  <Select value={joiningDay} onValueChange={setJoiningDay}>
+                    <SelectTrigger className="text-base">
+                      <SelectValue placeholder="Day" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Array.from({ length: daysInJoiningMonth }, (_, i) => String(i + 1).padStart(2, '0')).map((day) => (
+                        <SelectItem key={day} value={day}>{day}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Select value={joiningMonth} onValueChange={setJoiningMonth}>
+                    <SelectTrigger className="text-base">
+                      <SelectValue placeholder="Month" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="01">Jan</SelectItem>
+                      <SelectItem value="02">Feb</SelectItem>
+                      <SelectItem value="03">Mar</SelectItem>
+                      <SelectItem value="04">Apr</SelectItem>
+                      <SelectItem value="05">May</SelectItem>
+                      <SelectItem value="06">Jun</SelectItem>
+                      <SelectItem value="07">Jul</SelectItem>
+                      <SelectItem value="08">Aug</SelectItem>
+                      <SelectItem value="09">Sep</SelectItem>
+                      <SelectItem value="10">Oct</SelectItem>
+                      <SelectItem value="11">Nov</SelectItem>
+                      <SelectItem value="12">Dec</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Select value={joiningYear} onValueChange={setJoiningYear}>
+                    <SelectTrigger className="text-base">
+                      <SelectValue placeholder="Year" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Array.from({ length: 10 }, (_, i) => String(new Date().getFullYear() + i)).map((year) => (
+                        <SelectItem key={year} value={year}>{year}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
             </div>
 
             {/* Annual Salary */}
