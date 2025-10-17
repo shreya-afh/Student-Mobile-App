@@ -613,6 +613,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Search course by course code
+  app.get("/api/courses/search/:courseCode", async (req, res) => {
+    try {
+      const courseCode = req.params.courseCode.toUpperCase();
+      const course = await storage.getCourseByCode(courseCode);
+
+      if (!course) {
+        return res.status(404).json({
+          success: false,
+          message: "Course not found",
+        });
+      }
+
+      res.json({
+        success: true,
+        course,
+      });
+    } catch (error) {
+      console.error("Search course error:", error);
+      res.status(500).json({
+        success: false,
+        message: "Failed to search course",
+      });
+    }
+  });
+
   const httpServer = createServer(app);
 
   return httpServer;

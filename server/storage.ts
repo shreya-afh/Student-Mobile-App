@@ -2,12 +2,14 @@ import {
   users, 
   attendanceRecords,
   offerLetters,
+  courses,
   type User, 
   type InsertUser,
   type AttendanceRecord,
   type InsertAttendanceRecord,
   type OfferLetter,
-  type InsertOfferLetter
+  type InsertOfferLetter,
+  type Course
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc } from "drizzle-orm";
@@ -33,6 +35,7 @@ export interface IStorage {
   getOfferLetter(id: string): Promise<OfferLetter | undefined>;
   acceptOfferLetter(id: string): Promise<void>;
   rejectOfferLetter(id: string): Promise<void>;
+  getCourseByCode(courseCode: string): Promise<Course | undefined>;
 }
 
 // DatabaseStorage uses PostgreSQL for persistent data
@@ -158,6 +161,14 @@ export class DatabaseStorage implements IStorage {
       .update(offerLetters)
       .set({ status: "rejected" })
       .where(eq(offerLetters.id, id));
+  }
+
+  async getCourseByCode(courseCode: string): Promise<Course | undefined> {
+    const [course] = await db
+      .select()
+      .from(courses)
+      .where(eq(courses.courseCode, courseCode));
+    return course || undefined;
   }
 
   private cleanupExpiredOtps(): void {

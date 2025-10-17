@@ -6,22 +6,41 @@ import { useLocation } from "wouter";
 import { ChevronLeftIcon, CalendarIcon, ClockIcon, UsersIcon, MonitorIcon } from "lucide-react";
 import { useState } from "react";
 import { useAndroidBackButton } from "@/hooks/useAndroidBackButton";
+import { useQuery } from "@tanstack/react-query";
+import type { Course } from "@shared/schema";
+import { useToast } from "@/hooks/use-toast";
 import infosysLogo from "@assets/infosys-foundation-logo-blue_1760417156143.png";
 import aspireForHerLogo from "@assets/image_1760420610980.png";
 
 export default function CourseEnrollment() {
   const [, setLocation] = useLocation();
   const [courseCode, setCourseCode] = useState("");
-  const [showCourse, setShowCourse] = useState(false);
+  const [searchCode, setSearchCode] = useState("");
+  const { toast } = useToast();
   useAndroidBackButton("/dashboard");
 
+  const { data: courseData, isLoading, error } = useQuery<{ success: boolean; course: Course }>({
+    queryKey: ["/api/courses/search", searchCode],
+    enabled: !!searchCode,
+  });
+
   const handleSearch = () => {
-    if (courseCode) {
-      setShowCourse(true);
+    if (courseCode.trim()) {
+      setSearchCode(courseCode.toUpperCase().trim());
+    } else {
+      toast({
+        title: "Invalid Input",
+        description: "Please enter a course code",
+        variant: "destructive",
+      });
     }
   };
 
   const handleEnroll = () => {
+    toast({
+      title: "Enrollment Successful",
+      description: `You have been enrolled in ${courseData?.course.courseName}`,
+    });
     setLocation("/dashboard");
   };
 
@@ -91,32 +110,50 @@ export default function CourseEnrollment() {
             </Button>
           </div>
 
-          {showCourse && (
+          {isLoading && searchCode && (
+            <div className="text-center py-8">
+              <p className="font-['Inter',Helvetica] font-normal text-[#697282] text-sm">
+                Searching for course...
+              </p>
+            </div>
+          )}
+
+          {error && searchCode && (
+            <Card className="border-red-200 bg-red-50 mb-6">
+              <CardContent className="p-4 text-center">
+                <p className="font-['Inter',Helvetica] font-medium text-red-600 text-sm">
+                  Course not found. Please check the course code and try again.
+                </p>
+              </CardContent>
+            </Card>
+          )}
+
+          {courseData?.course && (
             <Card className="border-gray-200 hover:shadow-md transition-all mb-6">
               <CardContent className="p-4">
                 <div className="flex items-start justify-between mb-3">
                   <div>
                     <h3 className="font-['Inter',Helvetica] font-bold text-[#1d2838] text-lg">
-                      Digital Marketing Fundamentals
+                      {courseData.course.courseName}
                     </h3>
                     <p className="font-['Inter',Helvetica] font-normal text-[#495565] text-sm">
-                      Code: DM2024B4
+                      Code: {courseData.course.courseCode}
                     </p>
                   </div>
                   <Badge className="bg-[#eff1ff] text-[#5C4C7D] border-transparent hover:bg-[#eff1ff]">
-                    Digital Marketing
+                    {courseData.course.mode}
                   </Badge>
                 </div>
 
                 <p className="font-['Inter',Helvetica] font-normal text-[#495565] text-sm mb-4">
-                  Learn the fundamentals of digital marketing including SEO, social media marketing, content creation, and analytics.
+                  {courseData.course.description}
                 </p>
 
                 <div className="grid grid-cols-2 gap-3 mb-4">
                   <div className="flex items-center gap-2">
                     <ClockIcon className="w-4 h-4 text-[#697282]" />
                     <div>
-                      <p className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm">60 hours</p>
+                      <p className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm">{courseData.course.duration}</p>
                       <p className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs">Duration</p>
                     </div>
                   </div>
@@ -124,7 +161,7 @@ export default function CourseEnrollment() {
                   <div className="flex items-center gap-2">
                     <CalendarIcon className="w-4 h-4 text-[#697282]" />
                     <div>
-                      <p className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm">25 Dec 2024</p>
+                      <p className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm">{courseData.course.startDate}</p>
                       <p className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs">Start Date</p>
                     </div>
                   </div>
@@ -132,7 +169,9 @@ export default function CourseEnrollment() {
                   <div className="flex items-center gap-2">
                     <UsersIcon className="w-4 h-4 text-[#697282]" />
                     <div>
-                      <p className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm">18/30 students</p>
+                      <p className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm">
+                        {courseData.course.enrolledCount}/{courseData.course.totalCapacity} students
+                      </p>
                       <p className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs">Capacity</p>
                     </div>
                   </div>
@@ -140,7 +179,7 @@ export default function CourseEnrollment() {
                   <div className="flex items-center gap-2">
                     <MonitorIcon className="w-4 h-4 text-[#697282]" />
                     <div>
-                      <p className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm">Online</p>
+                      <p className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm">{courseData.course.mode}</p>
                       <p className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs">Mode</p>
                     </div>
                   </div>
@@ -148,7 +187,7 @@ export default function CourseEnrollment() {
 
                 <div className="pt-3 border-t border-[#0000001a]">
                   <p className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm mb-1">Trainer</p>
-                  <p className="font-['Inter',Helvetica] font-normal text-[#495565] text-sm">Priya Sharma</p>
+                  <p className="font-['Inter',Helvetica] font-normal text-[#495565] text-sm">{courseData.course.trainerName}</p>
                 </div>
 
                 <div className="mt-4">
@@ -156,14 +195,7 @@ export default function CourseEnrollment() {
                     Course Modules
                   </p>
                   <ul className="space-y-1">
-                    {[
-                      "Introduction to Digital Marketing",
-                      "Search Engine Optimization (SEO)",
-                      "Social Media Marketing",
-                      "Content Marketing",
-                      "Email Marketing",
-                      "Analytics & Reporting",
-                    ].map((module, i) => (
+                    {JSON.parse(courseData.course.modules).map((module: string, i: number) => (
                       <li key={i} className="font-['Inter',Helvetica] font-normal text-[#495565] text-sm flex items-center gap-2">
                         <span className="w-1.5 h-1.5 rounded-full bg-[#5C4C7D]"></span>
                         {module}

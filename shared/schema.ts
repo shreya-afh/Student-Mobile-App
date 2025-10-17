@@ -119,3 +119,26 @@ export const insertOfferLetterSchema = createInsertSchema(offerLetters).omit({
 
 export type InsertOfferLetter = z.infer<typeof insertOfferLetterSchema>;
 export type OfferLetter = typeof offerLetters.$inferSelect;
+
+export const courses = pgTable("courses", {
+  id: varchar("id").primaryKey(),
+  courseCode: text("course_code").notNull().unique(),
+  courseName: text("course_name").notNull(),
+  description: text("description").notNull(),
+  duration: text("duration").notNull(),
+  startDate: text("start_date").notNull(),
+  mode: text("mode").notNull(), // "Online" or "Offline"
+  trainerName: text("trainer_name").notNull(),
+  totalCapacity: integer("total_capacity").notNull(),
+  enrolledCount: integer("enrolled_count").notNull().default(0),
+  modules: text("modules").notNull(), // JSON string array
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const insertCourseSchema = createInsertSchema(courses).omit({
+  id: true,
+  createdAt: true,
+});
+
+export type InsertCourse = z.infer<typeof insertCourseSchema>;
+export type Course = typeof courses.$inferSelect;
