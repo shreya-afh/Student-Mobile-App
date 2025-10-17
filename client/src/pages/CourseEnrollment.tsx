@@ -23,7 +23,7 @@ export default function CourseEnrollment() {
   useAndroidBackButton("/dashboard");
 
   const { data: courseData, isLoading, error } = useQuery<{ success: boolean; course: Course }>({
-    queryKey: ["/api/courses/search", searchCode],
+    queryKey: [`/api/courses/search/${searchCode}`],
     enabled: !!searchCode,
   });
 
