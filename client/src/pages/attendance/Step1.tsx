@@ -116,7 +116,7 @@ export default function AttendanceStep1() {
                 Feedback Required
               </h2>
               <p className="font-['Inter',Helvetica] font-normal text-[#495565] text-sm">
-                Your feedback is mandatory to mark attendance. After scanning QR or joining online, you'll be asked to rate the session.
+                Your feedback is mandatory to mark attendance. After scanning QR, you'll be asked to rate the session.
               </p>
             </CardContent>
           </Card>
