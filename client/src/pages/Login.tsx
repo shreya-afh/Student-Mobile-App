@@ -52,7 +52,8 @@ export default function Login() {
       }
     },
     onError: (error: any) => {
-      setErrorMessage(error.message || "Invalid mobile number or password");
+      const message = error.message || "Invalid mobile number or password";
+      setErrorMessage(`Login failed due to ${message.toLowerCase()}`);
       setErrorDialogOpen(true);
     },
   });
