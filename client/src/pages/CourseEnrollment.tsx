@@ -25,7 +25,16 @@ export default function CourseEnrollment() {
   const { data: courseData, isLoading, error } = useQuery<{ success: boolean; course: Course }>({
     queryKey: [`/api/courses/search/${searchCode}`],
     enabled: !!searchCode,
+    retry: 1,
   });
+
+  // Debug logging
+  if (searchCode) {
+    console.log('🔍 Searching for course:', searchCode);
+    console.log('📊 Query state:', { isLoading, hasError: !!error, hasData: !!courseData });
+    if (error) console.error('❌ Course search error:', error);
+    if (courseData) console.log('✅ Course found:', courseData);
+  }
 
   const enrollMutation = useMutation({
     mutationFn: async () => {
@@ -158,9 +167,15 @@ export default function CourseEnrollment() {
 
           {error && searchCode && (
             <Card className="border-red-200 bg-red-50 mb-6">
-              <CardContent className="p-4 text-center">
-                <p className="font-['Inter',Helvetica] font-medium text-red-600 text-sm">
-                  Course not found. Please check the course code and try again.
+              <CardContent className="p-4">
+                <p className="font-['Inter',Helvetica] font-medium text-red-600 text-sm mb-2">
+                  Course not found
+                </p>
+                <p className="font-['Inter',Helvetica] font-normal text-red-500 text-xs">
+                  Error: {error instanceof Error ? error.message : String(error)}
+                </p>
+                <p className="font-['Inter',Helvetica] font-normal text-gray-600 text-xs mt-1">
+                  Searched for: {searchCode}
                 </p>
               </CardContent>
             </Card>
