@@ -554,6 +554,7 @@ export default function JobOffers() {
               <Label htmlFor="company">Employer Name *</Label>
               <Input
                 id="company"
+                className="text-base"
                 value={company}
                 onChange={(e) => setCompany(e.target.value)}
                 placeholder="e.g., Infosys"
@@ -565,6 +566,7 @@ export default function JobOffers() {
               <Label htmlFor="position">Job Title *</Label>
               <Input
                 id="position"
+                className="text-base"
                 value={position}
                 onChange={(e) => setPosition(e.target.value)}
                 placeholder="e.g., Software Engineer"
@@ -575,7 +577,7 @@ export default function JobOffers() {
             <div className="grid gap-2">
               <Label htmlFor="jobType">Job Type *</Label>
               <Select value={jobType} onValueChange={setJobType}>
-                <SelectTrigger>
+                <SelectTrigger className="text-base">
                   <SelectValue placeholder="Select job type" />
                 </SelectTrigger>
                 <SelectContent>
@@ -593,7 +595,7 @@ export default function JobOffers() {
             <div className="grid gap-2">
               <Label htmlFor="placementLocationType">Placement Location Type *</Label>
               <Select value={placementLocationType} onValueChange={setPlacementLocationType}>
-                <SelectTrigger>
+                <SelectTrigger className="text-base">
                   <SelectValue placeholder="Select location type" />
                 </SelectTrigger>
                 <SelectContent>
@@ -712,6 +714,7 @@ export default function JobOffers() {
               <Label htmlFor="salary">Annual Salary Offered in INR (CTC) *</Label>
               <Input
                 id="salary"
+                className="text-base"
                 value={salary}
                 onChange={(e) => setSalary(e.target.value)}
                 placeholder="e.g., 500000"
@@ -723,7 +726,7 @@ export default function JobOffers() {
             <div className="grid gap-2">
               <Label htmlFor="joiningStatus">Joining Status *</Label>
               <Select value={joiningStatus} onValueChange={setJoiningStatus}>
-                <SelectTrigger>
+                <SelectTrigger className="text-base">
                   <SelectValue placeholder="Select joining status" />
                 </SelectTrigger>
                 <SelectContent>
@@ -740,6 +743,7 @@ export default function JobOffers() {
               <Label htmlFor="file">Offer Letter (PDF) *</Label>
               <Input
                 id="file"
+                className="text-base"
                 type="file"
                 accept=".pdf"
                 onChange={handleFileSelect}
