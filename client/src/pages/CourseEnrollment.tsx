@@ -51,7 +51,11 @@ export default function CourseEnrollment() {
         title: "Enrollment Successful",
         description: `You have been enrolled in ${courseData?.course.courseName}`,
       });
-      setLocation("/dashboard");
+      
+      // Small delay to ensure context update completes before redirect
+      setTimeout(() => {
+        setLocation("/dashboard");
+      }, 100);
     },
     onError: (error: any) => {
       toast({
