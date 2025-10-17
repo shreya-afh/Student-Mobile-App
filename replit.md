@@ -20,6 +20,8 @@ The backend is an **Express.js** application with **TypeScript** running on **No
 ### Data Storage Solutions
 The project uses **PostgreSQL** for attendance records. Users are currently stored in an in-memory Map-based storage, but the system is prepared for full PostgreSQL integration with **Drizzle ORM** for migrations and schema management. UUID-based primary keys are used, and Zod is employed for schema validation.
 
+**Attendance Data Model:** The `classDuration` field supports decimal values (e.g., 1.5, 2.5 hours) using PostgreSQL's `numeric(4,2)` type. The API validates incoming durations as numbers via Zod, converts them to strings for database storage, and converts back to numbers for calculation. This ensures accurate hour tracking and progress calculations.
+
 ### Authentication and Authorization
 The system implements a multi-step user registration flow (4 steps) with form validation, including OTP verification for phone numbers. **Bcrypt** is used for password hashing, and a secure, cookie-based session authentication system is in place. User IDs follow an "AFH-XXXXXXX" format, generated thread-safely using PostgreSQL sequences. Login is based on mobile number and password, with a "forgot password" flow involving OTP verification and new password setting.
 
