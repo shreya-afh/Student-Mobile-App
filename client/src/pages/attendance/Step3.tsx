@@ -66,6 +66,7 @@ export default function AttendanceStep3() {
       sessionName: string;
       courseName: string;
       sessionDate: string;
+      classDuration: number;
       mode: string;
       locationLat?: string;
       locationLong?: string;
@@ -88,9 +89,12 @@ export default function AttendanceStep3() {
         console.error("Failed to clear attendance data:", e);
       }
       
-      // Invalidate attendance cache so history page shows the new record
+      // Invalidate attendance cache so history page and dashboard show the new record
       if (user?.id) {
         queryClient.invalidateQueries({ queryKey: [`/api/attendance/${user.id}`] });
+        if (user?.courseId) {
+          queryClient.invalidateQueries({ queryKey: [`/api/attendance/summary/${user.id}/${user.courseId}`] });
+        }
       }
       
       setLocation("/dashboard");
@@ -127,6 +131,7 @@ export default function AttendanceStep3() {
       sessionName: qrData.session,
       courseName: qrData.course,
       sessionDate: qrData.date,
+      classDuration: qrData.classDuration || 2,
       mode: qrData.mode,
       locationLat: qrData.location?.latitude?.toString(),
       locationLong: qrData.location?.longitude?.toString(),

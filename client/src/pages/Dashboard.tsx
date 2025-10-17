@@ -27,6 +27,21 @@ export default function Dashboard() {
     enabled: !!user?.courseId,
   });
 
+  // Fetch attendance summary
+  const { data: attendanceSummary } = useQuery<{ 
+    success: boolean; 
+    summary: { totalHoursAttended: number; totalSessions: number } 
+  }>({
+    queryKey: [`/api/attendance/summary/${user?.id}/${user?.courseId}`],
+    enabled: !!user?.id && !!user?.courseId,
+  });
+
+  const totalHoursAttended = attendanceSummary?.summary?.totalHoursAttended || 0;
+  const totalClassHours = courseData?.course?.totalClassHours || 60;
+  const progressPercentage = totalClassHours > 0 
+    ? Math.round((totalHoursAttended / totalClassHours) * 100) 
+    : 0;
+
   // Generate initials from user name
   const getInitials = (name?: string) => {
     if (!name) return "U";
@@ -155,20 +170,20 @@ export default function Dashboard() {
                       Progress
                     </span>
                     <span className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm">
-                      39/60 hours
+                      {totalHoursAttended}/{totalClassHours} hours
                     </span>
                   </div>
                   <div className="w-full bg-[#e5e7eb] rounded-full h-2">
-                    <div className="bg-[#5C4C7D] h-2 rounded-full" style={{ width: "65%" }}></div>
+                    <div className="bg-[#5C4C7D] h-2 rounded-full" style={{ width: `${progressPercentage}%` }}></div>
                   </div>
                   <p className="font-['Inter',Helvetica] font-normal text-[#495565] text-xs mt-1">
-                    65% completed
+                    {progressPercentage}% completed
                   </p>
                 </div>
 
                 <div className="mt-3 pt-3 border-t border-[#0000001a]">
                   <p className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs">
-                    Attendance: <span className="text-[#5C4C7D] font-medium">92%</span>
+                    Attendance: <span className="text-[#5C4C7D] font-medium">{progressPercentage}%</span>
                   </p>
                 </div>
               </CardContent>
@@ -219,7 +234,7 @@ export default function Dashboard() {
         <div className="grid grid-cols-3 gap-3 mb-6">
           <Card className="border-gray-200">
             <CardContent className="p-3 text-center">
-              <div className="font-['Inter',Helvetica] font-bold text-[#5C4C7D] text-xl">39</div>
+              <div className="font-['Inter',Helvetica] font-bold text-[#5C4C7D] text-xl">{totalHoursAttended}</div>
               <div className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs mt-1">
                 Hours Completed
               </div>
@@ -237,7 +252,7 @@ export default function Dashboard() {
 
           <Card className="border-gray-200">
             <CardContent className="p-3 text-center">
-              <div className="font-['Inter',Helvetica] font-bold text-[#5C4C7D] text-xl">92%</div>
+              <div className="font-['Inter',Helvetica] font-bold text-[#5C4C7D] text-xl">{progressPercentage}%</div>
               <div className="font-['Inter',Helvetica] font-normal text-[#697282] text-sm mt-1">
                 Attendance
               </div>

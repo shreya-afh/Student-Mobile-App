@@ -6,6 +6,7 @@ export const attendanceQRSchema = z.object({
   session: z.string().min(1, "Session name is required"),
   course: z.string().min(1, "Course name is required"),
   date: z.string().min(1, "Date is required"),
+  classDuration: z.number().default(2),
   mode: z.enum(["online", "offline"], { 
     errorMap: () => ({ message: "Mode must be either 'online' or 'offline'" })
   }),

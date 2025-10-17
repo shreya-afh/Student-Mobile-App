@@ -136,8 +136,11 @@ export class DatabaseStorage implements IStorage {
       .from(attendanceRecords)
       .where(eq(attendanceRecords.userId, userId));
     
-    const totalHoursAttended = records.reduce((sum, record) => sum + (record.classDuration || 0), 0);
-    const totalSessions = records.length;
+    // Filter records by courseId to get course-specific totals
+    const courseRecords = records.filter(record => record.courseId === courseId);
+    
+    const totalHoursAttended = courseRecords.reduce((sum, record) => sum + (record.classDuration || 0), 0);
+    const totalSessions = courseRecords.length;
     
     return { totalHoursAttended, totalSessions };
   }
