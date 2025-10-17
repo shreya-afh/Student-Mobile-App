@@ -445,7 +445,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         })
         .parse(req.body);
 
-      const record = await storage.createAttendanceRecord(attendanceData);
+      const record = await storage.createAttendanceRecord({
+        ...attendanceData,
+        classDuration: attendanceData.classDuration.toString(),
+      });
 
       res.json({
         success: true,

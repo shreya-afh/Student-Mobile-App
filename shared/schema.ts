@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { pgTable, text, varchar, timestamp, integer } from "drizzle-orm/pg-core";
+import { pgTable, text, varchar, timestamp, integer, numeric } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -87,7 +87,7 @@ export const attendanceRecords = pgTable("attendance_records", {
   sessionName: text("session_name").notNull(),
   courseName: text("course_name").notNull(),
   sessionDate: text("session_date").notNull(),
-  classDuration: integer("class_duration").notNull().default(2), // Duration in hours
+  classDuration: numeric("class_duration", { precision: 4, scale: 2 }).notNull().default("2"), // Duration in hours (supports decimals like 1.5)
   
   // Mode & Location
   mode: text("mode").notNull(), // "online" or "offline"
