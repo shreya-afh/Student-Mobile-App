@@ -52,8 +52,21 @@ export default function Login() {
       }
     },
     onError: (error: any) => {
-      const message = error.message || "Invalid mobile number or password";
-      setErrorMessage(`Login failed due to ${message.toLowerCase()}`);
+      // Extract clean error message from API response
+      let cleanMessage = "Invalid mobile number or password";
+      
+      if (error.message) {
+        // Try to extract message from JSON if present
+        const jsonMatch = error.message.match(/"message":"([^"]+)"/);
+        if (jsonMatch && jsonMatch[1]) {
+          cleanMessage = jsonMatch[1];
+        } else if (!error.message.includes("{") && !error.message.includes("401")) {
+          // Use message directly if it doesn't contain JSON or status code
+          cleanMessage = error.message;
+        }
+      }
+      
+      setErrorMessage(cleanMessage.charAt(0).toUpperCase() + cleanMessage.slice(1));
       setErrorDialogOpen(true);
     },
   });
