@@ -800,7 +800,6 @@ export default function JobOffers() {
                       {typeof city === 'string' ? city : city.label}
                     </SelectItem>
                   ))}
-                  <SelectItem value="other">Other</SelectItem>
                 </SelectContent>
               </Select>
               {showCityInput && (
