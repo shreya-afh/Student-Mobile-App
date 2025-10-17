@@ -15,6 +15,7 @@ export const courses = pgTable("courses", {
   totalCapacity: integer("total_capacity").notNull(),
   enrolledCount: integer("enrolled_count").notNull().default(0),
   modules: text("modules").notNull(), // JSON string array
+  totalClassHours: integer("total_class_hours").notNull().default(60), // Total course hours
   createdAt: timestamp("created_at").defaultNow(),
 });
 
@@ -86,6 +87,7 @@ export const attendanceRecords = pgTable("attendance_records", {
   sessionName: text("session_name").notNull(),
   courseName: text("course_name").notNull(),
   sessionDate: text("session_date").notNull(),
+  classDuration: integer("class_duration").notNull().default(2), // Duration in hours
   
   // Mode & Location
   mode: text("mode").notNull(), // "online" or "offline"
