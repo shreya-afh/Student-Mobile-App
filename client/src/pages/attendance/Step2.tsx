@@ -260,6 +260,9 @@ export default function AttendanceStep2() {
                     <p className="font-['Inter',Helvetica] font-normal text-[#495565]" data-testid="text-session-course">
                       <span className="font-medium">Course:</span> {qrData.course}
                     </p>
+                    <p className="font-['Inter',Helvetica] font-normal text-[#495565]" data-testid="text-class-duration">
+                      <span className="font-medium">Duration:</span> {qrData.classDuration || 2} hours
+                    </p>
                   </div>
                 </CardContent>
               </Card>
