@@ -8,6 +8,7 @@ import infosysLogo from "@assets/infosys-foundation-logo-blue_1760417156143.png"
 import aspireForHerLogo from "@assets/image_1760420610980.png";
 import { validateAttendanceQR, type AttendanceQRData } from "@shared/attendance-schema";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 
 function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
   const R = 6371e3;
@@ -32,6 +33,7 @@ export default function AttendanceStep2() {
   const [locationVerified, setLocationVerified] = useState<boolean | null>(null);
   const [locationError, setLocationError] = useState<string | null>(null);
   const { toast } = useToast();
+  const { user } = useAuth();
   useAndroidBackButton("/attendance");
 
   useEffect(() => {
@@ -78,6 +80,22 @@ export default function AttendanceStep2() {
         setLocation("/attendance");
         return;
       }
+
+      // Validate that the QR code is for the user's enrolled course
+      if (user?.courseId && validationResult.data.courseId !== user.courseId) {
+        toast({
+          title: "Wrong Course",
+          description: `This QR code is for "${validationResult.data.course}" but you are enrolled in a different course. Please scan the QR code for your enrolled course.`,
+          variant: "destructive",
+        });
+        try {
+          localStorage.removeItem("attendance_qr_data");
+        } catch (e) {
+          console.error("Failed to remove invalid data:", e);
+        }
+        setLocation("/attendance");
+        return;
+      }
       
       setQrData(validationResult.data);
       setIsValidating(false);
@@ -99,7 +117,7 @@ export default function AttendanceStep2() {
       }
       setLocation("/attendance");
     }
-  }, [setLocation, toast]);
+  }, [setLocation, toast, user?.courseId]);
 
   const verifyLocation = async (data: AttendanceQRData) => {
     if (!data.location) return;
