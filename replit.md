@@ -11,6 +11,9 @@ Preferred communication style: Simple, everyday language.
 ### Frontend Architecture
 The frontend is built with **React 18** and **TypeScript**, using **Vite** for development and building. **Wouter** handles client-side routing, and **TailwindCSS** with **shadcn/ui** provides a utility-first, accessible, and customizable design system. **TanStack Query** manages server state, caching, and data fetching, while React hooks manage local UI state. The design adheres to a mobile-first approach, using a custom purple/violet color palette and the Inter font family.
 
+#### Mobile Navigation
+A fixed bottom navigation bar provides quick access to core features (Home, Attendance, Offers, Profile) with active state detection including nested routes. The **AppLayout** component wraps all protected routes with the bottom navigation, and each protected page includes `pb-20` padding on its scrollable container to prevent content overlap with the fixed navigation bar.
+
 ### Backend Architecture
 The backend is an **Express.js** application with **TypeScript** running on **Node.js**. It features modular route registration, centralized error handling, and a custom Vite middleware for development. Storage is currently an **in-memory implementation** (MemStorage) but is designed with an interface-based pattern (IStorage) to easily swap to persistent database solutions like PostgreSQL via Drizzle ORM. Session management uses cookie-based sessions.
 
