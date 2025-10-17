@@ -30,6 +30,7 @@ export interface IStorage {
   createAttendanceRecord(record: InsertAttendanceRecord): Promise<AttendanceRecord>;
   getAttendanceRecords(userId: string): Promise<AttendanceRecord[]>;
   getAttendanceStats(userId: string): Promise<{ total: number; percentage: number }>;
+  getAttendanceSummary(userId: string, courseId: string): Promise<{ totalHoursAttended: number; totalSessions: number }>;
   createOfferLetter(offer: InsertOfferLetter): Promise<OfferLetter>;
   getOfferLetters(userId: string): Promise<OfferLetter[]>;
   getOfferLetter(id: string): Promise<OfferLetter | undefined>;
@@ -127,6 +128,18 @@ export class DatabaseStorage implements IStorage {
     const totalSessions = 60;
     const percentage = totalSessions > 0 ? Math.round((total / totalSessions) * 100) : 0;
     return { total, percentage };
+  }
+
+  async getAttendanceSummary(userId: string, courseId: string): Promise<{ totalHoursAttended: number; totalSessions: number }> {
+    const records = await db
+      .select()
+      .from(attendanceRecords)
+      .where(eq(attendanceRecords.userId, userId));
+    
+    const totalHoursAttended = records.reduce((sum, record) => sum + (record.classDuration || 0), 0);
+    const totalSessions = records.length;
+    
+    return { totalHoursAttended, totalSessions };
   }
 
   async createOfferLetter(insertOffer: InsertOfferLetter): Promise<OfferLetter> {

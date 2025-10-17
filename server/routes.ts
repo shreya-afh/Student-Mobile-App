@@ -435,6 +435,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           sessionName: z.string(),
           courseName: z.string(),
           sessionDate: z.string(),
+          classDuration: z.number().default(2),
           mode: z.string(),
           locationLat: z.string().optional(),
           locationLong: z.string().optional(),
@@ -494,6 +495,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({
         success: false,
         message: "Failed to fetch attendance stats",
+      });
+    }
+  });
+
+  // Get attendance summary for a user
+  app.get("/api/attendance/summary/:userId/:courseId", async (req, res) => {
+    try {
+      const { userId, courseId } = req.params;
+      const summary = await storage.getAttendanceSummary(userId, courseId);
+
+      res.json({
+        success: true,
+        summary,
+      });
+    } catch (error) {
+      console.error("Get attendance summary error:", error);
+      res.status(500).json({
+        success: false,
+        message: "Failed to fetch attendance summary",
       });
     }
   });
