@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useLocation } from "wouter";
 import { ChevronLeftIcon, CalendarIcon, ClockIcon, UsersIcon, MonitorIcon } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAndroidBackButton } from "@/hooks/useAndroidBackButton";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import type { Course } from "@shared/schema";
@@ -21,6 +21,14 @@ export default function CourseEnrollment() {
   const { toast } = useToast();
   const { user, login } = useAuth();
   useAndroidBackButton("/dashboard");
+
+  // Redirect if user is already enrolled in a course
+  useEffect(() => {
+    if (user?.courseId) {
+      console.log('🔄 User already enrolled, redirecting to dashboard');
+      setLocation("/dashboard");
+    }
+  }, [user?.courseId, setLocation]);
 
   const { data: courseData, isLoading, error } = useQuery<{ success: boolean; course: Course }>({
     queryKey: [`/api/courses/search/${searchCode}`],
