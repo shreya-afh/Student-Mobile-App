@@ -1,6 +1,6 @@
 # Overview
 
-AFH (AspireForHer) Student is a mobile-first web application designed for the Infosys X AspireForHer career transformation program. The application provides students with tools to manage course enrollment, track attendance, submit feedback, view certificates, and explore job opportunities. The app is built as a Progressive Web Application (PWA) with Android support through Capacitor, enabling deployment as both a web app and native Android application.
+AFH (AspireForHer) Student is a mobile-first Progressive Web Application (PWA) designed for the Infosys X AspireForHer career transformation program. It aims to empower students with tools for course enrollment, attendance tracking, feedback submission, certificate viewing, and job opportunity exploration. The application supports deployment as both a web app and a native Android application via Capacitor.
 
 ## User Preferences
 
@@ -9,251 +9,34 @@ Preferred communication style: Simple, everyday language.
 ## System Architecture
 
 ### Frontend Architecture
-
-**Core Technology Stack:**
-- **React 18** with TypeScript for type-safe component development
-- **Vite** as the build tool and development server for fast hot module replacement
-- **Wouter** for lightweight client-side routing
-- **TailwindCSS** for utility-first styling with custom design tokens
-- **shadcn/ui** component library built on Radix UI primitives for accessible, customizable UI components
-
-**State Management:**
-- **TanStack Query (React Query)** for server state management, caching, and data fetching
-- Local component state with React hooks for UI state
-
-**Design System:**
-- Custom color palette centered around purple/violet primary colors (#6d10b0)
-- Responsive mobile-first design targeting 768px breakpoint
-- Consistent Inter font family throughout the application
-- Gradient backgrounds for headers and accent elements
+The frontend is built with **React 18** and **TypeScript**, using **Vite** for development and building. **Wouter** handles client-side routing, and **TailwindCSS** with **shadcn/ui** provides a utility-first, accessible, and customizable design system. **TanStack Query** manages server state, caching, and data fetching, while React hooks manage local UI state. The design adheres to a mobile-first approach, using a custom purple/violet color palette and the Inter font family.
 
 ### Backend Architecture
-
-**Server Framework:**
-- **Express.js** with TypeScript running on Node.js
-- Custom Vite middleware integration for development hot reloading
-- Modular route registration pattern through `registerRoutes` function
-- Centralized error handling middleware
-
-**Storage Layer:**
-- **In-memory storage** implementation (MemStorage) as default
-- Interface-based storage pattern (IStorage) allowing easy swapping to database implementations
-- Prepared for PostgreSQL integration via Drizzle ORM (configuration present but not actively used)
-
-**Session Management:**
-- Cookie-based sessions configured for user authentication
-- Session storage interface ready for PostgreSQL via connect-pg-simple
-
-**Development Features:**
-- Request/response logging middleware with duration tracking
-- Replit-specific development plugins (cartographer, dev banner, runtime error overlay)
-- Separate development and production build processes
+The backend is an **Express.js** application with **TypeScript** running on **Node.js**. It features modular route registration, centralized error handling, and a custom Vite middleware for development. Storage is currently an **in-memory implementation** (MemStorage) but is designed with an interface-based pattern (IStorage) to easily swap to persistent database solutions like PostgreSQL via Drizzle ORM. Session management uses cookie-based sessions.
 
 ### Data Storage Solutions
-
-**Current Implementation:**
-- PostgreSQL database actively used for attendance records
-- In-memory Map-based storage for users
-- UUID-based primary keys using crypto.randomUUID()
-
-**Prepared Infrastructure:**
-- Drizzle ORM configuration for PostgreSQL migrations
-- Schema definitions in `shared/schema.ts` with Zod validation
-- Connection string support via DATABASE_URL environment variable
-- Migration output configured to `./migrations` directory
-
-**Schema Structure:**
-- Users table with id, username, and password fields
-- Attendance records table with comprehensive session tracking (userId, sessionId, courseId, mode, location, feedback, rating)
-- Extensible schema pattern using Drizzle's table definitions
-- Type-safe insert operations via Zod schemas
+The project uses **PostgreSQL** for attendance records. Users are currently stored in an in-memory Map-based storage, but the system is prepared for full PostgreSQL integration with **Drizzle ORM** for migrations and schema management. UUID-based primary keys are used, and Zod is employed for schema validation.
 
 ### Authentication and Authorization
+The system implements a multi-step user registration flow (4 steps) with form validation, including OTP verification for phone numbers. **Bcrypt** is used for password hashing, and a secure, cookie-based session authentication system is in place. User IDs follow an "AFH-XXXXXXX" format, generated thread-safely using PostgreSQL sequences. Login is based on mobile number and password, with a "forgot password" flow involving OTP verification and new password setting.
 
-**Planned Implementation:**
-- User registration multi-step flow (4 steps) with form validation
-- OTP verification for phone number confirmation
-- Session-based authentication with secure cookies
-- Password-based login system
+### Key Application Features
+The application includes core routes for:
+- User authentication and registration (`/`, `/login`, `/register/*`, `/verify-otp`)
+- A central dashboard (`/dashboard`)
+- Course management and enrollment (`/course-enrollment`)
+- A multi-step attendance system (`/attendance`, `/attendance/mode`, `/attendance/feedback`)
+- Attendance history tracking (`/attendance-history`)
+- Features for achievements and opportunities (`/certificates`, `/job-offers`, `/job-opportunities`)
+- User profile management (`/profile`)
+- Comprehensive offer letter management, including upload, tracking, and status updates, with Google Drive integration for document storage.
 
-**Current State:**
-- Mock authentication flow routing users through registration/login to dashboard
-- Frontend routes protected by navigation flow (not enforced on backend)
-- User creation interface defined but not fully implemented
+## External Dependencies
 
-### External Dependencies
-
-**UI Component Libraries:**
-- **Radix UI** - Comprehensive collection of accessible, unstyled React components
-  - Dialog, Dropdown, Popover, Toast, Accordion, Tabs, and 20+ other primitives
-  - Provides accessibility features and keyboard navigation out of the box
-
-**Mobile Platform:**
-- **Capacitor 7.4.3** - Cross-platform native runtime
-  - Configured for Android builds with package `com.infosys.afh.student`
-  - Web assets compiled to `dist/public` and synced to native projects
-  - Camera, Storage, and Internet permissions configured
-
-**Styling and Utilities:**
-- **TailwindCSS** with PostCSS and Autoprefixer
-- **class-variance-authority** for variant-based component styling
-- **clsx** and **tailwind-merge** for conditional class composition
-
-**Form Handling:**
-- **React Hook Form** with @hookform/resolvers for form state management
-- **Zod** for runtime validation and schema definition
-- Integration with shadcn/ui form components
-
-**Database (Prepared):**
-- **@neondatabase/serverless** - Serverless PostgreSQL driver
-- **Drizzle ORM** with drizzle-kit for migrations and schema management
-- **connect-pg-simple** for PostgreSQL session storage
-
-**Build and Development:**
-- **esbuild** for server-side bundling
-- **tsx** for TypeScript execution in development
-- Replit-specific plugins for enhanced development experience
-
-**Routing:**
-- **wouter** - Minimalist routing library for React (2KB alternative to React Router)
-
-**Key Application Routes:**
-- Landing page and authentication (/, /login, /register/step1-4, /verify-otp)
-- Dashboard with quick actions (/dashboard)
-- Course management (/course-enrollment)
-- Attendance system with multi-step flow (/attendance, /attendance/mode, /attendance/feedback)
-- Attendance history tracking (/attendance-history)
-- Achievements and opportunities (/certificates, /job-offers, /job-opportunities)
-- User profile (/profile)
-
-## Recent Changes (October 17, 2025)
-
-### Comprehensive Offer Letter Upload System
-- **Enhanced Database Schema**: Expanded offer_letters table with comprehensive placement tracking fields:
-  - Job Type: Dropdown (Full-time, Part-time, Contract, Internship, Apprenticeship, Self-employed)
-  - Placement Location: Type (Rural, Urban, Semi-Urban), State, District, City
-  - Joining Details: Date (DD-MM-YYYY format), Annual Salary (CTC in INR), Joining Status
-  - Joining Status: Joined, Will be joining, Considering another offer, Considering Higher Education
-- **Redesigned Upload Form**: Complete 11-field form with:
-  - Employer Name and Job Title
-  - Job Type and Placement Location dropdowns
-  - Geographic details (State, District, City)
-  - Salary and joining information
-  - PDF offer letter upload
-- **Backend Updates**: 
-  - Enhanced /api/offer-letters/upload endpoint to handle all new fields
-  - Zod validation for comprehensive form data
-  - All fields properly stored in PostgreSQL with Google Drive integration
-- **UI Improvements**:
-  - Scrollable dialog for better mobile experience
-  - Field validation with clear error messages
-  - All fields marked as required with asterisk (*)
-
-### Course Enrollment Tracking & User Flow Management
-- **Database Schema**: Added `courseId` column to users table with foreign key reference to courses table
-- **Enrollment Logic**: 
-  - New users after registration → Redirected to course enrollment page
-  - Existing users without course → Redirected to course enrollment on login
-  - Users with enrolled course → Redirected to dashboard
-- **API Endpoints**:
-  - GET /api/courses/search/:courseCode - Search course by code
-  - POST /api/enroll - Enroll user in course (saves courseId to user record)
-- **Frontend Flow**:
-  - Course search by code (case-insensitive, auto-uppercase)
-  - Dynamic course details display from database
-  - Enrollment mutation with loading states
-  - AuthContext updated with courseId for session tracking
-- **Sample Courses**: DM2024B4 (Digital Marketing), WD2024A3 (Web Dev), DA2025C1 (Data Analytics)
-- **User Experience**: Seamless flow ensuring all users are enrolled before accessing dashboard features
-
-## Recent Changes (October 15, 2025)
-
-### AFH Student ID System & Password Authentication
-- **ID Format**: Implemented AFH-XXXXXXX format for all student user IDs (7-digit zero-padded numbers, e.g., AFH-0000001)
-- **Thread-Safe Generation**: Uses PostgreSQL sequence (afh_id_seq) for atomic, race-condition-free ID generation
-- **Primary Key**: AFH IDs serve as primary keys for all student data across the system
-- **Password Security**: 
-  - Added password field to registration Step 4 with confirmation validation
-  - Bcrypt password hashing (10 salt rounds) implemented in backend
-  - Password stored securely in database (never sent in API responses)
-  - Minimum 6-character password requirement enforced
-- **Post-Registration Flow**: 
-  - Simple success toast showing "Registration Successful - Reg. ID: AFH-0000001"
-  - Automatic redirect to dashboard after registration
-- **Implementation**: 
-  - Created generateAFHId() utility function using PostgreSQL nextval() for thread-safe ID assignment
-  - Updated storage layer to generate AFH IDs before user creation
-  - All user references and foreign keys work with AFH-format IDs
-
-### Login & Password Reset System
-- **Login Authentication**:
-  - Login uses mobile number + password combination
-  - Password-based authentication with bcrypt verification
-  - POST /api/login endpoint with mobile number and password validation
-  - Show/hide password toggle for better UX
-- **Forgot Password Flow**:
-  - Created 3-step forgot password process:
-    1. Enter registered mobile number → Send OTP
-    2. Verify OTP (5-digit code)
-    3. Set new password with confirmation
-  - POST /api/reset-password endpoint for password updates
-  - OTP verification reused from registration flow
-  - getUserByPhone() and updateUserPassword() storage methods added
-  - Password strength validation (min 6 characters)
-- **Security Enhancements**:
-  - Password never exposed in API responses
-  - Bcrypt password comparison for login
-  - Secure password hashing before database storage
-  - Session-based user authentication maintained
-
-### Attendance Recording and History System
-- **Database Integration**: Implemented PostgreSQL storage for attendance records with complete session tracking
-- **Attendance Schema**: Created comprehensive schema with userId, sessionId, courseId, sessionName, courseName, sessionDate, mode (online/offline), location data (lat/long/address), rating (1-5), and feedback text
-- **API Endpoints**: 
-  - POST /api/attendance - Save attendance records to database
-  - GET /api/attendance/:userId - Retrieve all attendance records for a user
-  - GET /api/attendance/stats/:userId - Get attendance statistics (prepared for future use)
-- **Attendance History Page**: New page displaying all attended sessions with:
-  - Session name and course name
-  - Date and mode (online/offline) indicators
-  - Rating display (star icon with numeric rating)
-  - Feedback text
-  - Proper error handling with retry capability
-  - Loading states with user-friendly messages
-  - Empty state when no records exist
-- **Dashboard Integration**: Made Current Course card clickable to navigate to attendance history
-- **Error Handling**: Comprehensive error handling with dedicated error UI and retry functionality
-- **Android Compatibility**: All attendance data persisted in PostgreSQL, fully accessible across web and mobile app
-
-### Offer Letters Management System
-- **Database Schema**: Created comprehensive offer_letters table with support for both received and uploaded offers
-  - Fields: id, userId, type (received/uploaded), company, position, location, salary, status, fileName, fileUrl, fileType, receivedDate, deadlineDate, joiningDate, description
-  - Status tracking: pending, accepted, rejected
-  - File metadata storage for various document formats (PDF, DOC, DOCX)
-- **API Endpoints**:
-  - POST /api/offer-letters/upload - Upload offer letters to Google Drive with metadata
-  - GET /api/offer-letters/:userId - Fetch all offer letters for a user
-  - POST /api/offer-letters/:id/accept - Accept an offer letter and update status
-- **Frontend Features**:
-  - Upload dialog with company name and position fields
-  - File upload with format validation (PDF, DOC, DOCX)
-  - Separation of received vs uploaded offers with distinct UI sections
-  - Hyperlink-based document viewing (opens in new tab)
-  - Accept button for pending received offers
-  - Status badges (accepted, pending, uploaded)
-  - Empty state for users with no offers
-  - Loading states and error handling
-- **File Storage**: Offer letters uploaded to Google Drive with organized naming convention
-- **Data Flow**: Complete integration with authentication context for user-specific offer management
-
-### Android Mobile Scrolling Fix (October 15, 2025)
-- **Touch Scrolling Enhancement**: Added mobile-specific scrolling properties to ALL scrollable containers across the entire app
-  - Applied `-webkit-overflow-scrolling: touch` for smooth native scrolling on iOS/Android WebView
-  - Added `overscroll-behavior: contain` to prevent scroll chaining issues
-- **Fixed Pages** (comprehensive fix applied to all 16+ pages):
-  - **Registration Flow**: Step1, Step2, Step3, Step4
-  - **Attendance Flow**: Step1, Step2, Step3
-  - **Main Pages**: Dashboard, Profile (StudentMobileApp), AttendanceHistory, JobOpportunities, JobOffers, Certificates, CourseEnrollment, VerifyOTP
-  - **Dialog Components**: PopupCylinderPicker (state/district selection)
-- **Android Compatibility**: All scrolling containers properly configured for Android WebView touch events
-- **Testing**: Verified build and sync to Android successful with all Capacitor plugins (camera, geolocation, app) detected
+- **UI Component Libraries:** Radix UI (base for shadcn/ui) for accessible React components.
+- **Mobile Platform:** Capacitor 7.4.3 for cross-platform Android builds.
+- **Styling & Utilities:** TailwindCSS, class-variance-authority, clsx, tailwind-merge.
+- **Form Handling:** React Hook Form with Zod for validation.
+- **Database (Prepared):** @neondatabase/serverless, Drizzle ORM, drizzle-kit, connect-pg-simple.
+- **Build & Development:** esbuild, tsx.
+- **Routing:** wouter.
