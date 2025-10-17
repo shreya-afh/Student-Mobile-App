@@ -504,11 +504,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
     upload.single("file"),
     async (req: Request & { file?: Express.Multer.File }, res) => {
       try {
-        const { userId, company, position } = z
+        const { 
+          userId, 
+          company, 
+          position, 
+          jobType, 
+          placementLocationType, 
+          placementState, 
+          placementDistrict, 
+          placementCity, 
+          joiningDate, 
+          salary, 
+          joiningStatus 
+        } = z
           .object({
             userId: z.string(),
             company: z.string(),
             position: z.string(),
+            jobType: z.string().optional(),
+            placementLocationType: z.string().optional(),
+            placementState: z.string().optional(),
+            placementDistrict: z.string().optional(),
+            placementCity: z.string().optional(),
+            joiningDate: z.string().optional(),
+            salary: z.string().optional(),
+            joiningStatus: z.string().optional(),
           })
           .parse(JSON.parse(req.body.data));
 
@@ -534,6 +554,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
           type: "uploaded",
           company,
           position,
+          jobType,
+          placementLocationType,
+          placementState,
+          placementDistrict,
+          placementCity,
+          joiningDate,
+          salary,
+          joiningStatus,
           status: "pending",
           fileName: req.file.originalname,
           fileUrl,

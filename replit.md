@@ -128,6 +128,27 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes (October 17, 2025)
 
+### Comprehensive Offer Letter Upload System
+- **Enhanced Database Schema**: Expanded offer_letters table with comprehensive placement tracking fields:
+  - Job Type: Dropdown (Full-time, Part-time, Contract, Internship, Apprenticeship, Self-employed)
+  - Placement Location: Type (Rural, Urban, Semi-Urban), State, District, City
+  - Joining Details: Date (DD-MM-YYYY format), Annual Salary (CTC in INR), Joining Status
+  - Joining Status: Joined, Will be joining, Considering another offer, Considering Higher Education
+- **Redesigned Upload Form**: Complete 11-field form with:
+  - Employer Name and Job Title
+  - Job Type and Placement Location dropdowns
+  - Geographic details (State, District, City)
+  - Salary and joining information
+  - PDF offer letter upload
+- **Backend Updates**: 
+  - Enhanced /api/offer-letters/upload endpoint to handle all new fields
+  - Zod validation for comprehensive form data
+  - All fields properly stored in PostgreSQL with Google Drive integration
+- **UI Improvements**:
+  - Scrollable dialog for better mobile experience
+  - Field validation with clear error messages
+  - All fields marked as required with asterisk (*)
+
 ### Course Enrollment Tracking & User Flow Management
 - **Database Schema**: Added `courseId` column to users table with foreign key reference to courses table
 - **Enrollment Logic**: 

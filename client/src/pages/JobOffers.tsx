@@ -31,6 +31,13 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function JobOffers() {
   const [, setLocation] = useLocation();
@@ -38,8 +45,19 @@ export default function JobOffers() {
   const { user } = useAuth();
   const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
   const [uploadFile, setUploadFile] = useState<File | null>(null);
+  
+  // Form fields
   const [company, setCompany] = useState("");
   const [position, setPosition] = useState("");
+  const [jobType, setJobType] = useState("");
+  const [placementLocationType, setPlacementLocationType] = useState("");
+  const [placementState, setPlacementState] = useState("");
+  const [placementDistrict, setPlacementDistrict] = useState("");
+  const [placementCity, setPlacementCity] = useState("");
+  const [joiningDate, setJoiningDate] = useState("");
+  const [salary, setSalary] = useState("");
+  const [joiningStatus, setJoiningStatus] = useState("");
+  
   const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
   const [offerToReject, setOfferToReject] = useState<string | null>(null);
   useAndroidBackButton("/dashboard");
@@ -56,13 +74,33 @@ export default function JobOffers() {
 
   // Upload mutation
   const uploadMutation = useMutation({
-    mutationFn: async (data: { file: File; company: string; position: string }) => {
+    mutationFn: async (data: { 
+      file: File; 
+      company: string; 
+      position: string;
+      jobType: string;
+      placementLocationType: string;
+      placementState: string;
+      placementDistrict: string;
+      placementCity: string;
+      joiningDate: string;
+      salary: string;
+      joiningStatus: string;
+    }) => {
       const formData = new FormData();
       formData.append("file", data.file);
       formData.append("data", JSON.stringify({
         userId: user?.id,
         company: data.company,
         position: data.position,
+        jobType: data.jobType,
+        placementLocationType: data.placementLocationType,
+        placementState: data.placementState,
+        placementDistrict: data.placementDistrict,
+        placementCity: data.placementCity,
+        joiningDate: data.joiningDate,
+        salary: data.salary,
+        joiningStatus: data.joiningStatus,
       }));
       
       const baseUrl = await getApiBaseUrl();
@@ -88,6 +126,14 @@ export default function JobOffers() {
       setUploadFile(null);
       setCompany("");
       setPosition("");
+      setJobType("");
+      setPlacementLocationType("");
+      setPlacementState("");
+      setPlacementDistrict("");
+      setPlacementCity("");
+      setJoiningDate("");
+      setSalary("");
+      setJoiningStatus("");
     },
     onError: () => {
       toast({
@@ -154,16 +200,30 @@ export default function JobOffers() {
   };
 
   const handleSubmitUpload = () => {
-    if (!uploadFile || !company || !position) {
+    if (!uploadFile || !company || !position || !jobType || !placementLocationType || 
+        !placementState || !placementDistrict || !placementCity || !joiningDate || 
+        !salary || !joiningStatus) {
       toast({
         title: "Missing Information",
-        description: "Please fill in all fields and select a file",
+        description: "Please fill in all required fields and select a file",
         variant: "destructive",
       });
       return;
     }
     
-    uploadMutation.mutate({ file: uploadFile, company, position });
+    uploadMutation.mutate({ 
+      file: uploadFile, 
+      company, 
+      position,
+      jobType,
+      placementLocationType,
+      placementState,
+      placementDistrict,
+      placementCity,
+      joiningDate,
+      salary,
+      joiningStatus
+    });
   };
 
   const handleViewLetter = (fileUrl: string) => {
@@ -454,16 +514,17 @@ export default function JobOffers() {
 
       {/* Upload Dialog */}
       <Dialog open={uploadDialogOpen} onOpenChange={setUploadDialogOpen}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Upload Offer Letter</DialogTitle>
             <DialogDescription>
-              Upload your job offer letter with company and position details.
+              Fill in all the details about your job offer.
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
+            {/* Employer Name */}
             <div className="grid gap-2">
-              <Label htmlFor="company">Company Name</Label>
+              <Label htmlFor="company">Employer Name *</Label>
               <Input
                 id="company"
                 value={company}
@@ -471,8 +532,10 @@ export default function JobOffers() {
                 placeholder="e.g., Infosys"
               />
             </div>
+            
+            {/* Job Title */}
             <div className="grid gap-2">
-              <Label htmlFor="position">Position</Label>
+              <Label htmlFor="position">Job Title *</Label>
               <Input
                 id="position"
                 value={position}
@@ -480,12 +543,119 @@ export default function JobOffers() {
                 placeholder="e.g., Software Engineer"
               />
             </div>
+
+            {/* Job Type */}
             <div className="grid gap-2">
-              <Label htmlFor="file">Offer Letter (PDF, DOC, DOCX)</Label>
+              <Label htmlFor="jobType">Job Type *</Label>
+              <Select value={jobType} onValueChange={setJobType}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select job type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="1">Full-time</SelectItem>
+                  <SelectItem value="2">Part-time</SelectItem>
+                  <SelectItem value="3">Contract</SelectItem>
+                  <SelectItem value="4">Internship</SelectItem>
+                  <SelectItem value="5">Apprenticeship</SelectItem>
+                  <SelectItem value="6">Self-employed</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Placement Location Type */}
+            <div className="grid gap-2">
+              <Label htmlFor="placementLocationType">Placement Location Type *</Label>
+              <Select value={placementLocationType} onValueChange={setPlacementLocationType}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select location type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="1">Rural</SelectItem>
+                  <SelectItem value="2">Urban</SelectItem>
+                  <SelectItem value="3">Semi-Urban</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Placement State */}
+            <div className="grid gap-2">
+              <Label htmlFor="placementState">Placement State *</Label>
+              <Input
+                id="placementState"
+                value={placementState}
+                onChange={(e) => setPlacementState(e.target.value)}
+                placeholder="e.g., Karnataka"
+              />
+            </div>
+
+            {/* Placement District */}
+            <div className="grid gap-2">
+              <Label htmlFor="placementDistrict">Placement District *</Label>
+              <Input
+                id="placementDistrict"
+                value={placementDistrict}
+                onChange={(e) => setPlacementDistrict(e.target.value)}
+                placeholder="e.g., Bangalore Urban"
+              />
+            </div>
+
+            {/* Placement City */}
+            <div className="grid gap-2">
+              <Label htmlFor="placementCity">Placement City Location *</Label>
+              <Input
+                id="placementCity"
+                value={placementCity}
+                onChange={(e) => setPlacementCity(e.target.value)}
+                placeholder="e.g., Bangalore"
+              />
+            </div>
+
+            {/* Joining Date */}
+            <div className="grid gap-2">
+              <Label htmlFor="joiningDate">Joining Date (DD-MM-YYYY) *</Label>
+              <Input
+                id="joiningDate"
+                value={joiningDate}
+                onChange={(e) => setJoiningDate(e.target.value)}
+                placeholder="e.g., 15-03-2025"
+              />
+            </div>
+
+            {/* Annual Salary */}
+            <div className="grid gap-2">
+              <Label htmlFor="salary">Annual Salary Offered in INR (CTC) *</Label>
+              <Input
+                id="salary"
+                value={salary}
+                onChange={(e) => setSalary(e.target.value)}
+                placeholder="e.g., 500000"
+                type="number"
+              />
+            </div>
+
+            {/* Joining Status */}
+            <div className="grid gap-2">
+              <Label htmlFor="joiningStatus">Joining Status *</Label>
+              <Select value={joiningStatus} onValueChange={setJoiningStatus}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select joining status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="1">Joined</SelectItem>
+                  <SelectItem value="2">Will be joining</SelectItem>
+                  <SelectItem value="3">Considering another offer</SelectItem>
+                  <SelectItem value="4">Considering Higher Education</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Offer Letter File */}
+            <div className="grid gap-2">
+              <Label htmlFor="file">Offer Letter (PDF) *</Label>
               <Input
                 id="file"
                 type="file"
-                accept=".pdf,.doc,.docx"
+                accept=".pdf"
                 onChange={handleFileSelect}
               />
               {uploadFile && (

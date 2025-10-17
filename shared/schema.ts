@@ -115,11 +115,22 @@ export const offerLetters = pgTable("offer_letters", {
   // Offer Type: "received" (from company) or "uploaded" (by student)
   type: text("type").notNull(),
   
-  // Offer Details
+  // Employer Details
   company: text("company").notNull(),
   position: text("position").notNull(),
-  location: text("location"),
-  salary: text("salary"),
+  jobType: text("job_type"), // 1=Full-time, 2=Part-time, 3=Contract, 4=Internship, 5=Apprenticeship, 6=Self-employed
+  
+  // Placement Location
+  placementLocationType: text("placement_location_type"), // 1=Rural, 2=Urban, 3=Semi-Urban
+  placementState: text("placement_state"),
+  placementDistrict: text("placement_district"),
+  placementCity: text("placement_city"),
+  location: text("location"), // Legacy field for received offers
+  
+  // Joining Details
+  joiningDate: text("joining_date"), // DD-MM-YYYY
+  salary: text("salary"), // Annual Salary in INR (CTC)
+  joiningStatus: text("joining_status"), // 1=Joined, 2=Will be joining, 3=Considering another offer, 4=Considering Higher Education
   
   // Status: "pending", "accepted", "rejected"
   status: text("status").notNull().default("pending"),
@@ -129,10 +140,9 @@ export const offerLetters = pgTable("offer_letters", {
   fileUrl: text("file_url").notNull(),
   fileType: text("file_type"),
   
-  // Additional Details
+  // Additional Details (for received offers)
   receivedDate: text("received_date"),
   deadlineDate: text("deadline_date"),
-  joiningDate: text("joining_date"),
   description: text("description"),
   
   createdAt: timestamp("created_at").defaultNow(),
