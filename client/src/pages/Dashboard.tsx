@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useLocation } from "wouter";
 import { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+import type { Course } from "@shared/schema";
 import { QrCodeIcon, BriefcaseIcon, AwardIcon, TrendingUpIcon, LogOutIcon } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import infosysLogo from "@assets/infosys-foundation-logo-blue_1760417156143.png";
@@ -18,6 +20,12 @@ export default function Dashboard() {
       setLocation("/course-enrollment");
     }
   }, [user, setLocation]);
+
+  // Fetch enrolled course details
+  const { data: courseData } = useQuery<{ success: boolean; course: Course }>({
+    queryKey: ["/api/courses", user?.courseId],
+    enabled: !!user?.courseId,
+  });
 
   // Generate initials from user name
   const getInitials = (name?: string) => {
@@ -115,55 +123,67 @@ export default function Dashboard() {
           </div>
 
           {/* Current Course Card */}
-          <Card 
-            className="border-gray-200 shadow-sm cursor-pointer hover:shadow-md transition-all" 
-            onClick={() => setLocation("/attendance-history")}
-            data-testid="card-current-course"
-          >
-            <CardContent className="p-4">
-              <div className="flex items-start justify-between mb-2">
-                <div>
-                  <p className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs mb-1">
-                    Current Course
-                  </p>
-                  <h2 className="font-['Inter',Helvetica] font-semibold text-[#1d2838] text-base">
-                    Digital Marketing Fundamentals
-                  </h2>
-                  <p className="font-['Inter',Helvetica] font-normal text-[#495565] text-sm">
-                    Trainer: Priya Sharma
-                  </p>
+          {courseData?.course ? (
+            <Card 
+              className="border-gray-200 shadow-sm cursor-pointer hover:shadow-md transition-all" 
+              onClick={() => setLocation("/attendance-history")}
+              data-testid="card-current-course"
+            >
+              <CardContent className="p-4">
+                <div className="flex items-start justify-between mb-2">
+                  <div>
+                    <p className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs mb-1">
+                      Current Course
+                    </p>
+                    <h2 className="font-['Inter',Helvetica] font-semibold text-[#1d2838] text-base">
+                      {courseData.course.courseName}
+                    </h2>
+                    <p className="font-['Inter',Helvetica] font-normal text-[#495565] text-sm">
+                      Trainer: {courseData.course.trainerName}
+                    </p>
+                  </div>
+                  <div className="bg-[#eff1ff] rounded-lg px-3 py-1">
+                    <span className="font-['Inter',Helvetica] font-semibold text-[#5C4C7D] text-sm">
+                      {courseData.course.courseCode}
+                    </span>
+                  </div>
                 </div>
-                <div className="bg-[#eff1ff] rounded-lg px-3 py-1">
-                  <span className="font-['Inter',Helvetica] font-semibold text-[#5C4C7D] text-sm">
-                    DM2024B3
-                  </span>
-                </div>
-              </div>
 
-              <div className="mt-4">
-                <div className="flex justify-between items-center mb-1">
-                  <span className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs">
-                    Progress
-                  </span>
-                  <span className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm">
-                    39/60 hours
-                  </span>
+                <div className="mt-4">
+                  <div className="flex justify-between items-center mb-1">
+                    <span className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs">
+                      Duration
+                    </span>
+                    <span className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm">
+                      {courseData.course.duration}
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs">
+                      Mode
+                    </span>
+                    <span className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm">
+                      {courseData.course.mode}
+                    </span>
+                  </div>
                 </div>
-                <div className="w-full bg-[#e5e7eb] rounded-full h-2">
-                  <div className="bg-[#5C4C7D] h-2 rounded-full" style={{ width: "65%" }}></div>
-                </div>
-                <p className="font-['Inter',Helvetica] font-normal text-[#495565] text-xs mt-1">
-                  65% completed
-                </p>
-              </div>
 
-              <div className="mt-3 pt-3 border-t border-[#0000001a]">
-                <p className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs">
-                  Attendance: <span className="text-[#5C4C7D] font-medium">92%</span>
+                <div className="mt-3 pt-3 border-t border-[#0000001a]">
+                  <p className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs">
+                    Start Date: <span className="text-[#5C4C7D] font-medium">{courseData.course.startDate}</span>
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          ) : (
+            <Card className="border-gray-200 shadow-sm">
+              <CardContent className="p-4">
+                <p className="font-['Inter',Helvetica] font-normal text-[#697282] text-sm text-center">
+                  Loading course details...
                 </p>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          )}
         </div>
       </header>
 

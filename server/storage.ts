@@ -36,6 +36,7 @@ export interface IStorage {
   acceptOfferLetter(id: string): Promise<void>;
   rejectOfferLetter(id: string): Promise<void>;
   getCourseByCode(courseCode: string): Promise<Course | undefined>;
+  getCourseById(courseId: string): Promise<Course | undefined>;
   enrollUserInCourse(userId: string, courseId: string): Promise<void>;
 }
 
@@ -169,6 +170,14 @@ export class DatabaseStorage implements IStorage {
       .select()
       .from(courses)
       .where(eq(courses.courseCode, courseCode));
+    return course || undefined;
+  }
+
+  async getCourseById(courseId: string): Promise<Course | undefined> {
+    const [course] = await db
+      .select()
+      .from(courses)
+      .where(eq(courses.id, courseId));
     return course || undefined;
   }
 

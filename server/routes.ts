@@ -613,6 +613,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Get course by ID
+  app.get("/api/courses/:courseId", async (req, res) => {
+    try {
+      const courseId = req.params.courseId;
+      const course = await storage.getCourseById(courseId);
+
+      if (!course) {
+        return res.status(404).json({
+          success: false,
+          message: "Course not found",
+        });
+      }
+
+      res.json({
+        success: true,
+        course,
+      });
+    } catch (error) {
+      console.error("Get course error:", error);
+      res.status(500).json({
+        success: false,
+        message: "Failed to get course",
+      });
+    }
+  });
+
   // Search course by course code
   app.get("/api/courses/search/:courseCode", async (req, res) => {
     try {
