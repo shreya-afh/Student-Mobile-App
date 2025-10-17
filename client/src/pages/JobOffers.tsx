@@ -902,7 +902,8 @@ export default function JobOffers() {
                   });
                 }}
                 placeholder="e.g., 500000"
-                type="number"
+                type="text"
+                inputMode="numeric"
               />
             </div>
 
