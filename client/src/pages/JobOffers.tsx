@@ -277,6 +277,37 @@ export default function JobOffers() {
     });
   };
 
+  const getJobTypeLabel = (jobType: string | null) => {
+    const types: Record<string, string> = {
+      "1": "Full-time",
+      "2": "Part-time",
+      "3": "Contract",
+      "4": "Internship",
+      "5": "Apprenticeship",
+      "6": "Self-employed"
+    };
+    return jobType ? types[jobType] : "";
+  };
+
+  const getLocationTypeLabel = (locationType: string | null) => {
+    const types: Record<string, string> = {
+      "1": "Rural",
+      "2": "Urban",
+      "3": "Semi-Urban"
+    };
+    return locationType ? types[locationType] : "";
+  };
+
+  const getJoiningStatusLabel = (status: string | null) => {
+    const statuses: Record<string, string> = {
+      "1": "Joined",
+      "2": "Will be joining",
+      "3": "Considering another offer",
+      "4": "Considering Higher Education"
+    };
+    return status ? statuses[status] : "";
+  };
+
   const handleSubmitUpload = () => {
     const errors: Record<string, boolean> = {};
     let firstErrorField = "";
@@ -625,7 +656,50 @@ export default function JobOffers() {
                         </Badge>
                       </div>
 
-                      <div className="flex items-center justify-between">
+                      {/* Job Details Grid */}
+                      <div className="grid grid-cols-2 gap-3 my-3">
+                        {offer.jobType && (
+                          <div>
+                            <p className="font-['Inter',Helvetica] font-medium text-[#697282] text-xs mb-1">Job Type</p>
+                            <p className="font-['Inter',Helvetica] font-normal text-[#1d2838] text-sm">{getJobTypeLabel(offer.jobType)}</p>
+                          </div>
+                        )}
+                        {offer.salary && (
+                          <div>
+                            <p className="font-['Inter',Helvetica] font-medium text-[#697282] text-xs mb-1">Salary (CTC)</p>
+                            <p className="font-['Inter',Helvetica] font-normal text-[#1d2838] text-sm">₹{offer.salary}</p>
+                          </div>
+                        )}
+                        {offer.joiningDate && (
+                          <div>
+                            <p className="font-['Inter',Helvetica] font-medium text-[#697282] text-xs mb-1">Joining Date</p>
+                            <p className="font-['Inter',Helvetica] font-normal text-[#1d2838] text-sm">{offer.joiningDate}</p>
+                          </div>
+                        )}
+                        {offer.joiningStatus && (
+                          <div>
+                            <p className="font-['Inter',Helvetica] font-medium text-[#697282] text-xs mb-1">Status</p>
+                            <p className="font-['Inter',Helvetica] font-normal text-[#1d2838] text-sm">{getJoiningStatusLabel(offer.joiningStatus)}</p>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Location Details */}
+                      {(offer.placementLocationType || offer.placementCity || offer.placementDistrict || offer.placementState) && (
+                        <div className="mb-3">
+                          <p className="font-['Inter',Helvetica] font-medium text-[#697282] text-xs mb-1">Location</p>
+                          <p className="font-['Inter',Helvetica] font-normal text-[#1d2838] text-sm">
+                            {[
+                              offer.placementCity,
+                              offer.placementDistrict,
+                              offer.placementState,
+                              offer.placementLocationType ? `(${getLocationTypeLabel(offer.placementLocationType)})` : null
+                            ].filter(Boolean).join(', ')}
+                          </p>
+                        </div>
+                      )}
+
+                      <div className="flex items-center justify-between pt-2 border-t border-gray-100">
                         <span className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs">
                           {offer.receivedDate && `Uploaded: ${offer.receivedDate}`}
                         </span>
