@@ -2,6 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useLocation } from "wouter";
+import { useEffect } from "react";
 import { QrCodeIcon, BriefcaseIcon, AwardIcon, TrendingUpIcon, LogOutIcon } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import infosysLogo from "@assets/infosys-foundation-logo-blue_1760417156143.png";
@@ -10,6 +11,13 @@ import aspireForHerLogo from "@assets/image_1760420610980.png";
 export default function Dashboard() {
   const [, setLocation] = useLocation();
   const { logout, user } = useAuth();
+
+  // Redirect to course enrollment if user has no course
+  useEffect(() => {
+    if (user && !user.courseId) {
+      setLocation("/course-enrollment");
+    }
+  }, [user, setLocation]);
 
   // Generate initials from user name
   const getInitials = (name?: string) => {
