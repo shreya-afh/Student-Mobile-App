@@ -65,10 +65,10 @@ export default function Dashboard() {
       onClick: () => setLocation("/attendance"),
     },
     {
-      icon: BriefcaseIcon,
-      label: "Job Offers",
-      subtitle: "View job offers",
-      onClick: () => setLocation("/job-offers"),
+      icon: TrendingUpIcon,
+      label: "Job Opportunities",
+      subtitle: "Explore placement options",
+      onClick: () => setLocation("/job-opportunities"),
     },
     {
       icon: AwardIcon,
@@ -77,10 +77,10 @@ export default function Dashboard() {
       onClick: () => setLocation("/certificates"),
     },
     {
-      icon: TrendingUpIcon,
-      label: "Job Opportunities",
-      subtitle: "Explore placement options",
-      onClick: () => setLocation("/job-opportunities"),
+      icon: BriefcaseIcon,
+      label: "Job Offers",
+      subtitle: "View job offers",
+      onClick: () => setLocation("/job-offers"),
     },
   ];
 
