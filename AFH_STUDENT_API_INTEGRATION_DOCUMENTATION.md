@@ -236,13 +236,13 @@ Content-Type: application/json
 | `applicationDeadline` | string | Yes | Application deadline in YYYY-MM-DD format |
 | `callbackUrl` | string | Yes | Your callback endpoint to receive application notifications |
 | `status` | string | Yes | `active`, `closed`, or `draft` |
-| `visibilityRules` | array | Yes | Array of college-course combinations (min 1) |
+| `visibilityRules` | array | Yes | Array with exactly ONE college-course combination |
 | `visibilityRules[].collegeName` | string | Yes | Exact college name (must match AFH records) |
 | `visibilityRules[].courseCode` | string | Yes | Course code (e.g., "DM2024B4") |
 
 **Important Notes:**
 - **Idempotency:** If you send the same `externalOpportunityId` again, it will UPDATE the existing opportunity instead of creating a duplicate
-- **Visibility:** Students will only see opportunities where BOTH their college name AND course code match a visibility rule
+- **Visibility:** Each opportunity targets exactly ONE college + course combination. To target multiple colleges or courses, create separate opportunities with different `externalOpportunityId` values
 - **Case Sensitivity:** College names and course codes are matched case-insensitively
 - **Callback URL:** When students apply, AFH Student will POST application details to your `callbackUrl` (see [Application Callback](#application-callback) section)
 
@@ -487,14 +487,14 @@ The callback request will be signed using the same HMAC-SHA256 signature mechani
 **Matching Logic:**
 1. **Case-Insensitive:** "ABC Engineering College" matches "abc engineering college"
 2. **Exact Match:** Partial matches are not supported
-3. **AND Condition:** BOTH college AND course must match
-4. **Multiple Rules:** Use OR logic - student matches ANY visibility rule
+3. **AND Condition:** BOTH college AND course must match exactly
+4. **Single Rule Only:** Each opportunity must have exactly ONE visibility rule
 
-**Example Scenarios:**
-
-**Scenario 1: Single College, Single Course**
+**Valid Example:**
 ```json
 {
+  "externalOpportunityId": "opp_001",
+  "title": "Software Developer Internship",
   "visibilityRules": [
     {
       "collegeName": "ABC Engineering College",
@@ -503,11 +503,12 @@ The callback request will be signed using the same HMAC-SHA256 signature mechani
   ]
 }
 ```
-✅ Visible to: Students from "ABC Engineering College" enrolled in "DM2024B4"  
-❌ Not visible to: Students from other colleges OR other courses
+✅ **Visible to:** Students from "ABC Engineering College" enrolled in "DM2024B4" ONLY  
+❌ **Not visible to:** Students from other colleges OR other courses
 
-**Scenario 2: Multiple Colleges, Same Course**
+**Invalid Examples (Multiple Rules):**
 ```json
+// ❌ INVALID: Multiple colleges
 {
   "visibilityRules": [
     {
@@ -520,11 +521,8 @@ The callback request will be signed using the same HMAC-SHA256 signature mechani
     }
   ]
 }
-```
-✅ Visible to: Students from EITHER college, IF enrolled in "DM2024B4"
 
-**Scenario 3: Same College, Multiple Courses**
-```json
+// ❌ INVALID: Multiple courses
 {
   "visibilityRules": [
     {
@@ -538,7 +536,38 @@ The callback request will be signed using the same HMAC-SHA256 signature mechani
   ]
 }
 ```
-✅ Visible to: Students from "ABC Engineering College" in EITHER course
+
+**How to Target Multiple Colleges or Courses:**
+
+If you want to target multiple colleges or courses, create **separate opportunities**:
+
+```json
+{
+  "partnerId": "partner_infosys_001",
+  "opportunities": [
+    {
+      "externalOpportunityId": "opp_001_college_abc",
+      "title": "Software Developer Internship",
+      "visibilityRules": [
+        {
+          "collegeName": "ABC Engineering College",
+          "courseCode": "DM2024B4"
+        }
+      ]
+    },
+    {
+      "externalOpportunityId": "opp_001_college_xyz",
+      "title": "Software Developer Internship",
+      "visibilityRules": [
+        {
+          "collegeName": "XYZ Institute of Technology",
+          "courseCode": "DM2024B4"
+        }
+      ]
+    }
+  ]
+}
+```
 
 ### Student ID Format
 
