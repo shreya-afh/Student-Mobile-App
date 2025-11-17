@@ -12,8 +12,7 @@
 2. [Authentication & Security](#authentication--security)
 3. [Incoming APIs (External → AFH Student)](#incoming-apis)
    - [Push Job Opportunities](#1-push-job-opportunities)
-4. [Outgoing APIs (AFH Student → External)](#outgoing-apis)
-   - [Get Opportunity Applicants](#1-get-opportunity-applicants)
+4. [Application Callback](#application-callback)
 5. [Data Mapping & Visibility Rules](#data-mapping--visibility-rules)
 6. [Error Handling](#error-handling)
 7. [Rate Limits](#rate-limits)
@@ -29,14 +28,14 @@ The AFH Student Application integrates with external managing applications to:
 
 1. **Receive Placement Opportunities** - External applications push job/internship opportunities to AFH Student
 2. **Filter by College & Course** - Opportunities are shown only to eligible students based on college name and course code
-3. **Track Applications** - External applications can retrieve student application data
+3. **Track Applications** - When students apply, AFH Student notifies the external application via callback URL
 
 ### Key Features
 
 - ✅ **College & Course-Based Filtering** - Opportunities visible only to matching students
 - ✅ **Secure API Authentication** - HMAC-SHA256 request signing
 - ✅ **Idempotent Operations** - Safe to retry requests
-- ✅ **Real-time Application Tracking** - Get complete applicant lists with contact details
+- ✅ **Real-time Application Notifications** - Instant callbacks when students apply
 - ✅ **Bulk Operations** - Handle multiple opportunities in single request
 
 ---
@@ -176,7 +175,7 @@ Content-Type: application/json
       "jobType": "internship",
       "startDate": "2025-07-01",
       "applicationDeadline": "2025-06-15",
-      "applyUrl": "https://managing-app.com/apply/opp_ext_12345",
+      "callbackUrl": "https://managing-app.com/api/applications/receive",
       "status": "active",
       "visibilityRules": [
         {
@@ -202,7 +201,7 @@ Content-Type: application/json
       "jobType": "full-time",
       "startDate": "2025-06-01",
       "applicationDeadline": "2025-05-20",
-      "applyUrl": "https://managing-app.com/apply/opp_ext_12346",
+      "callbackUrl": "https://managing-app.com/api/applications/receive",
       "status": "active",
       "visibilityRules": [
         {
@@ -235,7 +234,7 @@ Content-Type: application/json
 | `jobType` | string | No | `full-time`, `part-time`, `internship`, `contract`, `apprenticeship` |
 | `startDate` | string | No | Expected start date in YYYY-MM-DD format |
 | `applicationDeadline` | string | Yes | Application deadline in YYYY-MM-DD format |
-| `applyUrl` | string | Yes | URL where students apply (redirects to your system) |
+| `callbackUrl` | string | Yes | Your callback endpoint to receive application notifications |
 | `status` | string | Yes | `active`, `closed`, or `draft` |
 | `visibilityRules` | array | Yes | Array of college-course combinations (min 1) |
 | `visibilityRules[].collegeName` | string | Yes | Exact college name (must match AFH records) |
@@ -245,7 +244,7 @@ Content-Type: application/json
 - **Idempotency:** If you send the same `externalOpportunityId` again, it will UPDATE the existing opportunity instead of creating a duplicate
 - **Visibility:** Students will only see opportunities where BOTH their college name AND course code match a visibility rule
 - **Case Sensitivity:** College names and course codes are matched case-insensitively
-- **Apply URL:** When students click "Apply", they'll be redirected to your `applyUrl` with query params: `?studentId=AFH-0000001&opportunityId=opp_ext_12345`
+- **Callback URL:** When students apply, AFH Student will POST application details to your `callbackUrl` (see [Application Callback](#application-callback) section)
 
 **Success Response (200 OK):**
 ```json
@@ -358,96 +357,69 @@ Content-Type: application/json
 
 ---
 
-## Outgoing APIs
+## Application Callback
 
-These APIs are called by the external managing application to retrieve data from AFH Student.
+When a student applies to an opportunity, AFH Student will immediately notify your system by calling your callback endpoint.
 
-### 1. Get Opportunity Applicants
+### Application Flow
 
-Retrieve the list of students who applied to a specific opportunity, including their contact details and application status.
+1. Student clicks "Apply" on an opportunity in AFH Student app
+2. AFH Student records the application internally
+3. AFH Student sends application details to your callback URL
+4. Your system processes the application and returns acknowledgment
 
-**Endpoint:**
+### Callback Configuration
+
+When pushing opportunities to AFH Student, include a `callbackUrl` field:
+
+```json
+{
+  "externalOpportunityId": "opp_ext_12345",
+  "title": "Software Developer Internship",
+  "callbackUrl": "https://your-managing-app.com/api/applications/receive",
+  ...
+}
 ```
-GET /api/partners/v1/opportunities/{externalOpportunityId}/applicants
-```
+
+### Callback Request (AFH Student → Your Application)
+
+AFH Student will make a POST request to your `callbackUrl` with the following payload:
+
+**Request Method:** `POST`
 
 **Request Headers:**
 ```
 X-AFH-API-Key: afh_partner_live_xxxxx
 X-AFH-Signature: t=1234567890,v1=abc123...
+Content-Type: application/json
 ```
 
-**Path Parameters:**
-- `externalOpportunityId` - Your external opportunity ID (e.g., "opp_ext_12345")
-
-**Query Parameters:**
-```
-?status=applied,accepted,rejected (optional filter, comma-separated)
-&limit=100 (default: 100, max: 500)
-&offset=0 (for pagination, default: 0)
-```
-
-**Example Request:**
-```
-GET /api/partners/v1/opportunities/opp_ext_12345/applicants?status=applied&limit=50&offset=0
-```
-
-**Success Response (200 OK):**
+**Request Body:**
 ```json
 {
-  "status": "success",
   "externalOpportunityId": "opp_ext_12345",
-  "afhOpportunityId": "opp_afh_001",
-  "opportunityTitle": "Software Developer Internship",
-  "company": "Tech Solutions India Pvt Ltd",
-  "total": 25,
-  "returned": 25,
-  "applicants": [
-    {
-      "studentId": "AFH-0000001",
-      "studentName": "Shreya Mishra",
-      "email": "shreya.mishra@example.com",
-      "phone": "8887566835",
-      "whatsappNumber": "8887566835",
-      "college": "ABC Engineering College",
-      "courseCode": "DM2024B4",
-      "courseName": "Digital Marketing Fundamentals",
-      "city": "Bangalore",
-      "state": "Karnataka",
-      "district": "Bangalore Urban",
-      "appliedAt": "2025-01-14T10:30:00Z",
-      "applicationStatus": "applied"
-    },
-    {
-      "studentId": "AFH-0000013",
-      "studentName": "Rajesh Kumar",
-      "email": "rajesh.kumar@example.com",
-      "phone": "9876543210",
-      "whatsappNumber": "9876543210",
-      "college": "ABC Engineering College",
-      "courseCode": "DM2024B4",
-      "courseName": "Digital Marketing Fundamentals",
-      "city": "Mumbai",
-      "state": "Maharashtra",
-      "district": "Mumbai",
-      "appliedAt": "2025-01-14T11:15:00Z",
-      "applicationStatus": "applied"
-    }
-  ],
-  "pagination": {
-    "limit": 50,
-    "offset": 0,
-    "total": 25,
-    "hasMore": false
-  },
-  "requestId": "req_pqr678"
+  "application": {
+    "studentId": "AFH-0000001",
+    "studentName": "Shreya Mishra",
+    "email": "shreya.mishra@example.com",
+    "phone": "8887566835",
+    "whatsappNumber": "8887566835",
+    "college": "ABC Engineering College",
+    "courseCode": "DM2024B4",
+    "courseName": "Digital Marketing Fundamentals",
+    "city": "Bangalore",
+    "state": "Karnataka",
+    "district": "Bangalore Urban",
+    "appliedAt": "2025-01-14T10:30:00Z"
+  }
 }
 ```
 
-**Field Descriptions (Applicants Array):**
+**Field Descriptions:**
 
 | Field | Type | Description |
 |-------|------|-------------|
+| `externalOpportunityId` | string | Your opportunity ID |
 | `studentId` | string | AFH Student ID (format: AFH-0000001) |
 | `studentName` | string | Full name of the student |
 | `email` | string | Email address |
@@ -460,19 +432,41 @@ GET /api/partners/v1/opportunities/opp_ext_12345/applicants?status=applied&limit
 | `state` | string | State of residence |
 | `district` | string | District of residence |
 | `appliedAt` | string | Application timestamp (ISO 8601) |
-| `applicationStatus` | string | `applied`, `accepted`, or `rejected` |
 
-**Error Response (404 Not Found):**
+### Expected Response from Your Application
+
+Your callback endpoint should return one of these responses:
+
+**Success Response (200 OK):**
+```json
+{
+  "status": "success",
+  "applicationId": "app_12345",
+  "message": "Application received successfully"
+}
+```
+
+**Error Response (400 Bad Request):**
 ```json
 {
   "status": "error",
   "error": {
-    "code": "OPPORTUNITY_NOT_FOUND",
-    "message": "Opportunity with ID 'opp_ext_99999' not found"
-  },
-  "requestId": "req_stu901"
+    "code": "INVALID_STUDENT",
+    "message": "Student does not meet eligibility criteria"
+  }
 }
 ```
+
+### Retry Logic
+
+If your callback endpoint fails or times out:
+- AFH Student will retry up to **3 times** with exponential backoff (5s, 15s, 45s)
+- After 3 failed attempts, the application will be marked as "pending notification"
+- You can manually fetch pending applications via a separate sync endpoint (to be provided)
+
+### Security
+
+The callback request will be signed using the same HMAC-SHA256 signature mechanism. Verify the signature to ensure the request is authentic and from AFH Student.
 
 ---
 
@@ -676,7 +670,8 @@ if (response.status === 'partial_success') {
 | Endpoint | Rate Limit | Burst Limit |
 |----------|------------|-------------|
 | `POST /opportunities` | 60 requests/minute | 10 requests/second |
-| `GET /opportunities/{id}/applicants` | 120 requests/minute | 20 requests/second |
+
+**Note:** Callbacks from AFH Student to your application are not subject to these rate limits.
 
 ### Rate Limit Headers
 
@@ -707,7 +702,7 @@ X-RateLimit-Reset: 1705234800
 1. **Respect Rate Limits:** Monitor `X-RateLimit-Remaining` header
 2. **Implement Backoff:** Wait for `retryAfter` seconds before retrying
 3. **Batch Operations:** Use bulk endpoints (max 50 opportunities per request)
-4. **Cache Data:** Cache applicant lists locally to reduce API calls
+4. **Callback Reliability:** Ensure your callback endpoint is highly available and responds quickly (<3s)
 
 ---
 
@@ -756,7 +751,7 @@ curl -X POST "https://ifafh-skilling.replit.app/api/partners/v1/opportunities" \
         "stipend": "10000",
         "jobType": "internship",
         "applicationDeadline": "2025-12-31",
-        "applyUrl": "https://example.com/apply",
+        "callbackUrl": "https://example.com/api/applications/receive",
         "status": "active",
         "visibilityRules": [
           {
@@ -792,7 +787,7 @@ const payload = {
       stipend: '15000',
       jobType: 'internship',
       applicationDeadline: '2025-12-31',
-      applyUrl: 'https://example.com/apply/opp_test_001',
+      callbackUrl: 'https://example.com/api/applications/receive',
       status: 'active',
       visibilityRules: [
         {
@@ -862,7 +857,7 @@ payload = {
             'stipend': '15000',
             'jobType': 'internship',
             'applicationDeadline': '2025-12-31',
-            'applyUrl': 'https://example.com/apply/opp_test_001',
+            'callbackUrl': 'https://example.com/api/applications/receive',
             'status': 'active',
             'visibilityRules': [
                 {
@@ -902,36 +897,63 @@ response = requests.post(
 print(response.json())
 ```
 
-### Example 2: Get Applicants
+### Example 2: Implement Callback Endpoint (Your Side)
 
-**cURL Example:**
-```bash
-curl -X GET "https://ifafh-skilling.replit.app/api/partners/v1/opportunities/opp_test_001/applicants?limit=10" \
-  -H "X-AFH-API-Key: afh_partner_live_abc123xyz789" \
-  -H "X-AFH-Signature: t=1705234800,v1=abcdef123456..."
-```
+Your application needs to implement a callback endpoint to receive application notifications from AFH Student.
 
-**JavaScript Example:**
+**Express.js/Node.js Example:**
 ```javascript
-const opportunityId = 'opp_test_001';
-const url = `https://ifafh-skilling.replit.app/api/partners/v1/opportunities/${opportunityId}/applicants?limit=50`;
+const express = require('express');
+const crypto = require('crypto');
 
-// Generate signature for GET request (empty body)
-const signature = generateSignature({}, sharedSecret);
+const app = express();
+app.use(express.json());
 
-const response = await fetch(url, {
-  method: 'GET',
-  headers: {
-    'X-AFH-API-Key': apiKey,
-    'X-AFH-Signature': signature
+// Your callback endpoint
+app.post('/api/applications/receive', (req, res) => {
+  try {
+    // Verify signature
+    const signature = req.headers['x-afh-signature'];
+    const apiKey = req.headers['x-afh-api-key'];
+    
+    // Verify API key matches
+    if (apiKey !== 'afh_partner_live_abc123xyz789') {
+      return res.status(401).json({
+        status: 'error',
+        error: { code: 'INVALID_API_KEY', message: 'Invalid API key' }
+      });
+    }
+    
+    // Verify signature (same logic as receiving requests)
+    // ... signature verification code ...
+    
+    // Process application
+    const { externalOpportunityId, application } = req.body;
+    
+    console.log(`New application received for opportunity: ${externalOpportunityId}`);
+    console.log(`Student: ${application.studentName} (${application.studentId})`);
+    console.log(`Email: ${application.email}, Phone: ${application.phone}`);
+    
+    // Save to your database
+    // ... your database logic ...
+    
+    // Return success
+    res.json({
+      status: 'success',
+      applicationId: 'app_' + Date.now(),
+      message: 'Application received successfully'
+    });
+    
+  } catch (error) {
+    console.error('Callback error:', error);
+    res.status(500).json({
+      status: 'error',
+      error: { code: 'INTERNAL_ERROR', message: error.message }
+    });
   }
 });
 
-const applicants = await response.json();
-console.log(`Total applicants: ${applicants.total}`);
-applicants.applicants.forEach(applicant => {
-  console.log(`- ${applicant.studentName} (${applicant.studentId})`);
-});
+app.listen(3000, () => console.log('Callback server running on port 3000'));
 ```
 
 ### Testing Checklist
@@ -939,10 +961,12 @@ applicants.applicants.forEach(applicant => {
 Before going to production, verify:
 
 - [ ] Successfully authenticate with API key and signature
-- [ ] Post test opportunity with valid visibility rules
+- [ ] Post test opportunity with valid visibility rules and callback URL
 - [ ] Verify opportunity appears to matching students only
 - [ ] Test opportunity update (same externalOpportunityId)
-- [ ] Retrieve applicant list
+- [ ] Implement and test callback endpoint to receive applications
+- [ ] Verify callback signature validation works
+- [ ] Test callback retry logic (simulate endpoint failures)
 - [ ] Handle rate limits gracefully
 - [ ] Implement retry logic for 5xx errors
 - [ ] Validate all error responses (400, 401, 403, 404)
@@ -967,9 +991,10 @@ For API integration support, credentials, or technical assistance:
 ### Version 1.0.0 (January 17, 2025)
 - Initial API release
 - Added opportunity push endpoint
-- Added applicant retrieval endpoint
+- Implemented callback mechanism for application notifications
 - Implemented HMAC-SHA256 authentication
 - Added college & course visibility filtering
+- Support for retry logic on callback failures
 
 ---
 
