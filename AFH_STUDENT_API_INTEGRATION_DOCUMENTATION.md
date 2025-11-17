@@ -14,8 +14,6 @@
    - [Push Job Opportunities](#1-push-job-opportunities)
 4. [Outgoing APIs (AFH Student → External)](#outgoing-apis)
    - [Get Opportunity Applicants](#1-get-opportunity-applicants)
-   - [Get Opportunity Metrics](#2-get-opportunity-metrics)
-   - [List All Opportunities](#3-list-all-opportunities)
 5. [Data Mapping & Visibility Rules](#data-mapping--visibility-rules)
 6. [Error Handling](#error-handling)
 7. [Rate Limits](#rate-limits)
@@ -31,14 +29,14 @@ The AFH Student Application integrates with external managing applications to:
 
 1. **Receive Placement Opportunities** - External applications push job/internship opportunities to AFH Student
 2. **Filter by College & Course** - Opportunities are shown only to eligible students based on college name and course code
-3. **Track Applications** - External applications can retrieve student application data and metrics
+3. **Track Applications** - External applications can retrieve student application data
 
 ### Key Features
 
 - ✅ **College & Course-Based Filtering** - Opportunities visible only to matching students
 - ✅ **Secure API Authentication** - HMAC-SHA256 request signing
 - ✅ **Idempotent Operations** - Safe to retry requests
-- ✅ **Real-time Application Tracking** - Get applicant lists and metrics
+- ✅ **Real-time Application Tracking** - Get complete applicant lists with contact details
 - ✅ **Bulk Operations** - Handle multiple opportunities in single request
 
 ---
@@ -478,184 +476,6 @@ GET /api/partners/v1/opportunities/opp_ext_12345/applicants?status=applied&limit
 
 ---
 
-### 2. Get Opportunity Metrics
-
-Retrieve aggregated statistics and metrics for a specific opportunity without detailed student information.
-
-**Endpoint:**
-```
-GET /api/partners/v1/opportunities/{externalOpportunityId}/metrics
-```
-
-**Request Headers:**
-```
-X-AFH-API-Key: afh_partner_live_xxxxx
-X-AFH-Signature: t=1234567890,v1=abc123...
-```
-
-**Path Parameters:**
-- `externalOpportunityId` - Your external opportunity ID (e.g., "opp_ext_12345")
-
-**Example Request:**
-```
-GET /api/partners/v1/opportunities/opp_ext_12345/metrics
-```
-
-**Success Response (200 OK):**
-```json
-{
-  "status": "success",
-  "externalOpportunityId": "opp_ext_12345",
-  "afhOpportunityId": "opp_afh_001",
-  "opportunityTitle": "Software Developer Internship",
-  "company": "Tech Solutions India Pvt Ltd",
-  "metrics": {
-    "totalApplicants": 25,
-    "statusBreakdown": {
-      "applied": 20,
-      "accepted": 3,
-      "rejected": 2
-    },
-    "collegeBreakdown": {
-      "ABC Engineering College": 15,
-      "XYZ Institute of Technology": 10
-    },
-    "courseBreakdown": {
-      "DM2024B4": 18,
-      "FS2024A1": 7
-    },
-    "locationBreakdown": {
-      "Karnataka": 12,
-      "Maharashtra": 8,
-      "Tamil Nadu": 5
-    },
-    "genderBreakdown": {
-      "female": 15,
-      "male": 10
-    }
-  },
-  "opportunityDetails": {
-    "status": "active",
-    "applicationDeadline": "2025-06-15",
-    "visibleToStudents": 45,
-    "createdAt": "2025-01-10T09:00:00Z"
-  },
-  "lastUpdated": "2025-01-14T15:30:00Z",
-  "requestId": "req_vwx234"
-}
-```
-
-**Field Descriptions:**
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `totalApplicants` | number | Total number of applications |
-| `statusBreakdown` | object | Count by application status |
-| `collegeBreakdown` | object | Count by college |
-| `courseBreakdown` | object | Count by course code |
-| `locationBreakdown` | object | Count by state |
-| `genderBreakdown` | object | Count by gender |
-| `visibleToStudents` | number | Total students who can see this opportunity |
-| `lastUpdated` | string | Last metrics calculation timestamp |
-
----
-
-### 3. List All Opportunities
-
-Retrieve all opportunities posted by your organization with summary statistics.
-
-**Endpoint:**
-```
-GET /api/partners/v1/opportunities
-```
-
-**Request Headers:**
-```
-X-AFH-API-Key: afh_partner_live_xxxxx
-X-AFH-Signature: t=1234567890,v1=abc123...
-```
-
-**Query Parameters:**
-```
-?status=active,closed,draft (optional filter, comma-separated, default: active)
-&limit=50 (default: 50, max: 100)
-&offset=0 (for pagination)
-```
-
-**Example Request:**
-```
-GET /api/partners/v1/opportunities?status=active&limit=20
-```
-
-**Success Response (200 OK):**
-```json
-{
-  "status": "success",
-  "partnerId": "partner_infosys_001",
-  "total": 3,
-  "returned": 3,
-  "opportunities": [
-    {
-      "externalOpportunityId": "opp_ext_12345",
-      "afhOpportunityId": "opp_afh_001",
-      "title": "Software Developer Internship",
-      "company": "Tech Solutions India Pvt Ltd",
-      "position": "Software Developer Intern",
-      "status": "active",
-      "applicationDeadline": "2025-06-15",
-      "totalApplicants": 25,
-      "visibleToStudents": 45,
-      "visibilityRuleCount": 2,
-      "createdAt": "2025-01-10T09:00:00Z",
-      "updatedAt": "2025-01-14T10:30:00Z"
-    },
-    {
-      "externalOpportunityId": "opp_ext_12346",
-      "afhOpportunityId": "opp_afh_002",
-      "title": "Digital Marketing Associate",
-      "company": "Digital Dynamics Agency",
-      "position": "Digital Marketing Associate",
-      "status": "active",
-      "applicationDeadline": "2025-05-20",
-      "totalApplicants": 12,
-      "visibleToStudents": 23,
-      "visibilityRuleCount": 1,
-      "createdAt": "2025-01-12T14:00:00Z",
-      "updatedAt": "2025-01-12T14:00:00Z"
-    },
-    {
-      "externalOpportunityId": "opp_ext_12347",
-      "afhOpportunityId": "opp_afh_003",
-      "title": "Data Analyst Trainee",
-      "company": "Analytics Pro Solutions",
-      "position": "Data Analyst Trainee",
-      "status": "closed",
-      "applicationDeadline": "2025-01-05",
-      "totalApplicants": 38,
-      "visibleToStudents": 67,
-      "visibilityRuleCount": 3,
-      "createdAt": "2024-12-15T10:00:00Z",
-      "updatedAt": "2025-01-06T09:00:00Z"
-    }
-  ],
-  "pagination": {
-    "limit": 20,
-    "offset": 0,
-    "total": 3,
-    "hasMore": false
-  },
-  "summary": {
-    "totalActive": 2,
-    "totalClosed": 1,
-    "totalDraft": 0,
-    "totalApplicantsAcrossAll": 75
-  },
-  "requestId": "req_yza567"
-}
-```
-
----
-
 ## Data Mapping & Visibility Rules
 
 ### College & Course Matching
@@ -857,8 +677,6 @@ if (response.status === 'partial_success') {
 |----------|------------|-------------|
 | `POST /opportunities` | 60 requests/minute | 10 requests/second |
 | `GET /opportunities/{id}/applicants` | 120 requests/minute | 20 requests/second |
-| `GET /opportunities/{id}/metrics` | 120 requests/minute | 20 requests/second |
-| `GET /opportunities` | 60 requests/minute | 10 requests/second |
 
 ### Rate Limit Headers
 
@@ -889,7 +707,7 @@ X-RateLimit-Reset: 1705234800
 1. **Respect Rate Limits:** Monitor `X-RateLimit-Remaining` header
 2. **Implement Backoff:** Wait for `retryAfter` seconds before retrying
 3. **Batch Operations:** Use bulk endpoints (max 50 opportunities per request)
-4. **Cache Data:** Cache metrics/applicant lists to reduce API calls
+4. **Cache Data:** Cache applicant lists locally to reduce API calls
 
 ---
 
@@ -1116,15 +934,6 @@ applicants.applicants.forEach(applicant => {
 });
 ```
 
-### Example 3: Get Metrics
-
-**cURL Example:**
-```bash
-curl -X GET "https://ifafh-skilling.replit.app/api/partners/v1/opportunities/opp_test_001/metrics" \
-  -H "X-AFH-API-Key: afh_partner_live_abc123xyz789" \
-  -H "X-AFH-Signature: t=1705234800,v1=abcdef123456..."
-```
-
 ### Testing Checklist
 
 Before going to production, verify:
@@ -1134,7 +943,6 @@ Before going to production, verify:
 - [ ] Verify opportunity appears to matching students only
 - [ ] Test opportunity update (same externalOpportunityId)
 - [ ] Retrieve applicant list
-- [ ] Get metrics/statistics
 - [ ] Handle rate limits gracefully
 - [ ] Implement retry logic for 5xx errors
 - [ ] Validate all error responses (400, 401, 403, 404)
@@ -1159,8 +967,7 @@ For API integration support, credentials, or technical assistance:
 ### Version 1.0.0 (January 17, 2025)
 - Initial API release
 - Added opportunity push endpoint
-- Added applicant retrieval endpoints
-- Added metrics endpoint
+- Added applicant retrieval endpoint
 - Implemented HMAC-SHA256 authentication
 - Added college & course visibility filtering
 
