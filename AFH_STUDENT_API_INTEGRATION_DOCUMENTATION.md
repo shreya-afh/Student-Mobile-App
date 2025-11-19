@@ -1,8 +1,8 @@
 # AFH Student Application - Integration API Documentation
 ## External Partner Integration APIs
 
-**Version:** 1.0.0  
-**Last Updated:** January 17, 2025  
+**Version:** 1.1.0  
+**Last Updated:** January 19, 2025  
 **Base URL:** `https://ifafh-skilling.replit.app/api/partners/v1`
 
 ---
@@ -12,11 +12,13 @@
 2. [Authentication & Security](#authentication--security)
 3. [Incoming APIs (External → AFH Student)](#incoming-apis)
    - [Push Job Opportunities](#1-push-job-opportunities)
-4. [Application Callback](#application-callback)
-5. [Data Mapping & Visibility Rules](#data-mapping--visibility-rules)
-6. [Error Handling](#error-handling)
-7. [Rate Limits](#rate-limits)
-8. [Testing & Examples](#testing--examples)
+4. [Outgoing APIs (AFH Student → External)](#outgoing-apis)
+   - [Get Student Attendance Records](#1-get-student-attendance-records)
+5. [Application Callback](#application-callback)
+6. [Data Mapping & Visibility Rules](#data-mapping--visibility-rules)
+7. [Error Handling](#error-handling)
+8. [Rate Limits](#rate-limits)
+9. [Testing & Examples](#testing--examples)
 
 ---
 
@@ -29,6 +31,7 @@ The AFH Student Application integrates with external managing applications to:
 1. **Receive Placement Opportunities** - External applications push job/internship opportunities to AFH Student
 2. **Filter by College & Course** - Opportunities are shown only to eligible students based on college name and course code
 3. **Track Applications** - When students apply, AFH Student notifies the external application via callback URL
+4. **Fetch Attendance Records** - AFH Student retrieves student attendance/session data from external managing application on-demand
 
 ### Key Features
 
@@ -37,6 +40,7 @@ The AFH Student Application integrates with external managing applications to:
 - ✅ **Idempotent Operations** - Safe to retry requests
 - ✅ **Real-time Application Notifications** - Instant callbacks when students apply
 - ✅ **Bulk Operations** - Handle multiple opportunities in single request
+- ✅ **On-Demand Data Fetching** - Pull attendance records from external system as needed
 
 ---
 
@@ -357,6 +361,384 @@ Content-Type: application/json
 
 ---
 
+## Outgoing APIs
+
+These APIs are called by AFH Student Application to fetch data from the external managing application.
+
+### 1. Get Student Attendance Records
+
+Fetch attendance/session records for a specific student from the external managing application. This API is called on-demand when a student views their attendance history in the AFH Student app.
+
+**Endpoint (External Managing Application):**
+```
+GET /api/attendance/student/{studentId}
+```
+
+**Request Method:** `GET`
+
+**Path Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `studentId` | string | Yes | AFH Student ID (format: AFH-0000001) |
+
+**Query Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `courseId` | string | No | Filter by specific course ID |
+| `fromDate` | string | No | Filter sessions from this date (YYYY-MM-DD) |
+| `toDate` | string | No | Filter sessions until this date (YYYY-MM-DD) |
+| `limit` | integer | No | Maximum number of records to return (default: 100, max: 500) |
+| `offset` | integer | No | Pagination offset (default: 0) |
+
+**Request Headers:**
+```
+X-AFH-API-Key: afh_partner_live_xxxxx
+X-AFH-Signature: t=1234567890,v1=abc123...
+Accept: application/json
+```
+
+**Example Request:**
+```bash
+GET https://managing-app.replit.app/api/attendance/student/AFH-0000001?courseId=DM2024B4&limit=50
+```
+
+**Signature Generation:**
+
+Since this is a GET request with no body, the signature is generated using the request path and query string:
+
+```javascript
+const crypto = require('crypto');
+
+function generateSignatureForGET(path, queryParams, secretKey) {
+  const timestamp = Math.floor(Date.now() / 1000);
+  const queryString = new URLSearchParams(queryParams).toString();
+  const fullPath = queryString ? `${path}?${queryString}` : path;
+  const signedPayload = `${timestamp}.${fullPath}`;
+  
+  const signature = crypto
+    .createHmac('sha256', secretKey)
+    .update(signedPayload)
+    .digest('hex');
+  
+  return `t=${timestamp},v1=${signature}`;
+}
+
+// Usage Example
+const path = '/api/attendance/student/AFH-0000001';
+const queryParams = { courseId: 'DM2024B4', limit: 50 };
+const signature = generateSignatureForGET(path, queryParams, 'your_shared_secret');
+
+// Add to headers
+headers['X-AFH-API-Key'] = 'afh_partner_live_abc123xyz';
+headers['X-AFH-Signature'] = signature;
+```
+
+**Success Response (200 OK):**
+```json
+{
+  "status": "success",
+  "studentId": "AFH-0000001",
+  "studentName": "Shreya Mishra",
+  "courseId": "DM2024B4",
+  "courseName": "Digital Marketing Fundamentals",
+  "totalRecords": 13,
+  "attendanceRecords": [
+    {
+      "sessionId": "sess_dm_001",
+      "sessionName": "Introduction to Digital Marketing",
+      "sessionDate": "2025-01-05",
+      "classDuration": 2.0,
+      "mode": "offline",
+      "locationLat": "12.9716",
+      "locationLong": "77.5946",
+      "locationAddress": "ABC Engineering College, MG Road, Bangalore",
+      "rating": 5,
+      "feedback": "Excellent session on digital marketing fundamentals",
+      "recordedAt": "2025-01-05T14:30:00Z"
+    },
+    {
+      "sessionId": "sess_dm_002",
+      "sessionName": "SEO Basics and Best Practices",
+      "sessionDate": "2025-01-08",
+      "classDuration": 1.5,
+      "mode": "online",
+      "locationLat": null,
+      "locationLong": null,
+      "locationAddress": null,
+      "rating": 4,
+      "feedback": "Good content on SEO strategies",
+      "recordedAt": "2025-01-08T15:00:00Z"
+    },
+    {
+      "sessionId": "sess_dm_003",
+      "sessionName": "Social Media Marketing",
+      "sessionDate": "2025-01-10",
+      "classDuration": 2.5,
+      "mode": "offline",
+      "locationLat": "12.9716",
+      "locationLong": "77.5946",
+      "locationAddress": "ABC Engineering College, MG Road, Bangalore",
+      "rating": 5,
+      "feedback": "Very practical session with real-world examples",
+      "recordedAt": "2025-01-10T16:45:00Z"
+    }
+  ],
+  "pagination": {
+    "limit": 50,
+    "offset": 0,
+    "hasMore": false
+  },
+  "summary": {
+    "totalSessionsAttended": 13,
+    "totalHoursCompleted": 7.5,
+    "totalCourseHours": 60,
+    "attendancePercentage": 12.5,
+    "averageRating": 4.6
+  },
+  "requestId": "req_attendance_001"
+}
+```
+
+**Field Descriptions:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `sessionId` | string | Yes | Unique session/class identifier |
+| `sessionName` | string | Yes | Name/topic of the session |
+| `sessionDate` | string | Yes | Session date in YYYY-MM-DD format |
+| `classDuration` | number | Yes | Duration in hours (supports decimals like 1.5, 2.5) |
+| `mode` | string | Yes | Session mode: `online` or `offline` |
+| `locationLat` | string/null | No | Latitude (required for offline mode, null for online) |
+| `locationLong` | string/null | No | Longitude (required for offline mode, null for online) |
+| `locationAddress` | string/null | No | Full address (required for offline mode, null for online) |
+| `rating` | integer | Yes | Student rating for the session (1-5) |
+| `feedback` | string/null | No | Student's textual feedback/comments |
+| `recordedAt` | string | Yes | ISO 8601 timestamp when attendance was recorded |
+
+**Empty Result Response (200 OK):**
+```json
+{
+  "status": "success",
+  "studentId": "AFH-0000001",
+  "studentName": "Shreya Mishra",
+  "courseId": "DM2024B4",
+  "courseName": "Digital Marketing Fundamentals",
+  "totalRecords": 0,
+  "attendanceRecords": [],
+  "pagination": {
+    "limit": 50,
+    "offset": 0,
+    "hasMore": false
+  },
+  "summary": {
+    "totalSessionsAttended": 0,
+    "totalHoursCompleted": 0,
+    "totalCourseHours": 60,
+    "attendancePercentage": 0,
+    "averageRating": 0
+  },
+  "requestId": "req_attendance_002"
+}
+```
+
+**Error Response (404 Not Found):**
+```json
+{
+  "status": "error",
+  "error": {
+    "code": "STUDENT_NOT_FOUND",
+    "message": "Student with ID 'AFH-0000001' not found in managing application"
+  },
+  "requestId": "req_attendance_003"
+}
+```
+
+**Error Response (401 Unauthorized):**
+```json
+{
+  "status": "error",
+  "error": {
+    "code": "INVALID_API_KEY",
+    "message": "Invalid or expired API key"
+  },
+  "requestId": "req_attendance_004"
+}
+```
+
+**Error Response (403 Forbidden):**
+```json
+{
+  "status": "error",
+  "error": {
+    "code": "INVALID_SIGNATURE",
+    "message": "Request signature verification failed"
+  },
+  "requestId": "req_attendance_005"
+}
+```
+
+**Error Response (400 Bad Request):**
+```json
+{
+  "status": "error",
+  "error": {
+    "code": "INVALID_DATE_RANGE",
+    "message": "Invalid date range: 'fromDate' must be before 'toDate'",
+    "details": {
+      "fromDate": "2025-12-01",
+      "toDate": "2025-01-01"
+    }
+  },
+  "requestId": "req_attendance_006"
+}
+```
+
+**Important Implementation Notes:**
+
+1. **Data Sync Strategy:**
+   - AFH Student no longer stores attendance records locally
+   - Data is fetched on-demand when users view their attendance history
+   - External application is the single source of truth for attendance data
+
+2. **Performance Considerations:**
+   - Response should be returned within 2 seconds for optimal user experience
+   - Implement caching on external application side if needed
+   - Use pagination for large datasets (>100 records)
+
+3. **Data Mapping:**
+   - Student ID format must match AFH format (AFH-XXXXXXX)
+   - Session dates should be in YYYY-MM-DD format
+   - Class duration must be numeric (supports decimals)
+   - Mode must be either "online" or "offline" (lowercase)
+
+4. **Security:**
+   - Always verify API key and HMAC signature
+   - Validate student ID format before querying database
+   - Implement rate limiting to prevent abuse
+
+5. **Backward Compatibility:**
+   - If an older version of AFH Student makes a request without required headers, return 401 with clear error message
+   - Always include `requestId` in responses for debugging
+
+**Implementation Example (External Application):**
+
+```javascript
+// Example Express.js endpoint in external managing application
+const express = require('express');
+const crypto = require('crypto');
+
+app.get('/api/attendance/student/:studentId', async (req, res) => {
+  try {
+    // 1. Verify API key
+    const apiKey = req.headers['x-afh-api-key'];
+    if (!apiKey || !verifyAPIKey(apiKey)) {
+      return res.status(401).json({
+        status: 'error',
+        error: { code: 'INVALID_API_KEY', message: 'Invalid or expired API key' },
+        requestId: generateRequestId()
+      });
+    }
+
+    // 2. Verify HMAC signature
+    const signature = req.headers['x-afh-signature'];
+    const fullPath = req.originalUrl;
+    if (!verifySignatureForGET(signature, fullPath, sharedSecret)) {
+      return res.status(403).json({
+        status: 'error',
+        error: { code: 'INVALID_SIGNATURE', message: 'Request signature verification failed' },
+        requestId: generateRequestId()
+      });
+    }
+
+    // 3. Extract and validate parameters
+    const { studentId } = req.params;
+    const { courseId, fromDate, toDate, limit = 100, offset = 0 } = req.query;
+
+    if (!studentId.match(/^AFH-\d{7}$/)) {
+      return res.status(400).json({
+        status: 'error',
+        error: { code: 'INVALID_STUDENT_ID', message: 'Invalid student ID format' },
+        requestId: generateRequestId()
+      });
+    }
+
+    // 4. Fetch attendance records from database
+    const records = await fetchAttendanceRecords({
+      studentId,
+      courseId,
+      fromDate,
+      toDate,
+      limit: Math.min(parseInt(limit), 500),
+      offset: parseInt(offset)
+    });
+
+    // 5. Calculate summary statistics
+    const summary = calculateSummary(records);
+
+    // 6. Return response
+    res.json({
+      status: 'success',
+      studentId,
+      studentName: records.studentName,
+      courseId: records.courseId,
+      courseName: records.courseName,
+      totalRecords: records.total,
+      attendanceRecords: records.data,
+      pagination: {
+        limit: parseInt(limit),
+        offset: parseInt(offset),
+        hasMore: records.hasMore
+      },
+      summary,
+      requestId: generateRequestId()
+    });
+
+  } catch (error) {
+    console.error('Attendance API error:', error);
+    res.status(500).json({
+      status: 'error',
+      error: { code: 'INTERNAL_ERROR', message: 'Internal server error' },
+      requestId: generateRequestId()
+    });
+  }
+});
+
+function verifySignatureForGET(signature, fullPath, secretKey, tolerance = 300) {
+  if (!signature) return false;
+  
+  const parts = signature.split(',').reduce((acc, part) => {
+    const [key, value] = part.split('=');
+    acc[key] = value;
+    return acc;
+  }, {});
+  
+  const timestamp = parseInt(parts.t);
+  const receivedSig = parts.v1;
+  
+  // Check timestamp
+  const currentTime = Math.floor(Date.now() / 1000);
+  if (Math.abs(currentTime - timestamp) > tolerance) {
+    return false;
+  }
+  
+  // Verify signature
+  const signedPayload = `${timestamp}.${fullPath}`;
+  const expectedSig = crypto
+    .createHmac('sha256', secretKey)
+    .update(signedPayload)
+    .digest('hex');
+  
+  return crypto.timingSafeEqual(
+    Buffer.from(receivedSig),
+    Buffer.from(expectedSig)
+  );
+}
+```
+
+---
+
 ## Application Callback
 
 When a student applies to an opportunity, AFH Student will immediately notify your system by calling your callback endpoint.
@@ -623,6 +1005,8 @@ All errors follow this structure:
 | **400** | `VALIDATION_ERROR` | Request payload validation failed | Check field requirements in error.details |
 | **400** | `INVALID_COURSE_CODE` | Course code doesn't exist in AFH | Use valid course codes from AFH catalog |
 | **400** | `INVALID_COLLEGE_NAME` | College name doesn't match any AFH records | Verify exact college name spelling |
+| **400** | `INVALID_STUDENT_ID` | Student ID format is invalid | Use AFH-XXXXXXX format |
+| **400** | `INVALID_DATE_RANGE` | Date range validation failed | Ensure fromDate < toDate |
 | **400** | `PAST_DEADLINE` | Application deadline is in the past | Use future date for deadline |
 | **400** | `MISSING_VISIBILITY_RULES` | No visibility rules provided | Add at least one visibility rule |
 | **401** | `INVALID_API_KEY` | API key is invalid or expired | Check API key or request new one |
@@ -631,6 +1015,7 @@ All errors follow this structure:
 | **403** | `TIMESTAMP_EXPIRED` | Request timestamp too old (>5 min) | Ensure clock synchronization |
 | **403** | `UNAUTHORIZED_PARTNER` | Partner ID mismatch | Verify partnerId matches API key |
 | **404** | `OPPORTUNITY_NOT_FOUND` | Opportunity doesn't exist | Check externalOpportunityId |
+| **404** | `STUDENT_NOT_FOUND` | Student doesn't exist in managing app | Verify student ID is synced |
 | **409** | `DUPLICATE_APPLICATION` | Student already applied | This is informational, not an error |
 | **413** | `PAYLOAD_TOO_LARGE` | Request exceeds size limit | Reduce opportunities per request (<50) |
 | **429** | `RATE_LIMIT_EXCEEDED` | Too many requests | Implement exponential backoff |
@@ -696,11 +1081,21 @@ if (response.status === 'partial_success') {
 
 ### Request Limits
 
+**Incoming APIs (External → AFH Student):**
+
 | Endpoint | Rate Limit | Burst Limit |
 |----------|------------|-------------|
 | `POST /opportunities` | 60 requests/minute | 10 requests/second |
 
-**Note:** Callbacks from AFH Student to your application are not subject to these rate limits.
+**Outgoing APIs (AFH Student → External):**
+
+| Endpoint | Rate Limit | Burst Limit |
+|----------|------------|-------------|
+| `GET /attendance/student/{studentId}` | 120 requests/minute | 20 requests/second |
+
+**Note:** 
+- Callbacks from AFH Student to your application are not subject to these rate limits
+- External managing application should implement its own rate limiting for the attendance endpoint
 
 ### Rate Limit Headers
 
@@ -989,6 +1384,7 @@ app.listen(3000, () => console.log('Callback server running on port 3000'));
 
 Before going to production, verify:
 
+**Incoming APIs (Job Opportunities):**
 - [ ] Successfully authenticate with API key and signature
 - [ ] Post test opportunity with valid visibility rules and callback URL
 - [ ] Verify opportunity appears to matching students only
@@ -996,6 +1392,19 @@ Before going to production, verify:
 - [ ] Implement and test callback endpoint to receive applications
 - [ ] Verify callback signature validation works
 - [ ] Test callback retry logic (simulate endpoint failures)
+
+**Outgoing APIs (Attendance Records):**
+- [ ] Implement attendance endpoint with proper authentication
+- [ ] Test successful attendance data fetch with valid student ID
+- [ ] Verify signature validation for GET requests
+- [ ] Test with invalid student ID format
+- [ ] Test with student not found in system
+- [ ] Verify pagination works correctly
+- [ ] Test date range filtering (fromDate, toDate)
+- [ ] Ensure response time is under 2 seconds
+- [ ] Verify summary calculations are accurate
+
+**General:**
 - [ ] Handle rate limits gracefully
 - [ ] Implement retry logic for 5xx errors
 - [ ] Validate all error responses (400, 401, 403, 404)
@@ -1016,6 +1425,15 @@ For API integration support, credentials, or technical assistance:
 ---
 
 ## Changelog
+
+### Version 1.1.0 (January 19, 2025)
+- **[NEW]** Added Outgoing API: Get Student Attendance Records
+- **[BREAKING]** AFH Student no longer stores attendance records locally
+- **[CHANGE]** Attendance data now fetched on-demand from external managing application
+- Updated error codes to include attendance-related errors
+- Added rate limits for attendance API endpoint
+- Added signature generation example for GET requests
+- Updated testing checklist with attendance API tests
 
 ### Version 1.0.0 (January 17, 2025)
 - Initial API release
