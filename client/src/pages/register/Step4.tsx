@@ -48,11 +48,6 @@ export default function RegisterStep4() {
   const handleComplete = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!validateAadhaar(formData.aadhaar)) {
-      setAadhaarError("Enter a valid 12-digit Aadhaar number");
-      return;
-    }
-
     if (!formData.selfie) {
       setSelfieError("Please capture your selfie to continue");
       toast({
@@ -156,32 +151,6 @@ export default function RegisterStep4() {
           </h1>
 
           <form onSubmit={handleComplete} className="space-y-4">
-            <div>
-              <Label htmlFor="aadhaar" className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm">
-                Aadhaar Number *
-              </Label>
-              <Input
-                id="aadhaar"
-                type="tel"
-                placeholder="Enter 12-digit Aadhaar number"
-                value={formData.aadhaar}
-                onChange={(e) => handleAadhaarChange(e.target.value)}
-                className={`mt-1 ${aadhaarError ? 'border-red-500' : ''}`}
-                maxLength={12}
-                required
-                data-testid="input-aadhaar"
-              />
-              {aadhaarError ? (
-                <p className="font-['Inter',Helvetica] font-normal text-red-500 text-xs mt-1">
-                  {aadhaarError}
-                </p>
-              ) : (
-                <p className="font-['Inter',Helvetica] font-normal text-[#697282] text-xs mt-1">
-                  Will be safely stored with encryption
-                </p>
-              )}
-            </div>
-
             <div>
               <Label className="font-['Inter',Helvetica] font-medium text-[#1d2838] text-sm mb-2 block">
                 Person with Disability (PWD) Status *
