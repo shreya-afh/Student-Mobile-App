@@ -839,14 +839,26 @@ Every screen has a **Logo Bar** at the very top: `Infosys Foundation logo × Asp
 **Fields:**
 | Field | Type | Validation |
 |---|---|---|
-| College Name | Select dropdown | Required (list of Indian colleges seeded in app) |
-| Highest Qualification Course | text input (or select) | Required |
-| Start Year | numeric input | Required; must be ≤ current year |
-| End Year | numeric input | Required; must be ≥ start year |
+| College Name | Select dropdown (strict list, 4 colleges) | Required |
+| Course | Select dropdown (grouped UG/PG list) | Required |
+| Start Year | number input (max 4 digits, numeric only) | Required; must be ≤ current year |
+| End Year | number input (max 4 digits, numeric only) | Required; must be ≥ start year |
 | State | Select (all Indian states from `shared/locationData`) | Required |
-| District | Select (filtered by state) | Required |
-| City | Select (filtered by district) + "Other" option | Required; if "Other" selected, shows text input |
-| Pincode | text input | Required; must be exactly 6 digits |
+| District | Select (filtered by state, disabled until state picked) | Required |
+| City | Select (filtered by district, disabled until district picked) + "other" option | Required; if "other" selected, text input appears for custom city name |
+| Pincode | text input | Required; must be exactly 6 digits (`/^\d{6}$/`) |
+
+**College Name options (exact `value`s):**
+- `"Annasaheb Dange College of Engineering & Technology, Ashta"`
+- `"Ashokrao Mane Group of Institutions"`
+- `"Don Bosco Institute of Technology"`
+- `"SKN SINHGAD COLLEGE OF ENGINEERING"`
+
+**Course options (grouped Select, exact `value`s equal to display labels):**
+
+UG group: BBA, BCom, BCom (Hons), BMS, BBM, BFIA, BSc (General), BSc (Hons) – Physics, BSc (Hons) – Chemistry, BSc (Hons) – Biology, BSc (Hons) – Mathematics, BSc (Hons) – Computer Science, BSc (Hons) – Biotechnology, BSc (Hons) – Environmental Science, BTech / BE, BCA, BSc Nursing, BA, BA (Hons) – English, BA (Hons) – History, BA (Hons) – Political Science, BA (Hons) – Sociology, BA (Hons) – Psychology, BFA, BDes, LLB (3-yr), BA LLB (5-yr integrated), BBA LLB (5-yr integrated), MBBS, BDS, BAMS, BHMS, BPT, BPharm, BEd, BA BEd (Integrated), BSc BEd (Integrated), BHM (Hotel Management), BFTech (Fashion Technology), BSc Animation, BJMC (Mass Communication & Journalism), BSc Aviation, BSc Agriculture, BSc Horticulture, BSc Forestry, BVSc
+
+PG group: MBA, MCom, PGDM, MSc (Physics), MSc (Chemistry), MSc (Biology), MSc (Mathematics), MSc (Computer Science), MSc (Biotechnology), MSc (Environmental Science), MTech / ME, MCA, MPhil, MA (English), MA (History), MA (Political Science), MA (Sociology), MA (Psychology), MFA, MDes, LLM, MD, MS, MDS, MPharm, MPT, MPH, MEd, MJMC, MHM (Hotel Management), MVSc
 
 **CTA:** "Continue" → validates → saves to RegistrationContext → navigates to `/register/step3`
 
@@ -1333,7 +1345,7 @@ Files uploaded:
 **Range:** `Sheet1!A:Z`  
 **Value input option:** `USER_ENTERED`
 
-**Column order for registration row (28 columns):**
+**Column order for registration row (29 columns, A through AC):**
 
 | Column # | Field | Source |
 |---|---|---|
