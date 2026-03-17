@@ -76,7 +76,7 @@
 | Routing | wouter |
 | State / Data fetching | TanStack Query v5 |
 | UI components | shadcn/ui + Tailwind CSS |
-| Forms | react-hook-form + zod |
+| Forms | `useState` + manual validation (no react-hook-form) |
 | Icons | lucide-react |
 | Native camera | @capacitor/camera |
 | Native geolocation | @capacitor/geolocation |
@@ -792,9 +792,9 @@ Every screen has a **Logo Bar** at the very top: `Infosys Foundation logo × Asp
 
 **Step 2 — OTP:**
 - 5 individual digit input boxes (auto-advance to next box on input)
-- 60-second countdown timer; "Resend OTP" button enabled when timer = 0
-- CTA: "Verify OTP" → calls `POST /api/verify-otp`
-- Auto-verifies when all 5 digits entered
+- 60-second countdown timer (`setInterval`, ticks every 1000ms via `useEffect`); shows "Resend OTP in Xs"
+- When timer reaches 0: shows "Resend OTP" clickable button (re-calls `sendOtpMutation`)
+- **No explicit "Verify OTP" CTA button.** Verification is triggered automatically when the 5th digit is entered (100ms `setTimeout` delay): `POST /api/verify-otp` is called immediately
 - On success → moves to Step 3
 
 **Step 3 — New Password:**
@@ -871,9 +871,18 @@ Every screen has a **Logo Bar** at the very top: `Infosys Foundation logo × Asp
 | Email | email input | Required |
 | Annual Family Income | Select dropdown | Required |
 
-**Family Income dropdown options** (exact values from app, displayed as labels):
-- Below 1 Lakh, 1-2 Lakh, 2-3 Lakh, 3-5 Lakh, 5-10 Lakh, Above 10 Lakh
-  *(These are the display labels; actual option values may match these strings)*
+**Family Income dropdown options** (exact `<SelectItem>` values and labels):
+
+| value | Display label |
+|---|---|
+| `below-1lakh` | Below ₹1 Lakh |
+| `1-2lakh` | ₹1-2 Lakhs |
+| `2-3lakh` | ₹2-3 Lakhs |
+| `3-4lakh` | ₹3-4 Lakhs |
+| `4-5lakh` | ₹4-5 Lakhs |
+| `above-5lakh` | Above ₹5 Lakhs |
+
+The stored value in `users.family_income` and the Google Sheet (column M) is the option `value` string, e.g. `"below-1lakh"`.
 
 **"Same as Contact" checkbox:** Syncs WhatsApp Number with Student Contact in real-time.
 
